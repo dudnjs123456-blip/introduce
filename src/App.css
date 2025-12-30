@@ -1,290 +1,1150 @@
-/* App.css */
-@import "~slick-carousel/slick/slick.css";
-@import "~slick-carousel/slick/slick-theme.css";
+/* Google Fonts - Poppins (깔끔하고 현대적인 폰트) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-html, body {
+/* ============================================================= */
+/* 🌐 전역 스타일 (Global Styles) - 세련된 웹페이지의 기본 🌐 */
+/* ============================================================= */
+
+:root {
+  /* 색상 팔레트 */
+  --primary-color: #007bff; /* 파란색 강조색 */
+  --secondary-color: #6c757d; /* 회색 보조색 */
+  --background-dark: #1a1a2e; /* 어두운 배경 */
+  --background-light: #f8f9fa; /* 밝은 배경 */
+  --text-dark: #333; /* 어두운 텍스트 */
+  --text-light: #e0e0e0; /* 밝은 텍스트 */
+  --highlight-color: #28a745; /* 강조색 */
+  --card-background: #20203a; /* 카드 배경색 */
+  --border-color: #3b3b5c; /* 테두리 색상 */
+  --header-bg: rgba(26, 26, 46, 0.95); /* 헤더 배경 (투명도) */
+
+  /* 폰트 */
+  --font-family-primary: 'Poppins', sans-serif;
+  --font-family-secondary: 'Arial', sans-serif;
+
+  /* 간격 */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+
+  /* 그림자 */
+  --shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-dark: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 모든 요소에 대한 기본 설정 */
+* {
   margin: 0;
-  padding: 0; /* 필요시 패딩도 제거 */
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@keyframes moveCloud {
-  0% {
-    transform: translateX(0%); /* 시작 위치 (왼쪽 밖) */
-  }
-  100% {
-    transform: translateX(1800px); /* 끝 위치 (오른쪽 밖) */
-  }
+body {
+  font-family: var(--font-family-primary);
+  line-height: 1.6;
+  color: var(--text-light); /* 기본 텍스트는 밝게 */
+  background-color: var(--background-dark); /* 전체 배경은 어둡게 */
+  scroll-behavior: smooth; /* 부드러운 스크롤 */
 }
 
-
-.road-image {
-  max-width: 100%;
-  height: auto;
+/* 링크 스타일 초기화 */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-.cloud {
-  position: absolute;
-  border: 1px solid black; /* 구름의 테두리 (디버깅 용도) */
-  top: 20%; /* 수직 위치 조정 */
-  left: -100px; /* 시작 위치 (왼쪽 밖) */
-  width: 200px; /* 구름 크기 */
-  height: auto; /* 비율 유지 */
-  animation: moveCloud 20s linear infinite; /* 애니메이션 설정 */
-  z-index: 3; /* 다른 요소 위에 위치 */
+a:hover {
+  color: var(--highlight-color);
 }
 
-.back-button{
-  position: absolute;
-  width: 300px;
-  height: 50px;
-  top: 85%;
-  left: 40%;
-}
-
-.My_img{
-  position: absolute;
-  top: 150px;
-  left: 5%;
-  border: 1px solid black;
-  width:450px;
-  height: 450px;
-  border-radius: 100%;
-}
-.additional-content{
-  position: absolute;
-  top: 10%;
-  left: 5%;
-}
-.MainName a{
-  position: absolute; 
-  width: 100%;
+/* 섹션 공통 스타일 */
+section {
+  padding: var(--spacing-xl) 0;
   text-align: center;
-  align-items: center;
-  z-index: 3;
+  overflow: hidden; /* 자식 요소의 오버플로우 방지 */
 }
 
-.background-image {
-  position: absolute; /* 절대 위치 지정 */
-  top: 50.5%;
-  left: 23%;
-  width: 48%;
-  height: 50%;
-  z-index: 1; /* 다른 요소 뒤에 배치 */
-  opacity: 80%;
-  background-image: url('./pngegg.png'); /* 상대 경로로 수정 */
-  background-size: cover; /* 이미지 크기 조절 */
-  background-position: center; /* 이미지 위치 조정 */
+.portfolio-container {
+    overflow-x: hidden; /* 가로 스크롤 방지 */
 }
 
-.sky {
-  background: linear-gradient(to bottom, #87CEEB, #B0E0E6); /* 하늘 색상 */
-  height: 50vh;
-  position: absolute; /* 절대 위치로 설정 */
-  top: 0; /* 상단에 위치 */
-  left: 0; /* 좌측에 위치 */
-  width: 100%; /* 전체 너비 */
-  z-index: 0; /* z-index를 설정하여 뒤쪽에 위치 */
-  transition: transform 0.5s ease, opacity 0.3s ease; /* 애니메이션 효과 추가 */
+.section-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg); /* 좌우 여백 */
 }
 
-@keyframes moveSun {
-  0% {
-    transform: translate(100px, 0) rotate(0deg); /* 오른쪽 위치 */
-  }
-  25% {
-    transform: translate(0, 100px) rotate(90deg); /* 아래쪽 위치 */
-  }
-  50% {
-    transform: translate(-100px, 0) rotate(180deg); /* 왼쪽 위치 */
-  }
-  75% {
-    transform: translate(0, -100px) rotate(270deg); /* 위쪽 위치 */
-  }
-  100% {
-    transform: translate(100px, 0) rotate(360deg); /* 오른쪽 위치로 돌아옴 */
-  }
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-xl);
+  color: #fff; /* 섹션 제목은 흰색 */
+  font-weight: 700;
+  position: relative;
+  display: inline-block; /* 밑줄 효과를 위해 */
 }
 
-.sun {
-  background: yellow;
-  border-radius: 50%; /* 원형으로 만들기 */
-  width: 100px; /* 해의 크기 */
-  height: 100px;
+.section-title::after { /* 제목 밑줄 효과 */
+  content: '';
   position: absolute;
-  top: 100px; /* 원의 중심 Y 좌표 */
-  left: 100px; /* 원의 중심 X 좌표 */
-  animation: moveSun 10s linear infinite; /* 애니메이션 설정 */
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background-color: var(--highlight-color);
+  border-radius: 2px;
 }
 
-
-
-.hide {
-  transform: translateY(-100%); /* 위로 올라가는 애니메이션 */
-  opacity: 0; /* 사라지는 효과 */
+/* ============================================================= */
+/* ✨ 알록달록 이름 애니메이션 (Animated Name) 스타일 ✨ */
+/* ============================================================= */
+.animated-name {
+  display: inline-block; /* span이 transform과 animation을 받을 수 있도록 */
+  font-weight: inherit; /* 부모로부터 폰트 굵기 상속 */
+  animation: color-change 5s infinite alternate; /* 5초 동안 색상이 변하고 다시 돌아오는 애니메이션 */
 }
 
-
-@keyframes moveSun {
-  0% {
-      left: -100px; /* 시작 위치 */
-  }
-  50% {
-      left: calc(100vw - 100px); /* 화면 오른쪽 끝으로 이동 */
-  }
-  100% {
-      left: -100px; /* 다시 시작 위치로 이동 */
-  }
+/* @keyframes 정의: 색깔이 순차적으로 변하는 과정 */
+@keyframes color-change {
+  0% { color: #FF0080; /* 마젠타 */ }
+  15% { color: #8A2BE2; /* 블루 바이올렛 */ }
+  30% { color: #00BFFF; /* 딥 스카이 블루 */ }
+  45% { color: #32CD32; /* 라임 그린 */ }
+  60% { color: #FFD700; /* 골드 */ }
+  75% { color: #FF4500; /* 오렌지 레드 */ }
+  90% { color: #FF0080; /* 마젠타 */ }
+  100% { color: #8A2BE2; /* 블루 바이올렛 */ }
 }
 
-.card-slider {
-  width: 80%;
-margin-left: 10%;
-margin-top: 13%;
-transition: transform 0.5s ease, opacity 0.3s ease;
-z-index: 2;
+/* ============================================================= */
+/* 🚀 헤더 (Header) 섹션 스타일 🚀 */
+/* ============================================================= */
+
+.section-header {
+  background-color: var(--header-bg); /* 배경색 지정 */
+  padding: var(--spacing-md) var(--spacing-lg);
+  position: sticky; /* 상단에 고정 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* 다른 요소 위에 오도록 */
+  box-shadow: var(--shadow-dark); /* 헤더에 그림자 */
+  backdrop-filter: blur(5px); /* 배경 블러 효과 (더욱 세련된 느낌) */
+  -webkit-backdrop-filter: blur(5px); /* 사파리 호환성 */
 }
 
-.slide-out {
-  transform: translateY(-100%); /* 위로 올라가는 애니메이션 */
-  opacity: 0; /* 사라지는 효과 */
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex; /* 요소들을 한 줄에 정렬 */
+  justify-content: space-between; /* 양 끝 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
 }
 
-.slide-in {
-  transform: translateY(0); /* 아래로 내려오는 애니메이션 */
-  opacity: 1; /* 보이는 효과 */
+.site-title {
+  font-size: 2rem;
+  color: white; /* 사이트 제목 색상 */
+  font-weight: 700;
+  margin: 0; /* h1 기본 마진 제거 */
+  letter-spacing: 1px;
 }
-.Main{
+
+.site-title a { /* 사이트 제목 링크 스타일 */
+  color: var(--highlight-color);
+  text-decoration: none;
+}
+
+.main-nav ul {
+  list-style: none; /* 목록 마커 제거 */
+  display: flex; /* 메뉴 아이템들을 한 줄에 정렬 */
+}
+
+.main-nav li {
+  margin-left: var(--spacing-lg); /* 메뉴 아이템 간 간격 */
+}
+
+.main-nav a {
+  color: var(--text-light);
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: var(--spacing-sm) 0; /* 호버 시 밑줄 공간 확보 */
+  position: relative; /* 밑줄 효과를 위해 */
+}
+
+.main-nav a::after { /* 메뉴 호버 밑줄 효과 */
+  content: '';
   position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background-color: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+.main-nav a:hover::after,
+.main-nav a.active::after { /* 활성 메뉴 또는 호버 시 */
+  width: 100%;
+}
+
+/* ============================================================= */
+/* 🌟 히어로 섹션 (HeroSection) 스타일 🌟 */
+/* ============================================================= */
+
+.section-hero {
+  background: var(--background-dark) url('https://via.placeholder.com/1920x1080?text=Background+Image') no-repeat center center/cover; /* 배경 이미지 또는 단색 */
+  min-height: 100vh; /* 화면 전체 높이 */
+  display: flex; /* 내용 중앙 정렬 */
+  flex-direction: column; /* 세로 방향 정렬 */
+  justify-content: center; /* 세로 중앙 정렬 */
+  align-items: center; /* 가로 중앙 정렬 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  color: var(--text-light); /* 텍스트 색상 */
+  position: relative;
+  z-index: 1; /* 배경 위에 오도록 */
+  padding: var(--spacing-xl); /* 모바일에서의 패딩 */
+}
+
+.section-hero::before { /* 배경 위에 어두운 오버레이 */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background-color: #386163; /* 원하는 배경 색상 */
-  overflow-x: hidden; /* 가로 스크롤 숨기기 */
+  background-color: rgba(0, 0, 0, 0.6); /* 어두운 오버레이 */
+  z-index: -1;
 }
 
-.app-container {
-  transition: background-color 0.5s ease; /* 배경 색상 변화 애니메이션 */
+.hero-content {
+  max-width: 800px;
+  padding: var(--spacing-xl);
+}
+
+.profile-image {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%; /* 원형 이미지 */
+  object-fit: cover; /* 이미지가 잘리지 않게 */
+  border: 5px solid var(--primary-color); /* 테두리 강조 */
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-dark); /* 그림자 효과 */
+  animation: pulse 2s infinite; /* 부드러운 애니메이션 */
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.hero-subtitle {
+  font-size: 1.4rem;
+  margin-bottom: var(--spacing-sm);
+  color: var(--primary-color);
+}
+
+.hero-title {
+  font-size: 2.3rem;
+  margin-bottom: var(--spacing-md);
+  color: #fff;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hero-title .highlight {
+  color: #067ca3;
+  font-weight: 800;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-xl);
+  color: var(--text-light);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-primary {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-light);
+}
+
+.btn-primary:hover {
+  background-color: var(--highlight-color);
+  transform: translateY(-3px); /* 호버 시 살짝 떠오르는 효과 */
+}
+
+.social-links {
+  margin-top: var(--spacing-md);
+}
+
+.social-links a {
+  color: var(--text-light);
+  font-size: 1.2rem;
+  margin: 0 var(--spacing-md);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-links a:hover {
+  color: var(--primary-color);
+  transform: translateY(-3px);
+}
+
+/* ============================================================= */
+/* 🙋‍♀️ 나에 대해 & 기술 스택 (AboutAndSkills) 스타일 🛠️ */
+/* ============================================================= */
+
+.section-about-skills {
+  background-color: var(--background-light); /* 밝은 배경 */
+  color: var(--text-dark); /* 어두운 텍스트 */
+  padding: var(--spacing-xl) 0;
+}
+
+.section-about-skills .section-title {
+  color: var(--text-dark); /* 제목은 어둡게 */
+}
+
+.about-me-content, .skills-content {
+  text-align: left;
+  margin-bottom: var(--spacing-xl);
+}
+
+.about-me-content h3, .skills-content h3 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-lg);
+  border-left: 5px solid var(--highlight-color);
+  padding-left: var(--spacing-md);
+}
+
+.about-me-content p {
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-md);
+  line-height: 1.8;
+  color: var(--text-dark); /* 밝은 섹션에서는 어두운 텍스트 */
+  text-align: justify; /* 양쪽 정렬 */
+}
+
+.about-me-content .highlight {
+  color: var(--primary-color); /* 밝은 배경에서는 강조색을 다르게 적용 */
+  font-weight: 600;
 }
 
 
-.additional-content {
-  transition: transform 1.5s ease, opacity 0.5s ease;
-  position: absolute;
-  width: 100%; /* 필요에 따라 조정 */
+.about-me-image {
+  width: 200px; /* 이미지 크기 조절 */
+  height: 200px;
+  border-radius: 50%; /* 원형 이미지 */
+  object-fit: cover; /* 이미지가 잘리지 않게 */
+  border: 4px solid var(--primary-color); /* 테두리 */
+  margin: var(--spacing-lg) auto var(--spacing-xl) auto; /* 상하 여백 및 중앙 정렬 */
+  display: block; /* 중앙 정렬을 위해 */
+  box-shadow: var(--shadow-dark); /* 그림자 효과 */
 }
 
-.inactive {
-  transform: translateX(-100%); /* 왼쪽으로 이동 */
-  opacity: 0; /* 사라짐 */
+.personal-info-list {
+  background-color: #f1f1f1; /* 리스트 배경색 */
+  padding: var(--spacing-lg);
+  margin: var(--spacing-xl) 0; /* 상하 여백 */
+  border-radius: 8px;
+  box-shadow: var(--shadow-light);
+  text-align: left; /* 텍스트 왼쪽 정렬 */
 }
 
-.active {
-  transform: translateX(0); /* 원래 위치 */
-  opacity: 1; /* 보임 */
+.personal-info-list h4 {
+  font-size: 1.4rem;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--secondary-color);
+  padding-bottom: var(--spacing-sm);
 }
 
-.road-image {
-  background-image: url('./Mainimg/road.png'); /* 현재 디렉토리에서 찾기 */
-  background-size: contain; /* 이미지 비율 유지하며 크기 조정 */
-  background-repeat: no-repeat; /* 이미지 반복 방지 */
-  position: absolute; /* 절대 위치 설정 */
-  top: 800px; /* 바닥에 배치 */
-  left: 0; /* 왼쪽에 배치 */
-  width: 1000px; /* 전체 너비 */
-  height: 200px; /* 높이 설정, 필요에 따라 조정 */
-  z-index: 1000; /* 다른 요소보다 위에 위치하게 설정 */
+.personal-info-list ul {
+  list-style: none; /* 기본 리스트 마커 제거 */
 }
 
-.cloud {
-  background-image: url('./Mainimg/cloud.jpeg'); /* 현재 디렉토리에서 찾기 */
-  background-size: contain; /* 이미지 비율 유지하며 크기 조정 */
-  background-repeat: no-repeat; /* 이미지 반복 방지 */
-  position: absolute; /* 절대 위치 설정 */
-  top: 100px; /* 바닥에 배치 */
-  left: 0; /* 왼쪽에 배치 */
-  width: 1000px; /* 전체 너비 */
-  height: 200px; /* 높이 설정, 필요에 따라 조정 */
-  z-index: 1000; /* 다른 요소보다 위에 위치하게 설정 */
+.personal-info-list ul li {
+  font-size: 1.05rem;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px dotted #ccc; /* 점선으로 구분 */
+  color: var(--text-dark);
 }
 
-.react {
-  background-image: url('./react.png'); /* 현재 디렉토리에서 찾기 */
-  background-size: contain; /* 이미지 비율 유지하며 크기 조정 */
-  background-repeat: no-repeat; /* 이미지 반복 방지 */
-  position: absolute; /* 절대 위치 설정 */
-  top: 100px; /* 바닥에 배치 */
-  left: 0; /* 왼쪽에 배치 */
-  width: 1000px; /* 전체 너비 */
-  height: 200px; /* 높이 설정, 필요에 따라 조정 */
-  z-index: 1000; /* 다른 요소보다 위에 위치하게 설정 */
+.personal-info-list ul li:last-child {
+  border-bottom: none; /* 마지막 항목은 선 제거 */
 }
 
-
-.js {
-  background-image: url('./js.png'); /* 현재 디렉토리에서 찾기 */
-  background-size: contain; /* 이미지 비율 유지하며 크기 조정 */
-  background-repeat: no-repeat; /* 이미지 반복 방지 */
-  position: absolute; /* 절대 위치 설정 */
-  top: 400px; /* 바닥에 배치 */
-  left: 0; /* 왼쪽에 배치 */
-  width: 1000px; /* 전체 너비 */
-  height: 200px; /* 높이 설정, 필요에 따라 조정 */
-  z-index: 1000; /* 다른 요소보다 위에 위치하게 설정 */
+.personal-info-list ul li strong {
+  color: var(--primary-color); /* 라벨 강조색 */
+  margin-right: var(--spacing-sm);
+  min-width: 60px; /* 라벨 너비 고정으로 정렬 유지 */
+  display: inline-block;
 }
 
-
-.new-background-1 {
-  position: absolute;
-  width: 100%;
-  height: 85%;
-  background-color: #ffffff; /* 원하는 배경 색상 */
-  z-index: 200;
+.skills-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 반응형 그리드 */
+  gap: var(--spacing-lg);
+  text-align: left;
 }
 
-
-.new-background-2 {
-  position: absolute;
-  width: 100%;
-  height: 85%;
-  background-color: #ffffff; /* 원하는 배경 색상 */
-  z-index: 200;
+.skill-category h4 {
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--secondary-color);
+  padding-bottom: var(--spacing-sm);
 }
 
-.new-background-3 {
-  position: absolute;
-  width: 100%;
-  height: 85%;
-  background-color: #ffffff; /* 원하는 배경 색상 */
-  z-index: 200;
-}
-
-.new-background-4 {
-  position: absolute;
-  width: 100%;
-  height: 85%;
-  background-color: #ffffff; /* 원하는 배경 색상 */
-  z-index: 200;
-}
-.new-background-1 span{
-  position: absolute;
-  background: white;
-  left: 10%;
-  top: 30%;
-  width: 400px;
-  height: 400px;
-  border: 1px solid black;
-  border-radius: 100%;
-}
-
-.background1Ul{
-  position: absolute;
-  left: 100%;
-  width: 500px;
-  height: 500px;
-  top: 150px;
-  left: 800px;
-  font-size: 18px;
-}
-.background1Ul li{
-  margin-top: 20px ;
+.skill-list {
   list-style: none;
 }
+
+.skill-list li {
+  padding: var(--spacing-sm) 0;
+  font-size: 1rem;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+}
+
+.skill-list li::before { /* 리스트 마커 (체크 아이콘 등) */
+  content: '✔'; /* 아이콘으로 대체 가능 (예: Font Awesome) */
+  color: var(--highlight-color);
+  margin-right: var(--spacing-sm);
+  font-weight: bold;
+}
+
+
+/* ============================================================= */
+/* 🚀 프로젝트 경험 (Projects) 섹션 스타일 🚀 */
+/* ============================================================= */
+
+.section-projects {
+  background-color: var(--background-dark); /* 어두운 배경 */
+  color: var(--text-light); /* 밝은 텍스트 */
+  padding: var(--spacing-xl) 0;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 반응형 그리드 */
+  gap: var(--spacing-xl);
+  justify-content: center;
+  align-items: stretch; /* 카드 높이 통일 */
+}
+
+.project-card {
+  background-color: var(--card-background);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow-dark);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  cursor: pointer; /* 클릭 가능하도록 커서 변경 */
+}
+
+.project-card:hover {
+  transform: translateY(-5px); /* 호버 시 살짝 떠오르는 효과 */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.project-thumbnail {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.project-card h3 {
+  font-size: 1.6rem;
+  color: var(--primary-color);
+  padding: var(--spacing-md) var(--spacing-lg) var(--spacing-sm);
+}
+
+.project-description {
+  font-size: 1rem;
+  color: var(--text-light);
+  padding: 0 var(--spacing-lg) var(--spacing-md);
+  flex-grow: 1; /* 설명이 긴 경우 카드 높이 조절 */
+}
+
+.project-tech-stack {
+  padding: 0 var(--spacing-lg) var(--spacing-md);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.project-tech-stack span {
+  background-color: var(--background-dark);
+  color: var(--primary-color);
+  padding: 0.3rem var(--spacing-sm);
+  border-radius: 3px;
+  font-size: 0.9rem;
+  white-space: nowrap; /* 태그가 줄바꿈되지 않도록 */
+}
+
+.project-links {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
+  border-top: 1px solid var(--border-color);
+  margin-top: auto; /* 하단 정렬 */
+}
+
+.btn-secondary {
+  display: inline-block;
+  background-color: transparent;
+  color: var(--primary-color);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  flex-grow: 1; /* 버튼 너비를 균등하게 */
+  text-align: center;
+}
+
+.btn-secondary:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+/* ============================================================= */
+/* 📧 연락처 (Contact) 섹션 스타일 📧 */
+/* ============================================================= */
+
+.section-contact {
+  background-color: var(--background-light); /* 밝은 배경 */
+  color: var(--text-dark); /* 어두운 텍스트 */
+  padding: var(--spacing-xl) 0;
+}
+
+.section-contact .section-title {
+  color: var(--text-dark);
+}
+
+.contact-description {
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-xl);
+  color: var(--text-dark);
+}
+
+.contact-info {
+  margin-bottom: var(--spacing-xl);
+}
+
+.contact-info p {
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.contact-info strong {
+  color: var(--primary-color);
+  margin-right: var(--spacing-sm);
+  min-width: 60px; /* 라벨 너비 고정으로 정렬 유지 */
+  display: inline-block;
+}
+
+
+.contact-info a {
+  color: var(--text-dark);
+  transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+  color: var(--primary-color);
+}
+
+/* 연락 폼 (주석 처리된 경우) */
+.contact-form {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: var(--shadow-light);
+  text-align: left;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  font-family: var(--font-family-primary);
+  font-size: 1rem;
+  color: var(--text-dark);
+  background-color: var(--background-light);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.contact-form .btn-primary {
+  align-self: flex-start; /* 버튼을 왼쪽 정렬 */
+  padding: var(--spacing-sm) var(--spacing-lg);
+}
+
+
+/* ============================================================= */
+/* 🦶 푸터 (Footer) 스타일 🦶 */
+/* ============================================================= */
+
+.section-footer {
+  background-color: var(--background-dark);
+  color: var(--text-light);
+  text-align: center;
+  padding: var(--spacing-lg) 0;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+
+.section-footer p {
+  margin-bottom: var(--spacing-sm);
+}
+
+
+/* ============================================================= */
+/* 💡 모달 및 슬라이드 전용 스타일 💡 */
+/* ============================================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85); /* 더 어두운 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000; /* 헤더보다 훨씬 위에 오도록 */
+  backdrop-filter: blur(8px); /* 더 강한 블러 효과 */
+  -webkit-backdrop-filter: blur(8px); /* 사파리 호환성 */
+}
+
+.modal-content {
+  background-color: var(--card-background); /* 카드 배경색 사용 */
+  color: var(--text-light); /* 전역 변수 사용 */
+  padding: var(--spacing-lg); /* 전체 패딩 조절 */
+  border-radius: 12px; /* 둥근 모서리 */
+  max-width: 90%;
+  width: 960px; /* 고정 너비 또는 반응형 */
+  max-height: 90vh; /* 모달 최대 높이 */
+  overflow-y: hidden; /* 슬라이드 영역만 스크롤하도록 변경 */
+  position: relative;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7); /* 더 강한 그림자 */
+  animation: modal-fade-in 0.3s ease-out; /* 등장 애니메이션 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* 기본 상세 뷰 (Simple Detail View) 스타일 */
+.simple-detail-view {
+  flex-grow: 1;
+  overflow-y: auto; /* ✨ 내용이 길면 세로 스크롤바가 생기도록 설정 ✨ */
+  max-height: calc(90vh - 120px); /* 모달 높이 - (제목+버튼 등 고정 요소 높이) */
+                                /* 이 calc 값은 실제 UI에 따라 조정이 필요할 수 있습니다. */
+  padding: var(--spacing-md) var(--spacing-xl);
+  text-align: center;
+}
+/* .simple-detail-view의 하위 요소들의 폰트 크기, 줄 간격 등을 조절하면 
+   스크롤 되는 내용의 양을 조절할 수 있습니다. */
+
+
+/* ------------------------------- */
+/* 슬라이드 뷰어 컨테이너 */
+.project-slide-viewer {
+    flex-grow: 1; /* 남은 공간을 채우도록 */
+    overflow-y: auto; /* ✨ 슬라이드 내용이 길면 세로 스크롤바가 생기도록 설정 ✨ */
+    max-height: calc(90vh - 200px); /* 모달 높이 - (슬라이드 제목+네비게이션 등 고정 요소 높이) */
+                                 /* 이 calc 값도 실제 UI에 따라 조정이 필요할 수 있습니다. */
+    padding: var(--spacing-lg) var(--spacing-xl); /* 내부 여백 */
+    border-radius: 8px;
+    background-color: #121223;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: var(--spacing-md);
+    position: relative;
+    max-width: 850px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 20px; /* 더 둥근 버튼 */
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  z-index: 10; 
+}
+
+.modal-close-btn:hover {
+  background-color: var(--highlight-color);
+  transform: scale(1.05);
+}
+
+.bottom-close-btn { /* 하단 '프로젝트 목록으로 돌아가기' 버튼 (항상 중앙) */
+    display: block;
+    width: fit-content;
+    margin: var(--spacing-lg) auto var(--spacing-sm) auto; /* 여백 및 중앙 정렬 */
+    background: var(--secondary-color); /* 색상 다르게 */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 5px; /* 조금 덜 둥글게 */
+}
+
+.bottom-close-btn:hover {
+    background-color: #5a6268; /* hover 색상 */
+    transform: scale(1.02);
+}
+
+/* ------------------------------- */
+/* 기본 상세 뷰 (Simple Detail View) 스타일 */
+/* ------------------------------- */
+.simple-detail-view {
+  flex-grow: 1;
+  overflow-y: auto; /* 내용이 길면 스크롤 */
+  padding: var(--spacing-md) var(--spacing-xl);
+  text-align: center;
+  /* border-bottom: 1px solid var(--border-color); */
+}
+
+.simple-detail-view .modal-title {
+    font-size: 2.2rem;
+    color: var(--highlight-color);
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+}
+
+.simple-detail-view .project-detail-image {
+  max-height: 250px;
+  margin: var(--spacing-md) auto;
+  display: block; /* 중앙 정렬 */
+}
+
+.simple-detail-view .project-detail-description {
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-lg);
+}
+
+.simple-detail-view .project-detail-full-description {
+    text-align: left;
+    margin-bottom: var(--spacing-lg);
+}
+.simple-detail-view .project-detail-full-description h4 {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-sm);
+}
+.simple-detail-view .project-detail-full-description p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-light);
+}
+
+.simple-detail-view .project-detail-tech-stack h4 {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+.simple-detail-view .project-detail-links {
+    justify-content: center; /* 버튼 중앙 정렬 */
+    padding: var(--spacing-sm) 0;
+    margin-top: var(--spacing-xl);
+    border-top: 1px solid var(--border-color);
+}
+
+.view-slideshow-btn { /* 'PPT 형태로 상세 설명 보기' 버튼 */
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: 1.1rem;
+    background-color: var(--highlight-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.view-slideshow-btn:hover {
+    background-color: #218838;
+}
+
+/* ------------------------------- */
+/* 슬라이드 뷰어 (Slideshow View) 스타일 */
+/* ------------------------------- */
+.slideshow-view {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md) var(--spacing-sm);
+  text-align: center;
+}
+
+.modal-title.slide-present-title { /* 슬라이드 뷰의 제목 */
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
+}
+
+/* 슬라이드 뷰어 컨테이너 */
+.project-slide-viewer {
+    flex-grow: 1; /* 남은 공간을 채우도록 */
+    overflow-y: auto; /* 슬라이드 내용이 길면 스크롤 */
+    padding: var(--spacing-lg) var(--spacing-xl); /* 내부 여백 */
+    border-radius: 8px;
+    background-color: #121223; /* 슬라이드 배경색 */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2); /* 안쪽 그림자 */
+    margin-bottom: var(--spacing-md);
+    position: relative;
+    max-width: 850px; /* 슬라이드 뷰 최대 너비 */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 개별 슬라이드 페이지 공통 스타일 */
+.slide {
+    min-height: 400px; /* 최소 높이 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: var(--spacing-lg) var(--spacing-md);
+    opacity: 1; /* 항상 보이도록 */
+    animation: slide-fade-in 0.5s ease-out; /* 슬라이드 전환 애니메이션 */
+}
+
+@keyframes slide-fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slide h3.slide-title-sm, .slide h2.slide-main-title {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.slide h2.slide-main-title {
+    font-size: 3rem;
+    color: rgb(80, 167, 213);
+}
+
+.slide p.slide-subtitle {
+    font-size: 1.5rem;
+    color: var(--text-light);
+    margin-bottom: var(--spacing-xl);
+}
+
+.slide p.slide-text, .slide p.slide-text-line {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-light);
+    max-width: 800px;
+    text-align: center; /* 텍스트 중앙 정렬 */
+}
+.slide p.slide-text-line { /* 줄바꿈 처리된 텍스트 */
+    text-align: left; /* 목록처럼 보이게 */
+    white-space: pre-wrap; /* \n 인식 */
+    margin-bottom: 0.5rem;
+}
+
+
+.slide-image {
+    max-width: 100%;
+    height: auto;
+    max-height: 350px; /* 이미지 최대 높이 */
+    object-fit: contain; /* 이미지 비율 유지 */
+    border-radius: 8px;
+    margin: var(--spacing-lg) 0;
+    box-shadow: var(--shadow-dark);
+}
+
+.slide-tech-list {
+    margin: var(--spacing-lg) 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+/* 슬라이드 내 링크 버튼은 기존 btn-modal-link 재활용 */
+
+
+/* 슬라이드 네비게이션 버튼 */
+.slide-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  color: var(--text-light);
+  font-size: 1.1rem;
+  font-weight: 500;
+  min-height: 50px; /* 네비게이션 영역 확보 */
+}
+
+.slide-nav-btn {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.7rem 1.2rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.slide-nav-btn:hover:not(:disabled) {
+  background-color: var(--highlight-color);
+  transform: translateY(-2px);
+}
+
+.slide-nav-btn:disabled {
+  background-color: var(--secondary-color);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
+/* ============================================================= */
+/* 📱 미디어 쿼리 (반응형 디자인) 📱 */
+/* ============================================================= */
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column; /* 모바일에서 헤더 아이템 세로 정렬 */
+  }
+
+  .main-nav ul {
+    margin-top: var(--spacing-md);
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .main-nav li {
+    margin: var(--spacing-sm) 0;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+
+  .profile-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr; /* 모바일에서 한 줄에 하나씩 */
+  }
+
+  .btn-secondary {
+    flex-grow: unset; /* 버튼 너비 자동 조절 해제 */
+    width: 100%; /* 모바일에서 버튼 너비 꽉 채움 */
+  }
+
+  /* 모달 미디어 쿼리 */
+  .modal-content {
+    padding: var(--spacing-md);
+    width: 95%;
+    max-width: 95%; /* 모바일에서 max-width 재정의 */
+  }
+
+  .modal-close-btn {
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  .bottom-close-btn {
+      font-size: 0.9rem;
+      padding: 0.6rem 1rem;
+  }
+  .simple-detail-view .modal-title {
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .slide-main-title {
+    font-size: 2rem;
+  }
+
+  .slide-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .slide h3.slide-title-sm {
+      font-size: 1.5rem;
+  }
+
+  .slide p.slide-text, .slide p.slide-text-line {
+      font-size: 0.95rem;
+      line-height: 1.6;
+  }
+
+  .project-detail-links {
+      flex-direction: column; /* 모바일에서 버튼 세로 정렬 */
+  }
+
+  .slide-nav-btn {
+      padding: 0.5rem 0.8rem;
+      font-size: 0.9rem;
+  }
+  .project-slide-viewer {
+      padding: var(--spacing-md) var(--spacing-sm);
+      min-height: 300px;
+  }
+  .view-slideshow-btn {
+      padding: var(--spacing-md) var(--spacing-lg);
+      font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-title {
+    font-size: 1.7rem;
+  }
+
+  .main-nav a {
+    font-size: 1rem;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+}
+
+.slide-image.main-p1 {
+  /* 여기에 원하는 스타일을 적용합니다. */
+  max-width: 50%;
+  height: 200px; /* 이 이미지의 높이를 400px로 설정 */
+  object-fit: contain; /* 이미지가 잘리지 않도록 전체를 보여줍니다. */
+  border: 5px dashed var(--project-modal-highlight); /* 눈에 띄는 테두리 예시 */
+  margin-top: var(--spacing-md); /* 위쪽 여백 */
+  margin-bottom: var(--spacing-md); /* 아래쪽 여백 */
+  padding: 5px;
+  /* 예시: 이미지가 너무 작다면 max-width를 조절해 볼 수도 있습니다. */
+  /* max-width: 80%; */ 
+}
+.slide-image.main-p2 {
+  /* 여기에 원하는 스타일을 적용합니다. */
+  max-width: 50%;
+  height: 200px; /* 이 이미지의 높이를 400px로 설정 */
+  object-fit: contain; /* 이미지가 잘리지 않도록 전체를 보여줍니다. */
+  border: 5px dashed var(--project-modal-highlight); /* 눈에 띄는 테두리 예시 */
+  margin-top: var(--spacing-md); /* 위쪽 여백 */
+  margin-bottom: var(--spacing-md); /* 아래쪽 여백 */
+  padding: 5px;
+  /* 예시: 이미지가 너무 작다면 max-width를 조절해 볼 수도 있습니다. */
+  /* max-width: 80%; */ 
+}
+
+.slide-image.main-p3 {
+  /* 여기에 원하는 스타일을 적용합니다. */
+  max-width: 30%;
+  height: 100px; /* 이 이미지의 높이를 400px로 설정 */
+  object-fit: contain; /* 이미지가 잘리지 않도록 전체를 보여줍니다. */
+  border: 5px dashed var(--project-modal-highlight); /* 눈에 띄는 테두리 예시 */
+  margin-top: var(--spacing-md); /* 위쪽 여백 */
+  margin-bottom: var(--spacing-md); /* 아래쪽 여백 */
+  padding: 5px;
+  /* 예시: 이미지가 너무 작다면 max-width를 조절해 볼 수도 있습니다. */
+  /* max-width: 80%; */ 
+}
+/* src/App.css */
+
+/* ... (기존 CSS 코드 유지) ... */
+
+/* ------------------------------- */
+/* ✨ 알바툰 메인기능 슬라이드의 강조 숫자 스타일 ✨ */
+.slide-text .highlight-num-1 {
+  font-size: 1.3em; /* 부모 폰트 사이즈의 1.3배 */
+  font-weight: 700;
+  color: var(--project-modal-primary); /* 프로젝트별 기본 색상 (연보라) */
+  display: inline; /* span은 기본적으로 inline, 줄바꿈을 위해선 br */
+}
+
+.slide-text .highlight-num-2 {
+  font-size: 1.3em;
+  font-weight: 700;
+  color : rgb(142, 44, 44);
+  display: inline;
+}
+
+.slide-text .highlight-num-3 {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #8aff8a; /* 밝은 녹색 */
+  display: inline;
+}
+
+.slide-text .highlight-num-4 {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #ffcc00; /* 황금색 */
+  display: inline;
+}
+
+.slide-text .highlight-num-5 {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #ff80df; /* 핑크색 */
+  display: inline;
+}
+
