@@ -283,7 +283,7 @@ section {
 }
 
 .btn-primary:hover {
-  background-color: var(--highlight-color);
+  background-color: rgb(6, 6, 34);
   transform: translateY(-3px); /* 호버 시 살짝 떠오르는 효과 */
 }
 
@@ -449,7 +449,7 @@ section {
 
 .project-card {
   background-color: var(--card-background);
-  border-radius: 10px;
+  border-radius: 10px;  
   overflow: hidden;
   box-shadow: var(--shadow-dark);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -709,7 +709,6 @@ section {
 .modal-close-btn {
   position: absolute;
   top: var(--spacing-md);
-  right: var(--spacing-md);
   background: var(--primary-color);
   color: #fff;
   border: none;
@@ -730,6 +729,8 @@ section {
 .bottom-close-btn { /* 하단 '프로젝트 목록으로 돌아가기' 버튼 (항상 중앙) */
     display: block;
     width: fit-content;
+    right: 10px;
+    top: -20px;
     margin: var(--spacing-lg) auto var(--spacing-sm) auto; /* 여백 및 중앙 정렬 */
     background: var(--secondary-color); /* 색상 다르게 */
     transition: background-color 0.3s ease, transform 0.2s ease;
@@ -754,7 +755,7 @@ section {
 
 .simple-detail-view .modal-title {
     font-size: 2.2rem;
-    color: var(--highlight-color);
+    color: rgb(192, 231, 251);
     margin-bottom: var(--spacing-xl);
     text-align: center;
 }
@@ -800,13 +801,11 @@ section {
 
 .view-slideshow-btn { /* 'PPT 형태로 상세 설명 보기' 버튼 */
     margin-top: var(--spacing-xl);
-    padding: var(--spacing-md) var(--spacing-xl);
-    font-size: 1.1rem;
-    background-color: var(--highlight-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 0.8rem;
+    background-color: blue;
 }
 .view-slideshow-btn:hover {
-    background-color: #218838;
+    background-color: rgb(1, 1, 83);
 }
 
 /* ------------------------------- */
@@ -822,7 +821,7 @@ section {
 
 .modal-title.slide-present-title { /* 슬라이드 뷰의 제목 */
   font-size: 1.8rem;
-  color: var(--primary-color);
+  color: white;
   margin-bottom: var(--spacing-md);
 }
 
@@ -1107,6 +1106,19 @@ section {
   /* 예시: 이미지가 너무 작다면 max-width를 조절해 볼 수도 있습니다. */
   /* max-width: 80%; */ 
 }
+
+.slide-image.main-p4 {
+  /* 여기에 원하는 스타일을 적용합니다. */
+  max-width: 50%;
+  height: 100px; /* 이 이미지의 높이를 400px로 설정 */
+  object-fit: contain; /* 이미지가 잘리지 않도록 전체를 보여줍니다. */
+  border: 5px dashed var(--project-modal-highlight); /* 눈에 띄는 테두리 예시 */
+  margin-top: var(--spacing-md); /* 위쪽 여백 */
+  margin-bottom: var(--spacing-md); /* 아래쪽 여백 */
+  padding: 5px;
+  /* 예시: 이미지가 너무 작다면 max-width를 조절해 볼 수도 있습니다. */
+  /* max-width: 80%; */ 
+}
 /* src/App.css */
 
 /* ... (기존 CSS 코드 유지) ... */
@@ -1148,3 +1160,112 @@ section {
   display: inline;
 }
 
+
+/* src/App.css */
+
+/* ... (기존 CSS 코드 유지) ... */
+
+/* ============================================================= */
+/* ✨ 프로젝트 후기 (Post-Project Review) 섹션 스타일 ✨ */
+/* ============================================================= */
+
+.section-post-review {
+  background-color: var(--background-light); /* 밝은 배경 */
+  color: var(--text-dark); /* 어두운 텍스트 */
+  padding: var(--spacing-xl) 0;
+  box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.1); /* 안쪽 그림자로 깊이감 부여 */
+}
+
+.section-post-review .section-title {
+  color: var(--text-dark); /* 섹션 제목은 어둡게 */
+  margin-bottom: var(--spacing-xl); /* 제목 아래 여백 증가 */
+}
+
+.review-content {
+  text-align: left; /* 텍스트는 왼쪽 정렬 */
+  max-width: 900px; /* 읽기 좋게 최대 너비 제한 (좀 더 넓게) */
+  margin: var(--spacing-lg) auto; /* 중앙 정렬 및 여백 */
+  font-size: 1.15rem; /* 폰트 사이즈 살짝 키움 */
+  line-height: 1.9; /* 줄 간격 넓혀 가독성 향상 */
+  padding: var(--spacing-lg); /* 내용 안쪽 패딩 추가 */
+  border-radius: 12px; /* 둥근 모서리 */
+  background-color: #ffffff; /* 하얀색 배경으로 내용을 더 돋보이게 */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* 더 깊이 있는 그림자 */
+  font-family: var(--font-family-secondary); /* 조금 더 가독성 좋은 폰트 사용 */
+}
+
+.review-content p {
+  margin-bottom: var(--spacing-xl); /* 단락별 여백 증가 */
+  color: #4a4a4a; /* 밝은 섹션에서는 어두운 텍스트 */
+}
+
+/* ✨ 새로운 강조 문구별 스타일 (윤여원님 페르소나 반영) ✨ */
+
+/* 성장과 책임감 (긍정적 변화) */
+.review-growth-highlight {
+  color: var(--primary-color); /* 주 색상 */
+  font-weight: 700;
+  background-image: linear-gradient(to right, #e0f2f7, #c9e6f2); /* 부드러운 배경 하이라이트 */
+  padding: 0.1em 0.3em;
+  border-radius: 0.2em;
+  box-shadow: 0 2px 5px rgba(var(--primary-color-rgb), 0.2); /* 은은한 그림자 */
+}
+
+/* AI 활용 (현대적, 효율성) */
+.review-ai-highlight {
+  color: #647eff; /* 푸른색 계열 */
+  font-weight: 700;
+  text-decoration: underline dotted #647eff; /* 점선 밑줄 */
+}
+
+/* 핵심 강점 (자신감, 강점) */
+.review-strength-highlight {
+  color: var(--highlight-color); /* 강조 색상 (산호색) */
+  font-weight: 800;
+  background-color: #fcebeb; /* 연한 배경색 */
+  padding: 0.1em 0.3em;
+  border-radius: 0.2em;
+}
+
+/* 협업의 중요성 (깨달음, 발전 의지) */
+.review-collaboration-highlight {
+  color: #28a745; /* 녹색 계열 */
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: #28a745;
+}
+
+/* 혁신과 새로운 시도 (도전 정신) */
+.review-innovation-highlight {
+  color: #fd7e14; /* 오렌지 계열 */
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+/* 프론트엔드 개발자 (현재 역할) */
+.review-frontend-developer {
+  color: var(--primary-color); /* 주 색상 */
+  font-weight: 800;
+}
+
+/* 무궁무진한 가능성 (미래 비전) */
+.review-potential {
+  color: #9c27b0; /* 보라색 계열 */
+  font-weight: 800;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* 텍스트 그림자 */
+}
+
+
+/* ------------------------------- */
+/* 모바일 반응형 (기존과 동일하게 유지) */
+@media (max-width: 768px) {
+  .review-content {
+    font-size: 1rem; /* 모바일에서 폰트 크기 조정 */
+    padding: var(--spacing-md); /* 모바일 패딩 조정 */
+    line-height: 1.7;
+  }
+  .review-content p {
+    margin-bottom: var(--spacing-lg);
+  }
+}
