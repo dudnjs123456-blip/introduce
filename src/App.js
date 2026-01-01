@@ -457,8 +457,8 @@ function App() {
           <h2 className="section-title">저와 함께 성장할 준비가 되셨나요?</h2>
           <p className="contact-description">궁금한 점이 있거나, 함께 일하고 싶으시다면 언제든지 편하게 연락 주세요!</p>
           <div className="contact-info">
-            <p><strong>Email:</strong> <a>ghkfkddlqtl@naver.com</a></p>
-            <p><strong>Tel:</strong><a>010-6522-7425</a></p>
+            <p><strong>Email:</strong> ghkfkddlqtl@naver.com</p>
+            <p><strong>Tel:</strong>010-6522-7425</p>
           </div>
         </div>
       </section>
