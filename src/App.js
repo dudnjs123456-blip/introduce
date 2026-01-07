@@ -322,7 +322,7 @@ function App() {
           <h2 className="section-title">나에 대해 & 나의 기술 스택</h2>
           
           <div className="about-me-content">
-            <h3>나란 사람에 대해</h3>
+
             
             <img src="내사진.jpeg" alt="About Me" className="about-me-image" />
             

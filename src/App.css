@@ -1,6 +1,10 @@
 /* Google Fonts - Poppins (깔끔하고 현대적인 폰트) */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cafe24+Ssurround&display=swap');
 
+/* 그 외 다른 CSS 코드들... */
+/* 그 외 다른 CSS 코드들... */
 /* ============================================================= */
 /* 🌐 전역 스타일 (Global Styles) - 세련된 웹페이지의 기본 🌐 */
 /* ============================================================= */
@@ -76,6 +80,7 @@ section {
   padding: 0 var(--spacing-lg); /* 좌우 여백 */
 }
 
+
 .section-title {
   font-size: 2.5rem;
   margin-bottom: var(--spacing-xl);
@@ -93,7 +98,7 @@ section {
   transform: translateX(-50%);
   width: 60px;
   height: 4px;
-  background-color: var(--highlight-color);
+  background-color: #007bff;
   border-radius: 2px;
 }
 
@@ -308,15 +313,17 @@ section {
 /* ============================================================= */
 
 .section-about-skills {
-  background-color: var(--background-light); /* 밝은 배경 */
+  background-color: rgba(0, 0, 0, 0.6); /* 밝은 배경 */
   color: var(--text-dark); /* 어두운 텍스트 */
   padding: var(--spacing-xl) 0;
 }
 
 .section-about-skills .section-title {
-  color: var(--text-dark); /* 제목은 어둡게 */
+  color: white;
+  font-family: 'Cafe24 Ssurround', sans-serif; /* 여기를 변경! */
+  /* 필요하다면 폰트 굵기 등을 조절해 보세요.
+     Cafe24 Ssurround 같은 폰트는 보통 굵기 하나로 제공되는 경우가 많아요! */
 }
-
 .about-me-content, .skills-content {
   text-align: left;
   margin-bottom: var(--spacing-xl);
@@ -326,7 +333,6 @@ section {
   font-size: 2rem;
   color: var(--primary-color);
   margin-bottom: var(--spacing-lg);
-  border-left: 5px solid var(--highlight-color);
   padding-left: var(--spacing-md);
 }
 
@@ -334,7 +340,7 @@ section {
   font-size: 1.1rem;
   margin-bottom: var(--spacing-md);
   line-height: 1.8;
-  color: var(--text-dark); /* 밝은 섹션에서는 어두운 텍스트 */
+  color: white; /* 밝은 섹션에서는 어두운 텍스트 */
   text-align: justify; /* 양쪽 정렬 */
 }
 
@@ -349,14 +355,13 @@ section {
   height: 200px;
   border-radius: 50%; /* 원형 이미지 */
   object-fit: cover; /* 이미지가 잘리지 않게 */
-  border: 4px solid var(--primary-color); /* 테두리 */
+  border: 1px solid gray; /* 테두리 */
   margin: var(--spacing-lg) auto var(--spacing-xl) auto; /* 상하 여백 및 중앙 정렬 */
   display: block; /* 중앙 정렬을 위해 */
   box-shadow: var(--shadow-dark); /* 그림자 효과 */
 }
 
 .personal-info-list {
-  background-color: #f1f1f1; /* 리스트 배경색 */
   padding: var(--spacing-lg);
   margin: var(--spacing-xl) 0; /* 상하 여백 */
   border-radius: 8px;
@@ -366,7 +371,7 @@ section {
 
 .personal-info-list h4 {
   font-size: 1.4rem;
-  color: var(--primary-color);
+  color: white;
   margin-bottom: var(--spacing-md);
   border-bottom: 2px solid var(--secondary-color);
   padding-bottom: var(--spacing-sm);
@@ -380,7 +385,7 @@ section {
   font-size: 1.05rem;
   padding: var(--spacing-sm) 0;
   border-bottom: 1px dotted #ccc; /* 점선으로 구분 */
-  color: var(--text-dark);
+  color: white;
 }
 
 .personal-info-list ul li:last-child {
@@ -403,7 +408,7 @@ section {
 
 .skill-category h4 {
   font-size: 1.5rem;
-  color: var(--text-dark);
+  color: white;
   margin-bottom: var(--spacing-md);
   border-bottom: 2px solid var(--secondary-color);
   padding-bottom: var(--spacing-sm);
@@ -416,7 +421,7 @@ section {
 .skill-list li {
   padding: var(--spacing-sm) 0;
   font-size: 1rem;
-  color: var(--text-dark);
+  color: white;
   display: flex;
   align-items: center;
 }
@@ -434,7 +439,7 @@ section {
 /* ============================================================= */
 
 .section-projects {
-  background-color: var(--background-dark); /* 어두운 배경 */
+  background-color:rgba(0, 0, 0, 0.6); /* 어두운 배경 */
   color: var(--text-light); /* 밝은 텍스트 */
   padding: var(--spacing-xl) 0;
 }
@@ -531,19 +536,19 @@ section {
 /* ============================================================= */
 
 .section-contact {
-  background-color: var(--background-light); /* 밝은 배경 */
-  color: var(--text-dark); /* 어두운 텍스트 */
+  background-color: rgba(0, 0, 0, 0.6); /* 밝은 배경 */
+  color: white; /* 어두운 텍스트 */
   padding: var(--spacing-xl) 0;
 }
 
 .section-contact .section-title {
-  color: var(--text-dark);
+  color: white;
 }
 
 .contact-description {
   font-size: 1.1rem;
   margin-bottom: var(--spacing-xl);
-  color: var(--text-dark);
+  color: white;
 }
 
 .contact-info {
@@ -1170,14 +1175,14 @@ section {
 /* ============================================================= */
 
 .section-post-review {
-  background-color: var(--background-light); /* 밝은 배경 */
+  background-color: rgba(0, 0, 0, 0.6); /* 밝은 배경 */
   color: var(--text-dark); /* 어두운 텍스트 */
   padding: var(--spacing-xl) 0;
   box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.1); /* 안쪽 그림자로 깊이감 부여 */
 }
 
 .section-post-review .section-title {
-  color: var(--text-dark); /* 섹션 제목은 어둡게 */
+  color: white; /* 섹션 제목은 어둡게 */
   margin-bottom: var(--spacing-xl); /* 제목 아래 여백 증가 */
 }
 
@@ -1189,14 +1194,14 @@ section {
   line-height: 1.9; /* 줄 간격 넓혀 가독성 향상 */
   padding: var(--spacing-lg); /* 내용 안쪽 패딩 추가 */
   border-radius: 12px; /* 둥근 모서리 */
-  background-color: #ffffff; /* 하얀색 배경으로 내용을 더 돋보이게 */
+  background-color: #ffffff0e; /* 하얀색 배경으로 내용을 더 돋보이게 */
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* 더 깊이 있는 그림자 */
   font-family: var(--font-family-secondary); /* 조금 더 가독성 좋은 폰트 사용 */
 }
 
 .review-content p {
   margin-bottom: var(--spacing-xl); /* 단락별 여백 증가 */
-  color: #4a4a4a; /* 밝은 섹션에서는 어두운 텍스트 */
+color: rgba(255, 255, 255, 0.758);
 }
 
 /* ✨ 새로운 강조 문구별 스타일 (윤여원님 페르소나 반영) ✨ */
@@ -1205,7 +1210,7 @@ section {
 .review-growth-highlight {
   color: var(--primary-color); /* 주 색상 */
   font-weight: 700;
-  background-image: linear-gradient(to right, #e0f2f7, #c9e6f2); /* 부드러운 배경 하이라이트 */
+
   padding: 0.1em 0.3em;
   border-radius: 0.2em;
   box-shadow: 0 2px 5px rgba(var(--primary-color-rgb), 0.2); /* 은은한 그림자 */
@@ -1222,7 +1227,6 @@ section {
 .review-strength-highlight {
   color: var(--highlight-color); /* 강조 색상 (산호색) */
   font-weight: 800;
-  background-color: #fcebeb; /* 연한 배경색 */
   padding: 0.1em 0.3em;
   border-radius: 0.2em;
 }
