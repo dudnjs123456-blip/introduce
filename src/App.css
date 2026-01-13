@@ -72,22 +72,79 @@ section {
 
 .portfolio-container {
     overflow-x: hidden; /* 가로 스크롤 방지 */
+    background-color: rgb(0, 0, 0);
+    
 }
 
+.about-me-content p.content-item.is-visible {
+  max-height: 400px; /* 각 p 태그의 내용보다 충분히 큰 max-height */
+  line-height: 1.8; /* 줄 간격 */
+  text-align: justify; /* 양쪽 정렬 (선택 사항) */
+  max-width: 1100px;
+  padding-left: 30px; /* 혹시 모를 패딩 초기화 */
+  padding-right: 0;
+}
+
+/* 첫 번째 p 태그에는 윗 여백을 줄 필요가 없을 수도 있어요 */
+.about-me-content p:first-of-type.content-item.is-visible {
+  margin-top: 50px;
+}
+
+/* personal-info-list도 마찬가지로 is-visible 상태의 정확한 값 설정 */
+.personal-info-list.content-item.is-visible {
+  max-height: 1000px; /* 개인 정보 리스트의 최대 높이 */
+  margin-top: 1em; /* 윗 여백 */
+  margin-bottom: 1em; /* 아래 여백 */
+}
 .section-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--spacing-lg); /* 좌우 여백 */
 }
 
+/* 애니메이션 효과가 적용될 요소의 기본 상태 */
+.content-item {
+  opacity: 0; /* 시각적으로 투명 */
+  transform: translateY(30px); /* 아래에서 위로 올라오는 초기 위치 */
 
+  /* ✨✨✨ 새로 추가되는 부분! ✨✨✨ */
+  max-height: 0; /* 초기 높이를 0으로 설정하여 공간을 차지하지 않게 함 */
+  overflow: hidden; /* max-height를 초과하는 내용이 있다면 숨김 */
+  padding-top: 0; /* 패딩이 있다면 초기화 */
+  padding-bottom: 0; /* 패딩이 있다면 초기화 */
+  margin-top: 0; /* 마진이 있다면 초기화 */
+  margin-bottom: 0; /* 마진이 있다면 초기화 */
+  
+  transition: opacity 0.6s ease-out, transform 0.2s ease-out, /* 기존 애니메이션 */
+              max-height 0.6s ease-out 0.1s, /* max-height 애니메이션 추가 (살짝 딜레이 줘서 자연스럽게) */
+              padding-top 0.6s ease-out 0.1s, /* 패딩도 애니메이션 */
+              padding-bottom 0.6s ease-out 0.1s, /* 패딩도 애니메이션 */
+              margin-top 0.6s ease-out 0.1s, /* 마진도 애니메이션 */
+              margin-bottom 0.6s ease-out 0.1s; /* 마진도 애니메이션 */
+}
+
+/* .section-title은 원래의 스타일만 가집니다. */
 .section-title {
   font-size: 2.5rem;
   margin-bottom: var(--spacing-xl);
-  color: #fff; /* 섹션 제목은 흰색 */
+  color: #fff;
   font-weight: 700;
   position: relative;
-  display: inline-block; /* 밑줄 효과를 위해 */
+  display: inline-block;
+}
+/* 뷰포트에 들어왔을 때 적용될 상태 */
+.content-item.is-visible {
+  opacity: 1; /* 완전히 보이게 */
+  transform: translateY(0); /* 원래 위치로 이동 */
+  
+  /* ✨✨✨ 새로 추가되는 부분! ✨✨✨ */
+  max-height: 500px; /* 충분히 큰 값 (컨텐츠 최대 높이보다 크게) */
+                      /* 만약 컨텐츠가 훨씬 길면 더 큰 값을 줘야 합니다.
+                         `max-content`나 `fit-content`는 transition이 안 될 수 있어 큰 고정값이 유리해요. */
+  padding-top: var(--original-padding-top); /* 원래 패딩 값으로 돌아옴 */
+  padding-bottom: var(--original-padding-bottom); /* 원래 패딩 값으로 돌아옴 */
+  margin-top: var(--original-margin-top); /* 원래 마진 값으로 돌아옴 */
+  margin-bottom: var(--original-margin-bottom); /* 원래 마진 값으로 돌아옴 */
 }
 
 .section-title::after { /* 제목 밑줄 효과 */
@@ -128,7 +185,7 @@ section {
 /* ============================================================= */
 
 .section-header {
-  background-color: var(--header-bg); /* 배경색 지정 */
+  background-color: rgba(0, 0, 0, 0.6); /* 배경색 지정 */
   padding: var(--spacing-md) var(--spacing-lg);
   position: sticky; /* 상단에 고정 */
   top: 0;
@@ -219,7 +276,7 @@ section {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* 어두운 오버레이 */
+  background-color: rgb(0, 0, 0); /* 어두운 오버레이 */
   z-index: -1;
 }
 
@@ -442,6 +499,7 @@ section {
   background-color:rgba(0, 0, 0, 0.6); /* 어두운 배경 */
   color: var(--text-light); /* 밝은 텍스트 */
   padding: var(--spacing-xl) 0;
+  margin-top: 200px;
 }
 
 .projects-grid {
@@ -450,6 +508,7 @@ section {
   gap: var(--spacing-xl);
   justify-content: center;
   align-items: stretch; /* 카드 높이 통일 */
+  margin-top: 30px;
 }
 
 .project-card {
@@ -1194,7 +1253,7 @@ section {
   line-height: 1.9; /* 줄 간격 넓혀 가독성 향상 */
   padding: var(--spacing-lg); /* 내용 안쪽 패딩 추가 */
   border-radius: 12px; /* 둥근 모서리 */
-  background-color: #ffffff0e; /* 하얀색 배경으로 내용을 더 돋보이게 */
+  background-color: #ffffff1c; /* 하얀색 배경으로 내용을 더 돋보이게 */
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* 더 깊이 있는 그림자 */
   font-family: var(--font-family-secondary); /* 조금 더 가독성 좋은 폰트 사용 */
 }
