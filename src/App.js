@@ -207,48 +207,42 @@ const ProjectDetailModal = ({ projects, selectedProjectId, onClose }) => {
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(null); 
-  
     const contentRefs = useRef([]);
-
-
   let currentRefIndex = 0; // ref 인덱스를 관리할 변수
+
 useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // ✨✨✨ 요소가 뷰포트에 들어오면 'is-visible' 클래스 추가 ✨✨✨
-            entry.target.classList.add('is-visible');
-            
-            // ✨✨✨ 이 줄이 핵심입니다! 한 번 관찰되면 더 이상 관찰하지 않음 ✨✨✨
-            observer.unobserve(entry.target);
-            
-          }
-          // ✨✨✨ 뷰포트에서 나갔을 때 'is-visible'을 제거하는 else 문은 삭제합니다 ✨✨✨
-          // else {
-          //   entry.target.classList.remove('is-visible');
-          // }
-        });
-      },
-      {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-      }
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        },
+        {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        }
     );
 
-    contentRefs.current.filter(el => el !== null).forEach((el) => {
-      observer.observe(el);
+    // ✨✨✨ Netlify 로그와 ESLint 에러 해결을 위한 핵심 수정 부분 ✨✨✨
+    // contentRefs.current의 현재 값을 캡처합니다.
+    const refsSnapshot = contentRefs.current.filter(el => el !== null);
+
+    refsSnapshot.forEach((el) => {
+        observer.observe(el);
     });
 
     return () => {
-      // 컴포넌트 언마운트 시 옵저버 해제 (filter 추가)
-      contentRefs.current.filter(el => el !== null).forEach(el => {
-        if (el) observer.unobserve(el);
-      });
-      observer.disconnect();
+        // 클린업 함수에서 캡처된 refsSnapshot을 사용합니다.
+        refsSnapshot.forEach(el => {
+            observer.unobserve(el);
+        });
+        observer.disconnect();
     };
-  }, []); // 컴포넌트 마운트 시 한 번만 실행
+}, []); // 의존성 배열은 비워두는 것이 이 로직에는 맞습니다.
 
 
 
