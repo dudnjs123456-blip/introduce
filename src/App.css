@@ -205,12 +205,25 @@ section {
   align-items: center; /* 세로 중앙 정렬 */
 }
 
-.site-title {
-  font-size: 2rem;
-  color: white; /* 사이트 제목 색상 */
-  font-weight: 700;
-  margin: 0; /* h1 기본 마진 제거 */
-  letter-spacing: 1px;
+.site-title span {
+  font-size: 40px; /* 글자 크기는 윤여원님 원하시는 대로 */
+  font-weight: 700; /* 굵은 글씨가 박스 느낌을 잘 살려요. 900이나 ExtraBold도 시도해보세요! */
+  letter-spacing: 0.05em; /* 글자 간격 살짝 넓혀서 덩어리감 */
+  display: inline-block; /* text-shadow 적용을 위해 */
+  text-transform: uppercase; /* 대문자로 표시 */
+
+  color: #FFFFFF; /* 글자 본연의 색상을 순수한 흰색으로! */
+
+  /* ✨ 여러 겹의 text-shadow로 대각선 입체감과 덩어리감을 만듭니다. */
+  text-shadow:
+    /* 가장 옅은 회색부터 시작하여 대각선으로 점점 진해지게 만듭니다. */
+    1px 1px 0px #F0F0F0, /* 아주 살짝 그림자 져서 떠 있는 느낌 */
+    2px 2px 0px #E0E0E0,
+
+    /* 텍스트가 바닥에 드리우는 부드러운 그림자 효과 (리얼리티 추가) */
+    12px 12px 15px rgba(0, 0, 0, 0.6); /* 더 넓고 진하게 퍼지는 그림자 */
+
+  /* will-change: text-shadow, color; */ /* (성능 최적화를 위해 추가 가능) */
 }
 
 .site-title a { /* 사이트 제목 링크 스타일 */
@@ -284,18 +297,34 @@ section {
   max-width: 800px;
   padding: var(--spacing-xl);
 }
-
 .profile-image {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%; /* 원형 이미지 */
-  object-fit: cover; /* 이미지가 잘리지 않게 */
-  border: 5px solid var(--primary-color); /* 테두리 강조 */
-  margin-bottom: var(--spacing-lg);
-  box-shadow: var(--shadow-dark); /* 그림자 효과 */
-  animation: pulse 2s infinite; /* 부드러운 애니메이션 */
+  /* ... (위와 동일) ... */
+  animation: pulse 2s infinite;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* animation 자체에 transition은 필요 없음 */
+  will-change: transform, box-shadow;
 }
 
+.profile-image:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  /* ✨ 호버 시 기존 애니메이션을 멈추기 (즉각 정지) ✨ */
+  animation: none; /* 즉시 애니메이션을 중단 */
+}
+/* 기본 프로필 이미지 스타일 (예시) */
+.profile-image {
+  max-width: 350px; /* 이미지의 최대 크기 (원하는대로 조절) */
+  height: auto;
+  border-radius: 50%; /* 이미지를 원형으로 만들고 싶을 경우 */
+  border: 2px solid rgba(255, 255, 255, 0.436);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 은은한 그림자 추가 (선택 사항) */
+
+}
+
+/* ✨ 마우스를 올렸을 때 (hover) 적용될 스타일 ✨ */
+.profile-image:hover {
+  transform: scale(1.1); /* 이미지를 1.1배 (10%) 확대 */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* 그림자를 더 진하게 만들어서 입체감 강조 (선택 사항) */
+}
 @keyframes pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.03); }
@@ -303,14 +332,16 @@ section {
 }
 
 .hero-subtitle {
-  font-size: 1.4rem;
-  margin-bottom: var(--spacing-sm);
-  color: var(--primary-color);
+  font-size: 2rem;
+  margin-top: 12px;
+  color: white;
 }
 
+
+
 .hero-title {
-  font-size: 2.3rem;
-  margin-bottom: var(--spacing-md);
+  font-size: 1.5rem;
+  margin-top: 12px;
   color: #fff;
   font-weight: 700;
   line-height: 1.2;
@@ -332,7 +363,7 @@ section {
 
 .btn-primary {
   display: inline-block;
-  background-color: var(--primary-color);
+  background-color: rgb(36, 36, 36);
   color: #fff;
   padding: var(--spacing-md) var(--spacing-xl);
   border-radius: 5px;
@@ -341,7 +372,7 @@ section {
   letter-spacing: 1px;
   transition: background-color 0.3s ease, transform 0.3s ease;
   margin-bottom: var(--spacing-lg);
-  box-shadow: var(--shadow-light);
+  box-shadow: 1px solid (--shadow-light);
 }
 
 .btn-primary:hover {
@@ -1042,11 +1073,6 @@ section {
 
   .hero-description {
     font-size: 1rem;
-  }
-
-  .profile-image {
-    width: 120px;
-    height: 120px;
   }
 
   .section-title {
