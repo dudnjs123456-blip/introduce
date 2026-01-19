@@ -306,7 +306,7 @@ useEffect(() => {
       Url: 'https://www.youtube.com/@onein1004',
       slides: [] // 프로젝트 2는 슬라이드가 없으므로 빈 배열로 둡니다.
     }
-  ];
+  ];  
 
   const handleProjectClick = (projectId) => {
     setSelectedProjectId(projectId); // 클릭된 프로젝트의 ID를 selectedProjectId에 저장
@@ -319,6 +319,7 @@ useEffect(() => {
     setSelectedProjectId(null); // 선택된 프로젝트 ID 초기화
   };
 
+  const name = "Yoon Yeo Won"; 
   return (
     <div className='portfolio-container'> 
       
@@ -327,7 +328,23 @@ useEffect(() => {
       {/* ============================================================= */}
       <header id="header" className="section-header">
         <div className="header-content">
-          <h1 className="site-title"><span>Yoon Yeo Won</span></h1>
+
+
+
+
+
+<h1 className="site-title">
+  {/* accessibility를 위해 전체 텍스트를 aria-label에 넣어줍니다. */}
+  <span aria-label={name}>
+    {name.split('').map((char, index) => (
+      // 각 글자를 .letter 클래스의 span으로 감쌉니다.
+      // 공백은 특수 공백 문자(&nbsp;에 해당)로 처리하여 CSS 애니메이션이 잘 적용되도록 합니다.
+      <span key={index} className="letter">
+        {char === ' ' ? '\u00A0' : char}
+      </span>
+    ))}
+  </span>
+</h1>
           <nav className="main-nav">
             <ul>
               <li><a href="#hero">Home</a></li>
@@ -380,7 +397,7 @@ useEffect(() => {
             ref={el => contentRefs.current[2] = el} // 세 번째 요소
             style={{ transitionDelay: '0.2s' }} // 0.2초 뒤에 나타남
           >
-            호기심이 많고 새로운 도전을 즐기는 저는 개발뿐만 아니라 다양한 분야에 관심이 많습니다. 특히 <span className="highlight">[프리미어 프로를 이용한 쇼츠 편집]</span>과 <span className="highlight">[디자인 및 메인 페이지 꾸미기]
+            호기심이 많고 새로운 도전을 즐기는 저는 개발뿐만 아니라 다양한 분야에 관심이 많습니다. 특히 <span className="highlight">프리미어 프로를 이용한 쇼츠 편집</span>과 <span className="highlight">디자인 및 메인 페이지 꾸미기
             </span>에 깊은 흥미를 느끼고 있습니다. 이러한 활동들을 통해 시각적으로 매력적인 결과물을 만드는 즐거움을 느끼고 있습니다. 제 삶의 이러한 경험이 결국 더 나은 앞길을 제시하고 창의적인 해결책을 찾는 데 도움이 된다고 믿습니다.
           </p>
           <p 
