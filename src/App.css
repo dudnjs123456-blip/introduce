@@ -838,11 +838,11 @@ section {
 /* ============================================================= */
 
 .section-footer {
-  background-color: var(--background-dark);
+  background-color: black;
   color: var(--text-light);
   text-align: center;
   padding: var(--spacing-lg) 0;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid rgb(80, 80, 80);
   font-size: 0.9rem;
 }
 
@@ -870,7 +870,7 @@ section {
 }
 
 .modal-content {
-  background-color: var(--card-background); /* 카드 배경색 사용 */
+  background-color:rgba(56, 56, 56, 0.603); /* 카드 배경색 사용 */
   color: var(--text-light); /* 전역 변수 사용 */
   padding: var(--spacing-lg); /* 전체 패딩 조절 */
   border-radius: 12px; /* 둥근 모서리 */
@@ -931,8 +931,8 @@ section {
 .modal-close-btn {
   position: absolute;
   top: var(--spacing-md);
-  background: var(--primary-color);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.59);
+  color: #000000;
   border: none;
   border-radius: 20px; /* 더 둥근 버튼 */
   padding: 0.6rem 1.2rem;
@@ -977,7 +977,7 @@ section {
 
 .simple-detail-view .modal-title {
     font-size: 2.2rem;
-    color: rgb(192, 231, 251);
+    color: rgb(255, 255, 255);
     margin-bottom: var(--spacing-xl);
     text-align: center;
 }
@@ -999,7 +999,7 @@ section {
 }
 .simple-detail-view .project-detail-full-description h4 {
     font-size: 1.3rem;
-    color: var(--primary-color);
+    color: white;
     margin-bottom: var(--spacing-sm);
 }
 .simple-detail-view .project-detail-full-description p {
@@ -1024,10 +1024,11 @@ section {
 .view-slideshow-btn { /* 'PPT 형태로 상세 설명 보기' 버튼 */
     margin-top: var(--spacing-xl);
     font-size: 0.8rem;
-    background-color: blue;
+    background-color: rgb(0, 0, 0);
 }
 .view-slideshow-btn:hover {
-    background-color: rgb(1, 1, 83);
+    background-color: rgb(82, 82, 82);
+    color: black;
 }
 
 /* ------------------------------- */
@@ -1053,7 +1054,7 @@ section {
     overflow-y: auto; /* 슬라이드 내용이 길면 스크롤 */
     padding: var(--spacing-lg) var(--spacing-xl); /* 내부 여백 */
     border-radius: 8px;
-    background-color: #121223; /* 슬라이드 배경색 */
+    background-color: #050505; /* 슬라이드 배경색 */
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2); /* 안쪽 그림자 */
     margin-bottom: var(--spacing-md);
     position: relative;
@@ -1089,7 +1090,7 @@ section {
 
 .slide h2.slide-main-title {
     font-size: 3rem;
-    color: rgb(80, 167, 213);
+    color: rgb(255, 255, 255);
 }
 
 .slide p.slide-subtitle {
