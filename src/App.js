@@ -595,7 +595,7 @@ useEffect(() => {
           <h2
             className="section-title content-item"
             ref={el => contentRefs.current[currentRefIndex++] = el} // 이전 섹션에 이어서 인덱스 9부터 시작!
-            style={{ transitionDelay: '1.5s' }} // 이전 요소보다 약간 뒤에 나타나도록
+            style={{ transitionDelay: '0.9s' }} // 이전 요소보다 약간 뒤에 나타나도록
           >
             내 손으로 만든 프로젝트들
           </h2>
@@ -604,7 +604,7 @@ useEffect(() => {
             <div
               className="project-card content-item"
               ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: `${1.5 + 0.1}s` }} // h2 제목보다 0.1초 뒤에
+              style={{ transitionDelay: `${0.9 + 0.1}s` }} // h2 제목보다 0.1초 뒤에
               onClick={() => handleProjectClick('project1')}
             >
               <img src={projectsData[0].thumbnail} alt={projectsData[0].name} className="project-thumbnail" />
