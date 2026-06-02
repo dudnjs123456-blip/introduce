@@ -211,40 +211,35 @@ function App() {
   let currentRefIndex = 0; // ref 인덱스를 관리할 변수
 
 useEffect(() => {
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        },
-        {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        } else {
+          entry.target.classList.remove('is-visible');
         }
-    );
+      });
+    },
+    {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1,
+    }
+  );
 
-    // ✨✨✨ Netlify 로그와 ESLint 에러 해결을 위한 핵심 수정 부분 ✨✨✨
-    // contentRefs.current의 현재 값을 캡처합니다.
-    const refsSnapshot = contentRefs.current.filter(el => el !== null);
+  const refsSnapshot = contentRefs.current.filter(el => el !== null);
+  refsSnapshot.forEach((el) => {
+    observer.observe(el);
+  });
 
-    refsSnapshot.forEach((el) => {
-        observer.observe(el);
+  return () => {
+    refsSnapshot.forEach(el => {
+      observer.unobserve(el);
     });
-
-    return () => {
-        // 클린업 함수에서 캡처된 refsSnapshot을 사용합니다.
-        refsSnapshot.forEach(el => {
-            observer.unobserve(el);
-        });
-        observer.disconnect();
-    };
-}, []); // 의존성 배열은 비워두는 것이 이 로직에는 맞습니다.
-
-
+    observer.disconnect();
+  };
+}, []);
 
 
   const projectsData = [
@@ -539,14 +534,14 @@ useEffect(() => {
             <h3
               className="content-item"
               ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.5s' }}
+              style={{ transitionDelay: '0.1s' }}
             >
               나의 기술 무기들
             </h3>
             <div
               className="skill-category content-item"
               ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.6s' }}
+              style={{ transitionDelay: '0.2s' }}
             >
               <h4>Languages</h4>
               <ul className="skill-list">
@@ -559,7 +554,7 @@ useEffect(() => {
             <div
               className="skill-category content-item"
               ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.7s' }}
+              style={{ transitionDelay: '0.1s' }}
             >
               <h4>Frontend (프론트엔드) & Backend & API</h4>
               <ul className="skill-list">
@@ -576,7 +571,7 @@ useEffect(() => {
             <div
               className="skill-category content-item"
               ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.8s' }}
+              style={{ transitionDelay: '0.2s' }}
             >
               <h4>Tools & Others</h4>
               <ul className="skill-list">
@@ -647,7 +642,7 @@ useEffect(() => {
           <h2
             className="section-title content-item"
             ref={el => contentRefs.current[currentRefIndex++] = el}
-            style={{ transitionDelay: '0.9s' }} // 이전 섹션의 마지막 딜레이에 이어지는 값 (조정 필요)
+            style={{ transitionDelay: '0.1s' }} // 이전 섹션의 마지막 딜레이에 이어지는 값 (조정 필요)
           >
             프로젝트를 만들고 난 후기
           </h2>
@@ -655,7 +650,7 @@ useEffect(() => {
             <p
               className="content-item"
               ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '1.0s' }}
+              style={{ transitionDelay: '0.2s' }}
             >
               '알바툰' 프로젝트를 맨 처음 시작했을 때는 웹에 글자 하나 띄우는 것만으로도 신기하고 재미있었습니다. 그 재미가 제가 이분야로 들어오게 된 큰 계기입니다.
               하지만 개발을 '업'으로 생각하고 실제 문제점들을 마주했을 때, 잠시 적성에 대한 고민과 함께 주춤했던 시기도 있었습니다.
@@ -666,7 +661,7 @@ useEffect(() => {
             <p
               className="content-item"
               ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '1.1s' }}
+              style={{ transitionDelay: '0.3s' }}
             >
               그리고 이 프로젝트를 만들면서 마주한 많은 문제들 속에서, <span className="review-ai-highlight">AI의 도움은 문제 해결의 속도와 생산성을 비약적으로 높여주었습니다.</span> 하지만 그로인해 제가 모든 코드를 짜는게 아니기에 코드에 대한 이해도나 효율성이 떨어진다고 생각합니다. 허나 저는 현대 개발자에게는 <span className="review-strength-highlight">코드를 넘어선 '큰 그림을 그리는 능력'과 '실질적인 비즈니스 가치 창출 능력'</span>이 더욱 중요하다고 생각합니다.
               코드의 효율이나 가독성을 높이는 기술적 측면에서는 부족할지 몰라도, '이 기능이 회사에 어떤 실질적인 도움이 될까?', '어떻게 하면 서비스의 생산성을 극대화할 수 있을까?'와 같은 비즈니스 관점의 고민을 깊이 해왔기에, 이런 부분에서 다른 개발자보다 차별화된 강점이 있다고 자부합니다.
@@ -675,7 +670,7 @@ useEffect(() => {
             <p
               className="content-item"
               ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '1.2s' }}
+              style={{ transitionDelay: '0.4s' }}
             >
               그리고 이 알바툰 프로젝트는 아직 미완성입니다. 저는 이 프로젝트를 처음부터 혼자 만들었고 그로 인해 저혼자서는 모든걸 해낼 수 없고, 다른 사람들의 도움이 얼마나 절실한지 깨달았습니다.
               웹 개발이라는게 겉보기엔 단순해보이지만, 모든 것을 혼자 구현하기에는 턱없이 부족한것을 깨달았기에 <span className="review-collaboration-highlight">협업의 중요성</span>이 얼마나 큰지를 몸소 체험했습니다.
@@ -685,7 +680,7 @@ useEffect(() => {
             <p
               className="content-item"
               ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '1.3s' }}
+              style={{ transitionDelay: '0.5s' }}
             >
               마지막으로 저는 <span className="review-innovation-highlight">끊임없이 배우고 늘 새로운 시도를 추구합니다.</span> 저의 유튜브 채널 활동은 이러한 저의 성향을 잘 보여줍니다. 짧은 쇼츠 영상들이지만 '어떻게 하면 최소한의 자원으로 최대의 생산성을 낼 수 있을까?'라는 고민 끝에 드라마 쇼츠에 최대한의 화질 업스케일링을 시도했습니다. 당시에는 흔치 않았던 시도로 최대 500~600만 조회수를 달성하기도 했죠. 비록 수익화로는 이어지지 않았지만, 새로운 시도와 그로 인한 반응을 분석하며 인사이트를 얻는 값진 경험이었습니다.
               저는 현재 <span className="review-frontend-developer">프론트엔드 개발자</span>이지만, 단순히 기술에만 국한되지 않는 <span className="review-potential">무궁무진한 가능성을 가진 '윤여원'</span>이라는 사람을 소개하고 싶습니다! 감사합니다😊
@@ -700,21 +695,20 @@ useEffect(() => {
           <h2
             className="section-title content-item"
             ref={el => contentRefs.current[currentRefIndex++] = el}
-            style={{ transitionDelay: '1.4s' }}
+            style={{ transitionDelay: '0.1s' }}
           >
-            저와 함께 성장할 준비가 되셨나요?
           </h2>
           <p
             className="contact-description content-item"
             ref={el => contentRefs.current[currentRefIndex++] = el}
-            style={{ transitionDelay: '1.5s' }}
+            style={{ transitionDelay: '0.2s' }}
           >
             궁금한 점이 있거나, 함께 일하고 싶으시다면 언제든지 편하게 연락 주세요!
           </p>
           <div
             className="contact-info content-item"
             ref={el => contentRefs.current[currentRefIndex++] = el}
-            style={{ transitionDelay: '1.6s' }}
+            style={{ transitionDelay: '0.3s' }}
           >
             <p><strong>Email:</strong> ghkfkddlqtl@naver.com</p>
             <p><strong>Tel:</strong>010-6522-7425</p>
