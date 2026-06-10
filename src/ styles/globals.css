@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'Jalnan2';
+  src: url('/fonts/Jalnan2/Jalnan2.otf') format('opentype'),
+       url('/fonts/Jalnan2/Jalnan2TTF.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 폰트 적용 예시 */
+.section-about-skills .section-title {
+  color: white;
+  font-family: 'Jalnan2', sans-serif;
+}
