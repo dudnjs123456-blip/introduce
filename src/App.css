@@ -135,23 +135,30 @@ section {
 
 /* 애니메이션 효과가 적용될 요소의 기본 상태 */
 .content-item {
-  opacity: 0; /* 시각적으로 투명 */
-  transform: translateY(30px); /* 아래에서 위로 올라오는 초기 위치 */
+  --original-padding-top: 10px; /* 실제 요소의 기본 패딩 탑 값 */
+  --original-padding-bottom: 10px;
+  --original-margin-top: 15px;
+  --original-margin-bottom: 15px;
 
-  /* ✨✨✨ 새로 추가되는 부분! ✨✨✨ */
-  max-height: 0; /* 초기 높이를 0으로 설정하여 공간을 차지하지 않게 함 */
-  overflow: hidden; /* max-height를 초과하는 내용이 있다면 숨김 */
-  padding-top: 0; /* 패딩이 있다면 초기화 */
-  padding-bottom: 0; /* 패딩이 있다면 초기화 */
-  margin-top: 0; /* 마진이 있다면 초기화 */
-  margin-bottom: 0; /* 마진이 있다면 초기화 */
-  
-  transition: opacity 0.6s ease-out, transform 0.2s ease-out, /* 기존 애니메이션 */
-              max-height 0.6s ease-out 0.1s, /* max-height 애니메이션 추가 (살짝 딜레이 줘서 자연스럽게) */
-              padding-top 0.6s ease-out 0.1s, /* 패딩도 애니메이션 */
-              padding-bottom 0.6s ease-out 0.1s, /* 패딩도 애니메이션 */
-              margin-top 0.6s ease-out 0.1s, /* 마진도 애니메이션 */
-              margin-bottom 0.6s ease-out 0.1s; /* 마진도 애니메이션 */
+  opacity: 0;
+  transform: translateY(30px);
+
+  max-height: 0;
+  overflow: hidden;
+
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.2s ease-out,
+    max-height 0.6s ease-out 0.1s,
+    padding-top 0.6s ease-out 0.1s,
+    padding-bottom 0.6s ease-out 0.1s,
+    margin-top 0.6s ease-out 0.1s,
+    margin-bottom 0.6s ease-out 0.1s;
 }
 .section-title {
   /* ✨ 새로운 귀여운 폰트 패밀리 적용! */
@@ -177,17 +184,17 @@ section {
 /* 뷰포트에 들어왔을 때 적용될 상태 */
 
 .content-item.is-visible {
-  opacity: 1; /* 완전히 보이게 */
-  transform: translateY(0); /* 원래 위치로 이동 */
-  /* ✨✨✨ 새로 추가되는 부분! ✨✨✨ */
-  max-height: 500px; /* 충분히 큰 값 (컨텐츠 최대 높이보다 크게) */
-                      /* 만약 컨텐츠가 훨씬 길면 더 큰 값을 줘야 합니다.
-                         `max-content`나 `fit-content`는 transition이 안 될 수 있어 큰 고정값이 유리해요. */
-  padding-top: var(--original-padding-top); /* 원래 패딩 값으로 돌아옴 */
-  padding-bottom: var(--original-padding-bottom); /* 원래 패딩 값으로 돌아옴 */
-  margin-top: var(--original-margin-top); /* 원래 마진 값으로 돌아옴 */
-  margin-bottom: var(--original-margin-bottom); /* 원래 마진 값으로 돌아옴 */
+  opacity: 1;
+  transform: translateY(0);
+
+  max-height: 500px;
+
+  padding-top: var(--original-padding-top);
+  padding-bottom: var(--original-padding-bottom);
+  margin-top: var(--original-margin-top);
+  margin-bottom: var(--original-margin-bottom);
 }
+
 
 .section-title::after { /* 제목 밑줄 효과 */
   content: '';
@@ -492,6 +499,8 @@ section {
   color: var(--text-dark); /* 어두운 텍스트 */
   padding: var(--spacing-xl) 0;
 }
+
+
 
 .section-about-skills .section-title {
   color: white;
@@ -930,21 +939,23 @@ section {
 
 .modal-close-btn {
   position: absolute;
-  top: var(--spacing-md);
-  background: rgba(255, 255, 255, 0.59);
+  top: 30px;
+  left: 85%;
+  background: rgb(255, 255, 255);
   color: #000000;
   border: none;
   border-radius: 20px; /* 더 둥근 버튼 */
-  padding: 0.6rem 1.2rem;
+  padding: 0.4rem 1rem;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   transition: background-color 0.3s ease, transform 0.2s ease;
   z-index: 10; 
 }
 
 .modal-close-btn:hover {
-  background-color: var(--highlight-color);
+  background-color: black;
+  color: white;
   transform: scale(1.05);
 }
 
@@ -1021,16 +1032,25 @@ section {
     border-top: 1px solid var(--border-color);
 }
 
-.view-slideshow-btn { /* 'PPT 형태로 상세 설명 보기' 버튼 */
-    margin-top: var(--spacing-xl);
-    font-size: 0.8rem;
-    background-color: rgb(0, 0, 0);
-}
-.view-slideshow-btn:hover {
-    background-color: rgb(82, 82, 82);
-    color: black;
+.view-slideshow-btn {
+  margin-top: var(--spacing-xl);
+  font-size: 0.9rem;
+  background-color: #333333; /* 검정 대신 연한 다크 그레이 */
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 12px; /* 둥근 모서리 */
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 살짝 올라오는 그림자 */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 600;
+  font-family: 'Spoqa Han Sans Neo', sans-serif; /* 한국어도 잘 어울리는 폰트 */
 }
 
+.view-slideshow-btn:hover {
+  background-color: #555555; /* 호버 시 좀 밝게 */
+  transform: scale(1.05); /* 약간 확대 효과 */
+}
 /* ------------------------------- */
 /* 슬라이드 뷰어 (Slideshow View) 스타일 */
 /* ------------------------------- */
@@ -1082,7 +1102,7 @@ section {
 }
 
 .slide h3.slide-title-sm, .slide h2.slide-main-title {
-    color: white;
+    color: rgb(255, 255, 255);
     margin-bottom: var(--spacing-md);
     font-weight: 600;
     line-height: 1.3;
