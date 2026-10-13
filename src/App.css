@@ -1,11 +1,3 @@
-/* Google Fonts - Poppins (깔끔하고 현대적인 폰트) */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cafe24+Ssurround&display=swap');
-@import url('https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css');
-@import url('https://fonts.googleapis.com/css2?family=Cafe24+Anemone&display=swap');
-/* 그 외 다른 CSS 코드들... */
-/* 그 외 다른 CSS 코드들... */
 /* ============================================================= */
 /* 🌐 전역 스타일 (Global Styles) - 세련된 웹페이지의 기본 🌐 */
 /* ============================================================= */
@@ -24,8 +16,8 @@
   --header-bg: rgba(26, 26, 46, 0.95); /* 헤더 배경 (투명도) */
 
   /* 폰트 */
-  --font-family-primary: 'Poppins', sans-serif;
-  --font-family-secondary: 'Arial', sans-serif;
+  --font-family-primary: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-family-secondary: var(--font-family-primary);
 
   /* 간격 */
   --spacing-sm: 0.5rem;
@@ -50,7 +42,8 @@ body {
   line-height: 1.6;
   color: var(--text-light); /* 기본 텍스트는 밝게 */
   background-color: var(--background-dark); /* 전체 배경은 어둡게 */
-  scroll-behavior: smooth; /* 부드러운 스크롤 */
+  font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
 }
 
 /* 링크 스타일 초기화 */
@@ -79,28 +72,15 @@ section {
 
 /* src/App.css (또는 해당 컴포넌트의 CSS 파일) */
 
-/* ... (기존 폰트 import, .site-title, .section-title 스타일 등) ... */
-
-
-/* ✨ '나에 대해' 섹션의 본문 단락(.content-item) 스타일 (is-visible 상태일 때) ✨ */
-/* 이전에 주신 CSS에 중앙 정렬을 추가합니다. */
-.about-me-content p.content-item.is-visible {
-  max-height: 400px; /* 사용자 요청 */
+/* About section copy */
+.about-me-content p.content-item {
   line-height: 1.8; /* 사용자 요청 */
-  
-  /* ✨ 텍스트 중앙 정렬과 블록 자체의 중앙 배치를 적용 */
-  text-align: center; /* 텍스트 내용은 가운데 정렬 */
-  max-width: 1100px; /* 사용자 요청 (단락의 최대 너비) */
-  margin: 0 auto; /* max-width가 적용된 단락 블록 자체를 가로 중앙으로! */
-
-  padding-left: 30px; /* 사용자 요청 */
-  padding-right: 0; /* 사용자 요청 */
-
-  /* 기존 본문 스타일과 통일감을 위해 몇 가지 추가 */
-  color: #ffffff; /* 본문 텍스트 색상 */
-  font-family: 'Spoqa Han Sans Neo', sans-serif; /* 본문 폰트 */
-  font-size: 16px; /* 본문 폰트 크기 */
-  margin-bottom: 20px; /* 단락 아래 여백 */
+  text-align: center;
+  max-width: 68rem;
+  margin: 0 auto 1.25rem;
+  padding: 0 1rem;
+  color: #ffffff;
+  font-size: 1rem;
 }
 
 /* ✨ .highlight 클래스 스타일 (별표와 파란색 강조) ✨ */
@@ -114,87 +94,34 @@ section {
 }
 
 
-/* ... (기존 애니메이션 관련 CSS 및 다른 스타일들) ... */
-
-/* 첫 번째 p 태그에는 윗 여백을 줄 필요가 없을 수도 있어요 */
-.about-me-content p:first-of-type.content-item.is-visible {
-  margin-top: 50px;
-}
-
-/* personal-info-list도 마찬가지로 is-visible 상태의 정확한 값 설정 */
-.personal-info-list.content-item.is-visible {
-  max-height: 1000px; /* 개인 정보 리스트의 최대 높이 */
-  margin-top: 1em; /* 윗 여백 */
-  margin-bottom: 1em; /* 아래 여백 */
-}
 .section-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--spacing-lg); /* 좌우 여백 */
 }
 
-/* 애니메이션 효과가 적용될 요소의 기본 상태 */
 .content-item {
-  --original-padding-top: 10px; /* 실제 요소의 기본 패딩 탑 값 */
-  --original-padding-bottom: 10px;
-  --original-margin-top: 15px;
-  --original-margin-bottom: 15px;
-
   opacity: 0;
-  transform: translateY(30px);
-
-  max-height: 0;
-  overflow: hidden;
-
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-
-  transition:
-    opacity 0.6s ease-out,
-    transform 0.2s ease-out,
-    max-height 0.6s ease-out 0.1s,
-    padding-top 0.6s ease-out 0.1s,
-    padding-bottom 0.6s ease-out 0.1s,
-    margin-top 0.6s ease-out 0.1s,
-    margin-bottom 0.6s ease-out 0.1s;
+  transform: translate3d(0, 16px, 0);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
 }
 .section-title {
-  /* ✨ 새로운 귀여운 폰트 패밀리 적용! */
-  font-family: 'Cafe24 Anemone', cursive, sans-serif; /* cursive는 귀여운 손글씨 폰트에 대한 일반적인 fallback */
-  font-size: 40px; /* 좀 더 통통하고 눈에 띄도록 크기를 키워봤어요 */
-  font-weight: 700; /* 귀여운 폰트라도 굵직해야 입체감이 잘 살아요! */
+  position: relative;
+  font-family: var(--font-family-primary);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
   color: white;
   text-align: center;
-  margin-top: 50px;
-  margin-bottom: 30px;
-  letter-spacing: 0.08em; /* 글자 간격 살짝 넓혀서 귀여운 느낌 더 강조 */
-  line-height: 1.2; /* 줄 높이 */
-  white-space: nowrap; /* 줄바꿈 방지 */
-  
-  /* ✨ 글자에 입체감을 더하는 text-shadow! */
-  text-shadow:
-    /* 첫 번째 그림자 층: 글자 바로 아래에 떨어지는 그림자 (튀어나온 듯한 느낌) */
-    2px 2px 0px #07070772, /* 살짝 노란빛 (폰트 색상과 잘 어울리는 보색 계열) */
-    4px 4px 0px #6f6f6f8f, /* 좀 더 진한 주황빛 노란색 */
-
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
 }
-
-/* 뷰포트에 들어왔을 때 적용될 상태 */
 
 .content-item.is-visible {
   opacity: 1;
-  transform: translateY(0);
-
-  max-height: 500px;
-
-  padding-top: var(--original-padding-top);
-  padding-bottom: var(--original-padding-bottom);
-  margin-top: var(--original-margin-top);
-  margin-bottom: var(--original-margin-bottom);
+  transform: translate3d(0, 0, 0);
 }
-
 
 .section-title::after { /* 제목 밑줄 효과 */
   content: '';
@@ -208,25 +135,26 @@ section {
   border-radius: 2px;
 }
 
+.section-projects .section-title,
+.section-post-review .section-title {
+  font-family: 'Jua', var(--font-family-primary);
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-weight: 400;
+  letter-spacing: 0.015em;
+}
+
+.section-projects .section-title::after,
+.section-post-review .section-title::after {
+  display: none;
+}
+
 /* ============================================================= */
 /* ✨ 알록달록 이름 애니메이션 (Animated Name) 스타일 ✨ */
 /* ============================================================= */
 .animated-name {
   display: inline-block; /* span이 transform과 animation을 받을 수 있도록 */
   font-weight: inherit; /* 부모로부터 폰트 굵기 상속 */
-  animation: color-change 5s infinite alternate; /* 5초 동안 색상이 변하고 다시 돌아오는 애니메이션 */
-}
-
-/* @keyframes 정의: 색깔이 순차적으로 변하는 과정 */
-@keyframes color-change {
-  0% { color: #FF0080; /* 마젠타 */ }
-  15% { color: #8A2BE2; /* 블루 바이올렛 */ }
-  30% { color: #00BFFF; /* 딥 스카이 블루 */ }
-  45% { color: #32CD32; /* 라임 그린 */ }
-  60% { color: #FFD700; /* 골드 */ }
-  75% { color: #FF4500; /* 오렌지 레드 */ }
-  90% { color: #FF0080; /* 마젠타 */ }
-  100% { color: #8A2BE2; /* 블루 바이올렛 */ }
+  color: #71c7ff;
 }
 
 /* ============================================================= */
@@ -242,8 +170,8 @@ section {
   width: 100%;
   z-index: 1000; /* 다른 요소 위에 오도록 */
   box-shadow: var(--shadow-dark); /* 헤더에 그림자 */
-  backdrop-filter: blur(5px); /* 배경 블러 효과 (더욱 세련된 느낌) */
-  -webkit-backdrop-filter: blur(5px); /* 사파리 호환성 */
+  backdrop-filter: blur(5px); /* 배경 블러 효과 */
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .header-content {
@@ -254,27 +182,20 @@ section {
   align-items: center; /* 세로 중앙 정렬 */
 }
 
-/* 기존 .site-title span 스타일은 그대로 둡니다. */
-.site-title span {
-  font-size: 40px; /* 글자 크기는 윤여원님 원하시는 대로 */
-  font-weight: 700; /* 굵은 글씨가 박스 느낌을 잘 살려요. 900이나 ExtraBold도 시도해보세요! */
-  letter-spacing: 0.05em; /* 글자 간격 살짝 넓혀서 덩어리감 */
+/* 상단 이름 로고 */
+.site-title > span {
+  font-family: 'Arial Rounded MT Bold', 'Trebuchet MS', var(--font-family-primary);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   display: inline-block; /* text-shadow 적용을 위해 */
   text-transform: uppercase; /* 대문자로 표시 */
-
-  color: #FFFFFF; /* 글자 본연의 색상을 순수한 흰색으로! */
-
-  /* ✨ 여러 겹의 text-shadow로 대각선 입체감과 덩어리감을 만듭니다. */
+  color: #FFFFFF;
   text-shadow:
-    /* 가장 옅은 회색부터 시작하여 대각선으로 점점 진해지게 만듭니다. */
-    1px 1px 0px #F0F0F0, /* 아주 살짝 그림자 져서 떠 있는 느낌 */
-    2px 2px 0px #E0F0F0, /* 옅은 회색 그림자 */
+    1px 1px 0px #F0F0F0,
+    2px 2px 0px #E0F0F0,
     3px 3px 0px #D0D0D0,
-
-    /* 텍스트가 바닥에 드리우는 부드러운 그림자 효과 (리얼리티 추가) */
-    10px 10px 15px rgba(0, 0, 0, 0.6); /* 더 넓고 진하게 퍼지는 그림자 */
-
-  /* will-change: text-shadow, color; */ /* (성능 최적화를 위해 추가 가능) */
+    10px 10px 15px rgba(0, 0, 0, 0.6);
 }
 
 
@@ -283,46 +204,32 @@ section {
 /* 각 글자를 감싼 .letter 클래스에 애니메이션을 적용 */
 .site-title span .letter {
   display: inline-block; /* 각 글자가 독립적으로 움직이도록 */
-  animation: letterBounce 1.5s infinite ease-in-out; /* 통통 튀는 애니메이션 적용 */
+  animation: letterBounce 1.5s infinite ease-in-out;
   /* duration: 1.5초, infinite: 무한 반복, ease-in-out: 자연스러운 가속/감속 */
 }
 
-/* @keyframes로 'letterBounce' 애니메이션 정의 */
 @keyframes letterBounce {
-  0%, 100% {
-    transform: translateY(0); /* 시작과 끝은 원래 위치 */
-  }
-  20% {
-    transform: translateY(-10px); /* 위로 10px 점프 */
-  }
-  40% {
-    transform: translateY(0); /* 다시 원래 위치로 낙하 */
-  }
-  60% {
-    transform: translateY(-5px); /* 작게 한 번 더 점프 (통통 튀는 느낌) */
-  }
-  80% {
-    transform: translateY(0); /* 원래 위치로 최종 낙하 */
-  }
+  0%, 100% { transform: translateY(0); }
+  20% { transform: translateY(-10px); }
+  40% { transform: translateY(0); }
+  60% { transform: translateY(-5px); }
+  80% { transform: translateY(0); }
 }
 
-/* 각 글자마다 애니메이션 시작 시간을 다르게 하여 통통 튀는 시차 효과를 만듭니다. */
-.site-title span .letter:nth-child(1) { animation-delay: 0.0s; }
+.site-title span .letter:nth-child(1) { animation-delay: 0s; }
 .site-title span .letter:nth-child(2) { animation-delay: 0.5s; }
 .site-title span .letter:nth-child(3) { animation-delay: 0.4s; }
 .site-title span .letter:nth-child(4) { animation-delay: 0.6s; }
 .site-title span .letter:nth-child(5) { animation-delay: 0.8s; }
-/* (이하 필요한 글자 수만큼 추가, 공백도 하나의 글자로 카운트) */
-/* 예: "Yoon Yeo Won"은 총 11글자 (공백 포함)이므로, 11개까지 설정 */
 .site-title span .letter:nth-child(6) { animation-delay: 1s; }
 .site-title span .letter:nth-child(7) { animation-delay: 1.2s; }
 .site-title span .letter:nth-child(8) { animation-delay: 1.4s; }
 .site-title span .letter:nth-child(9) { animation-delay: 1.6s; }
 .site-title span .letter:nth-child(10) { animation-delay: 1.8s; }
-.site-title span .letter:nth-child(11) { animation-delay: 2.0s; }
+.site-title span .letter:nth-child(11) { animation-delay: 2s; }
 .site-title span .letter:nth-child(12) { animation-delay: 2.2s; }
 .site-title span .letter:nth-child(13) { animation-delay: 2.4s; }
-.site-title span .letter:nth-child(14) { animation-delay: 2.6s; } /* 혹시 더 긴 이름이나 문구 대비 */
+.site-title span .letter:nth-child(14) { animation-delay: 2.6s; }
 .site-title span .letter:nth-child(15) { animation-delay: 2.8s; }
 
 .main-nav ul {
@@ -391,59 +298,112 @@ section {
   max-width: 800px;
   padding: var(--spacing-xl);
 }
-.profile-image {
-  /* ... (위와 동일) ... */
-  animation: pulse 2s infinite;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* animation 자체에 transition은 필요 없음 */
-  will-change: transform, box-shadow;
+.profile-image-wrap {
+  position: relative;
+  isolation: isolate;
+  width: min(350px, 70vw);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  border-radius: 50%;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.profile-image:hover {
+.profile-image-wrap:hover {
   transform: scale(1.1);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-  /* ✨ 호버 시 기존 애니메이션을 멈추기 (즉각 정지) ✨ */
-  animation: none; /* 즉시 애니메이션을 중단 */
 }
-/* 기본 프로필 이미지 스타일 (예시) */
+
+.profile-wave {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 2px solid rgba(113, 199, 255, 0.7);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: profileWave 2.1s ease-out infinite;
+}
+
+.profile-wave:nth-child(2) {
+  animation-delay: 0.7s;
+}
+
+.profile-wave:nth-child(3) {
+  animation-delay: 1.4s;
+}
+
+@keyframes profileWave {
+  0% { transform: scale(0.94); opacity: 0.8; }
+  100% { transform: scale(1.55); opacity: 0; }
+}
+
 .profile-image {
-  max-width: 350px; /* 이미지의 최대 크기 (원하는대로 조절) */
-  height: auto;
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius: 50%; /* 이미지를 원형으로 만들고 싶을 경우 */
   border: 2px solid rgba(255, 255, 255, 0.436);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 은은한 그림자 추가 (선택 사항) */
-
+  animation: profileGroove 1.8s ease-in-out infinite;
+  transform-origin: center;
 }
 
-/* ✨ 마우스를 올렸을 때 (hover) 적용될 스타일 ✨ */
-.profile-image:hover {
-  transform: scale(1.1); /* 이미지를 1.1배 (10%) 확대 */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* 그림자를 더 진하게 만들어서 입체감 강조 (선택 사항) */
-}
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.03); }
-  100% { transform: scale(1); }
+.profile-image-wrap:hover .profile-image {
+  animation-play-state: paused;
 }
 
+@keyframes profileGroove {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  18% { transform: translate3d(-9px, -5px, 0) rotate(-3deg); }
+  38% { transform: translate3d(1px, 3px, 0) rotate(2deg); }
+  62% { transform: translate3d(9px, -5px, 0) rotate(3deg); }
+  82% { transform: translate3d(-2px, 2px, 0) rotate(-2deg); }
+}
 .hero-subtitle {
-  font-size: 2rem;
+  font-family: 'Jua', var(--font-family-primary);
+  font-size: clamp(1.25rem, 2.4vw, 2rem);
   margin-top: 12px;
-  color: white;
+  color: #71c7ff;
+  letter-spacing: 0.015em;
+  text-shadow: 0 2px 12px rgba(81, 177, 255, 0.28);
+}
+
+.greeting-letter {
+  display: inline-block;
+  animation: greetingLetterBounce 1.2s ease-in-out infinite,
+    greetingRainbow 5s linear infinite;
+}
+
+@keyframes greetingLetterBounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-5px); }
+  40% { transform: translateY(0); }
+}
+
+@keyframes greetingRainbow {
+  0%, 100% { color: #ff9aa2; }
+  20% { color: #ffc58a; }
+  40% { color: #fff19a; }
+  60% { color: #9ee6b8; }
+  80% { color: #a9c9ff; }
 }
 
 
 
 .hero-title {
-  font-size: 1.5rem;
+  font-family: 'Jua', var(--font-family-primary);
+  font-size: clamp(1.75rem, 4vw, 3rem);
   margin-top: 12px;
   color: #fff;
-  font-weight: 700;
+  font-weight: 400;
+  letter-spacing: 0.015em;
   line-height: 1.2;
 }
 
 .hero-title .highlight {
   color: #067ca3;
-  font-weight: 800;
+  font-weight: 400;
 }
 
 .hero-description {
@@ -497,36 +457,70 @@ section {
 .section-about-skills {
   background-color: rgba(0, 0, 0, 0.6); /* 밝은 배경 */
   color: var(--text-dark); /* 어두운 텍스트 */
-  padding: var(--spacing-xl) 0;
+  padding: 1.5rem 0;
 }
 
-
-
 .section-about-skills .section-title {
+  font-family: 'Jua', var(--font-family-primary);
+  font-size: clamp(2.1rem, 4vw, 3.15rem);
+  font-weight: 400;
+  letter-spacing: 0.015em;
   color: white;
-  font-family: 'Cafe24 Ssurround', sans-serif; /* 여기를 변경! */
-  /* 필요하다면 폰트 굵기 등을 조절해 보세요.
-     Cafe24 Ssurround 같은 폰트는 보통 굵기 하나로 제공되는 경우가 많아요! */
+  margin: 0 0 1.5rem;
+}
+
+.section-about-skills .section-title::after {
+  display: none;
 }
 .about-me-content, .skills-content {
   text-align: left;
-  margin-top: 40px;
+  margin-top: 1.25rem;
+}
+
+.about-intro.content-item {
+  transform: translate3d(140px, 18px, 0) rotate(4deg) skewX(-3deg);
+  filter: blur(4px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.7s ease;
+}
+
+.about-intro.content-item.is-visible {
+  transform: translate3d(0, 0, 0) rotate(0) skewX(0);
+  filter: blur(0);
+}
+
+.about-intro.content-item.is-exiting-left {
+  transform: translate3d(-140px, -12px, 0) rotate(-5deg) skewX(3deg);
+  filter: blur(4px);
+}
+
+.about-intro.content-item.is-exiting-right {
+  transform: translate3d(140px, 12px, 0) rotate(5deg) skewX(-3deg);
+  filter: blur(4px);
+}
+
+.about-intro-copy {
+  max-width: 68rem;
+  margin: 0 auto 1.25rem;
+  padding: 0 1rem;
+  color: #ffffff;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  text-align: center;
 }
 
 .about-me-content h3, .skills-content h3 {
-  font-size: 2.2rem;
+  font-family: 'Noto Sans KR', var(--font-family-primary);
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.035em;
   color: rgb(255, 255, 255);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: 1rem;
   padding-left: var(--spacing-md);
 }
 
-.about-me-content p {
-  font-size: 1.1rem;
-  margin-bottom: var(--spacing-md);
-  line-height: 1.8;
-  color: white; /* 밝은 섹션에서는 어두운 텍스트 */
-  text-align: justify; /* 양쪽 정렬 */
-}
 /* src/App.css (또는 해당 컴포넌트의 CSS 파일) */
 
 /* ... (기존 폰트 import, .site-title, .section-title, .about-me-content p.content-item.is-visible 스타일 등) ... */
@@ -563,13 +557,6 @@ section {
   left: 0; /* .highlight 왼쪽 끝에 배치 */
   top: 50%; /* 수직 중앙 정렬 */
   transform: translateY(-50%); /* 수직 중앙 정렬 미세 조정 */
-  animation: sparkleScale 1s infinite alternate; /* 작게 깜빡이는 애니메이션 유지 */
-}
-
-/* ✨ 이모티콘 깜빡이는 애니메이션 정의 (선택 사항) ✨ (이전과 동일) */
-@keyframes sparkleScale {
-  0% { transform: translateY(-50%) scale(1); opacity: 1; }
-  100% { transform: translateY(-50%) scale(0.9); opacity: 0.7; }
 }
 
 
@@ -580,14 +567,14 @@ section {
   border-radius: 50%; /* 원형 이미지 */
   object-fit: cover; /* 이미지가 잘리지 않게 */
   border: 1px solid gray; /* 테두리 */
-  margin: var(--spacing-lg) auto var(--spacing-xl) auto; /* 상하 여백 및 중앙 정렬 */
+  margin: 1rem auto 1.5rem; /* 상하 여백 및 중앙 정렬 */
   display: block; /* 중앙 정렬을 위해 */
   box-shadow: var(--shadow-dark); /* 그림자 효과 */
 }
 
 .personal-info-list {
-  padding: var(--spacing-lg);
-  margin: var(--spacing-xl) 0; /* 상하 여백 */
+  padding: 1.25rem;
+  margin: 1.25rem 0; /* 상하 여백 */
   border-radius: 8px;
   box-shadow: var(--shadow-light);
   text-align: left; /* 텍스트 왼쪽 정렬 */
@@ -666,7 +653,7 @@ section {
   background-color:rgba(0, 0, 0, 0.6); /* 어두운 배경 */
   color: var(--text-light); /* 밝은 텍스트 */
   padding: var(--spacing-xl) 0;
-  margin-top: 200px;
+  margin-top: 0;
 }
 
 .projects-grid {
@@ -675,7 +662,7 @@ section {
   gap: var(--spacing-xl);
   justify-content: center;
   align-items: stretch; /* 카드 높이 통일 */
-  margin-top: 60px;
+  margin-top: 2rem;
 }
 
 .project-card {
@@ -700,6 +687,21 @@ section {
   height: 200px;
   object-fit: cover;
   border-bottom: 1px solid var(--border-color);
+}
+
+.eywa-project-thumbnail {
+  height: 150px;
+}
+
+.project-ai-cover {
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 75% 25%, rgba(75, 160, 255, 0.35), transparent 35%),
+    linear-gradient(135deg, #151c31, #202f4a);
+  color: #dcecff;
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
 }
 
 .project-card h3 {
@@ -753,8 +755,8 @@ section {
 }
 
 .btn-secondary:hover {
-  background-color: var(--primary-color);
-  color: #fff;
+  background-color: #fff;
+  color: #111;
 }
 
 /* ============================================================= */
@@ -939,40 +941,28 @@ section {
 
 .modal-close-btn {
   position: absolute;
-  top: 30px;
-  left: 85%;
-  background: rgb(255, 255, 255);
-  color: #000000;
-  border: none;
-  border-radius: 20px; /* 더 둥근 버튼 */
-  padding: 0.4rem 1rem;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  z-index: 10; 
+  font-size: 1.6rem;
+  line-height: 1;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  z-index: 10;
 }
 
 .modal-close-btn:hover {
-  background-color: black;
-  color: white;
-  transform: scale(1.05);
-}
-
-.bottom-close-btn { /* 하단 '프로젝트 목록으로 돌아가기' 버튼 (항상 중앙) */
-    display: block;
-    width: fit-content;
-    right: 10px;
-    top: -20px;
-    margin: var(--spacing-lg) auto var(--spacing-sm) auto; /* 여백 및 중앙 정렬 */
-    background: var(--secondary-color); /* 색상 다르게 */
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    border-radius: 5px; /* 조금 덜 둥글게 */
-}
-
-.bottom-close-btn:hover {
-    background-color: #5a6268; /* hover 색상 */
-    transform: scale(1.02);
+  background-color: #fff;
+  color: #111;
+  border-color: #fff;
+  transform: rotate(90deg);
 }
 
 /* ------------------------------- */
@@ -987,10 +977,32 @@ section {
 }
 
 .simple-detail-view .modal-title {
-    font-size: 2.2rem;
-    color: rgb(255, 255, 255);
-    margin-bottom: var(--spacing-xl);
+    position: relative;
+    width: fit-content;
+    max-width: calc(100% - 3rem);
+    margin: 0 auto var(--spacing-xl);
+    padding: 0.15em 0.45em 0.35em;
+    color: #fff;
+    font-family: 'Jua', 'Noto Sans KR', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.1rem);
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: 0.015em;
     text-align: center;
+    text-wrap: balance;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+.simple-detail-view .modal-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 54px;
+    height: 4px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #8dd8ff, #b5a2ff);
+    transform: translateX(-50%);
 }
 
 .simple-detail-view .project-detail-image {
@@ -1033,24 +1045,48 @@ section {
 }
 
 .view-slideshow-btn {
-  margin-top: var(--spacing-xl);
-  font-size: 0.9rem;
-  background-color: #333333; /* 검정 대신 연한 다크 그레이 */
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 12px; /* 둥근 모서리 */
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 살짝 올라오는 그림자 */
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  font-weight: 600;
-  font-family: 'Spoqa Han Sans Neo', sans-serif; /* 한국어도 잘 어울리는 폰트 */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    margin-top: var(--spacing-lg);
+    margin-bottom: 0;
+    padding: 0.9rem 1.35rem;
+    border: 1px solid rgba(174, 199, 255, 0.45);
+    border-radius: 999px;
+    background: linear-gradient(135deg, #a9d3ff, #c4b5fd);
+    color: #171727;
+    box-shadow: 0 8px 24px rgba(169, 211, 255, 0.18);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.view-slideshow-btn::after {
+    content: '→';
+    font-size: 1.1em;
+    transition: transform 0.2s ease;
 }
 
 .view-slideshow-btn:hover {
-  background-color: #555555; /* 호버 시 좀 밝게 */
-  transform: scale(1.05); /* 약간 확대 효과 */
+    background: linear-gradient(135deg, #b9dcff, #d0c4ff);
+    color: #171727;
+    filter: saturate(1.08);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(169, 211, 255, 0.28);
 }
+
+.view-slideshow-btn:hover::after {
+    transform: translateX(3px);
+}
+
+.view-slideshow-btn:focus-visible {
+    outline: 3px solid rgba(196, 181, 253, 0.7);
+    outline-offset: 4px;
+}
+
 /* ------------------------------- */
 /* 슬라이드 뷰어 (Slideshow View) 스타일 */
 /* ------------------------------- */
@@ -1063,7 +1099,7 @@ section {
 }
 
 .modal-title.slide-present-title { /* 슬라이드 뷰의 제목 */
-  font-size: 1.8rem;
+  font-size: 1.55rem;
   color: white;
   margin-bottom: var(--spacing-md);
 }
@@ -1102,10 +1138,14 @@ section {
 }
 
 .slide h3.slide-title-sm, .slide h2.slide-main-title {
-    color: rgb(255, 255, 255);
+    color: white;
     margin-bottom: var(--spacing-md);
     font-weight: 600;
     line-height: 1.3;
+}
+
+.slide h3.slide-title-sm {
+    font-size: clamp(1.35rem, 2.4vw, 1.75rem);
 }
 
 .slide h2.slide-main-title {
@@ -1120,13 +1160,19 @@ section {
 }
 
 .slide p.slide-text, .slide p.slide-text-line {
-    font-size: 1.1rem;
-    line-height: 1.7;
+    font-size: 1.2rem;
+    line-height: 1.85;
     margin-bottom: var(--spacing-sm);
     color: var(--text-light);
     max-width: 800px;
     text-align: center; /* 텍스트 중앙 정렬 */
 }
+
+.slide p.slide-text.albartoon-main-features {
+    font-size: 0.96rem;
+    line-height: 1.65;
+}
+
 .slide p.slide-text-line { /* 줄바꿈 처리된 텍스트 */
     text-align: left; /* 목록처럼 보이게 */
     white-space: pre-wrap; /* \n 인식 */
@@ -1156,39 +1202,105 @@ section {
 
 
 /* 슬라이드 네비게이션 버튼 */
+.slideshow-header {
+  display: flex;
+  align-items: center;
+  width: min(100%, 850px);
+  min-height: 42px;
+  margin: 0 auto 0.25rem;
+}
+
+.back-to-detail-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 42px;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.82);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.back-to-detail-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.back-to-detail-btn span {
+  font-size: 1.05rem;
+}
+
 .slide-navigation {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-md);
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 0;
   color: var(--text-light);
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  min-height: 50px; /* 네비게이션 영역 확보 */
+  min-height: 46px;
 }
 
 .slide-nav-btn {
-  background-color: var(--primary-color);
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 0.7rem 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 40px;
+  padding: 0.55rem 0.9rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f4f5fa;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .slide-nav-btn:hover:not(:disabled) {
-  background-color: var(--highlight-color);
-  transform: translateY(-2px);
+  background: rgba(169, 211, 255, 0.18);
+  border-color: rgba(169, 211, 255, 0.42);
+  transform: translateY(-1px);
 }
 
 .slide-nav-btn:disabled {
-  background-color: var(--secondary-color);
+  background: rgba(255, 255, 255, 0.025);
+  border-color: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.34);
   cursor: not-allowed;
-  opacity: 0.6;
+}
+
+.slide-counter {
+  min-width: 4.2rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.52);
+  font-variant-numeric: tabular-nums;
+}
+
+.slide-counter strong {
+  color: #fff;
+  font-size: 1.05rem;
+}
+
+.eywa-presentation .slide p.slide-text,
+.eywa-presentation .slide p.slide-text-line {
+  font-size: 1.02rem;
+  line-height: 1.72;
+}
+
+.eywa-presentation .slide-image.eywa-screen-image {
+  display: block;
+  max-height: 420px;
+  width: auto;
+  margin: 0 auto var(--spacing-sm);
 }
 
 
@@ -1245,10 +1357,6 @@ section {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
   }
-  .bottom-close-btn {
-      font-size: 0.9rem;
-      padding: 0.6rem 1rem;
-  }
   .simple-detail-view .modal-title {
     font-size: 1.8rem;
     margin-bottom: var(--spacing-lg);
@@ -1267,7 +1375,12 @@ section {
   }
 
   .slide p.slide-text, .slide p.slide-text-line {
-      font-size: 0.95rem;
+      font-size: 1.05rem;
+      line-height: 1.8;
+  }
+
+  .slide p.slide-text.albartoon-main-features {
+      font-size: 0.9rem;
       line-height: 1.6;
   }
 
@@ -1278,6 +1391,9 @@ section {
   .slide-nav-btn {
       padding: 0.5rem 0.8rem;
       font-size: 0.9rem;
+  }
+  .slide-navigation {
+      justify-self: center;
   }
   .project-slide-viewer {
       padding: var(--spacing-md) var(--spacing-sm);
@@ -1300,6 +1416,26 @@ section {
 
   .hero-title {
     font-size: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .profile-image,
+  .profile-wave {
+    animation: none;
+  }
+
+  .profile-image-wrap {
+    transition: none;
   }
 }
 
@@ -1359,39 +1495,34 @@ section {
 
 /* ------------------------------- */
 /* ✨ 알바툰 메인기능 슬라이드의 강조 숫자 스타일 ✨ */
+.slide-text .highlight-num-1,
+.slide-text .highlight-num-2,
+.slide-text .highlight-num-3,
+.slide-text .highlight-num-4,
+.slide-text .highlight-num-5 {
+  font-size: 0.88em;
+  font-weight: 600;
+  display: inline;
+}
+
 .slide-text .highlight-num-1 {
-  font-size: 1.3em; /* 부모 폰트 사이즈의 1.3배 */
-  font-weight: 700;
-  color: var(--project-modal-primary); /* 프로젝트별 기본 색상 (연보라) */
-  display: inline; /* span은 기본적으로 inline, 줄바꿈을 위해선 br */
+  color: #a9caff;
 }
 
 .slide-text .highlight-num-2 {
-  font-size: 1.3em;
-  font-weight: 700;
-  color : rgb(142, 44, 44);
-  display: inline;
+  color: #c4b5fd;
 }
 
 .slide-text .highlight-num-3 {
-  font-size: 1.3em;
-  font-weight: 700;
-  color: #8aff8a; /* 밝은 녹색 */
-  display: inline;
+  color: #a8d8c0;
 }
 
 .slide-text .highlight-num-4 {
-  font-size: 1.3em;
-  font-weight: 700;
-  color: #ffcc00; /* 황금색 */
-  display: inline;
+  color: #e8c99b;
 }
 
 .slide-text .highlight-num-5 {
-  font-size: 1.3em;
-  font-weight: 700;
-  color: #ff80df; /* 핑크색 */
-  display: inline;
+  color: #e5b4c8;
 }
 
 
@@ -1419,73 +1550,66 @@ section {
   text-align: left; /* 텍스트는 왼쪽 정렬 */
   max-width: 900px; /* 읽기 좋게 최대 너비 제한 (좀 더 넓게) */
   margin: var(--spacing-lg) auto; /* 중앙 정렬 및 여백 */
-  font-size: 18px; /* 폰트 사이즈 살짝 키움 */
-  line-height:2.2; /* 줄 간격 넓혀 가독성 향상 */
+  font-size: 1.05rem;
+  line-height: 1.9;
   padding: var(--spacing-lg); /* 내용 안쪽 패딩 추가 */
   border-radius: 12px; /* 둥근 모서리 */
-  background-color: #ffffff1c; /* 하얀색 배경으로 내용을 더 돋보이게 */
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* 더 깊이 있는 그림자 */
-  font-family: var(--font-family-secondary); /* 조금 더 가독성 좋은 폰트 사용 */
+  font-family: 'Noto Sans KR', var(--font-family-primary);
+  letter-spacing: -0.015em;
 }
 
 .review-content p {
-  margin-bottom: var(--spacing-xl); /* 단락별 여백 증가 */
-color: rgba(255, 255, 255, 0.758);
+  margin-bottom: var(--spacing-lg);
+  color: #fff;
+  font-weight: 400;
 }
 
 /* ✨ 새로운 강조 문구별 스타일 (윤여원님 페르소나 반영) ✨ */
 
 /* 성장과 책임감 (긍정적 변화) */
 .review-growth-highlight {
-  color:rgba(199, 254, 228, 0.796); /* 주 색상 */
+  color: #a9d3ff;
   font-weight: 700;
-
-  padding: 0.1em 0.3em;
-  border-radius: 0.2em;
-  box-shadow: 0 2px 5px rgba(var(--primary-color-rgb), 0.2); /* 은은한 그림자 */
 }
 
 /* AI 활용 (현대적, 효율성) */
 .review-ai-highlight {
-  color: #a3b2f8; /* 푸른색 계열 */
+  color: #c4b5fd;
   font-weight: 700;
 }
 
 /* 핵심 강점 (자신감, 강점) */
 .review-strength-highlight {
-  color: rgb(211, 157, 157); /* 강조 색상 (산호색) */
-  font-weight: 800;
-  padding: 0.1em 0.3em;
-  border-radius: 0.2em;
+  color: #ffd1a8;
+  font-weight: 700;
 }
 
 /* 협업의 중요성 (깨달음, 발전 의지) */
 .review-collaboration-highlight {
-  color: #91dda3; /* 녹색 계열 */
+  color: #9fe3c1;
   font-weight: 700;
-  text-decoration: underline;
-  text-decoration-color: #28a745;
 }
 
 /* 혁신과 새로운 시도 (도전 정신) */
 .review-innovation-highlight {
-  color: #d1ad90; /* 오렌지 계열 */
+  color: #f4c2d7;
   font-weight: 700;
-  font-style: italic;
-  letter-spacing: 0.5px;
+  font-style: normal;
 }
 
 /* 프론트엔드 개발자 (현재 역할) */
 .review-frontend-developer {
-  color: var(--primary-color); /* 주 색상 */
-  font-weight: 800;
+  color: #91d9e8;
+  font-weight: 700;
 }
 
 /* 무궁무진한 가능성 (미래 비전) */
 .review-potential {
-  color: #d6a9ded6; /* 보라색 계열 */
-  font-weight: 800;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* 텍스트 그림자 */
+  color: #c4b5fd;
+  font-weight: 700;
 }
 
 

@@ -76,7 +76,9 @@ const ProjectDetailModal = ({ projects, selectedProjectId, onClose }) => {
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-content">
         {/* 모달 닫기 버튼 */}
-        <button className="modal-close-btn" onClick={onClose}>닫기</button>
+        <button className="modal-close-btn" onClick={onClose} aria-label="프로젝트 상세 닫기">
+          <span aria-hidden="true">×</span>
+        </button>
         
         {currentView === 'simple' ? (
           // ==============================
@@ -95,10 +97,9 @@ const ProjectDetailModal = ({ projects, selectedProjectId, onClose }) => {
               </div>
             )}
 
-            {/* 프로젝트 1이고 슬라이드가 있는 경우에만 '상세 보기 (슬라이드)' 버튼을 보여줍니다. */}
-            {project.id === 'project1' && hasSlides && (
+            {hasSlides && (
               <button className="btn-primary view-slideshow-btn" onClick={() => setCurrentView('slideshow')}>
-                PPT 형태로 상세 설명 보기
+                PPT 형태로 보기
               </button>
             )}
 
@@ -109,7 +110,12 @@ const ProjectDetailModal = ({ projects, selectedProjectId, onClose }) => {
           // ==============================
           // 💡 슬라이드 뷰어 (Slideshow View) 💡
           // ==============================
-          <div className="slideshow-view">
+          <div className={`slideshow-view${project.id === 'project3' ? ' eywa-presentation' : ''}`}>
+            <div className="slideshow-header">
+              <button className="back-to-detail-btn" onClick={() => setCurrentView('simple')}>
+                <span aria-hidden="true">←</span> 기본 정보
+              </button>
+            </div>
             <h2 className="modal-title slide-present-title">{project.name} - 상세 발표</h2>
 
             <div className="project-slide-viewer">
@@ -150,7 +156,7 @@ const ProjectDetailModal = ({ projects, selectedProjectId, onClose }) => {
                     )
                   )}
 
-      <p className="slide-text" dangerouslySetInnerHTML={{ __html: currentSlide.content }}></p>
+      <p className={`slide-text ${currentSlide.contentClassName || ''}`} dangerouslySetInnerHTML={{ __html: currentSlide.content }}></p>
                 </div>
               )}
 {currentSlide.type === 'text' && (
@@ -186,13 +192,14 @@ const ProjectDetailModal = ({ projects, selectedProjectId, onClose }) => {
 
             {/* 슬라이드 네비게이션 */}
             <div className="slide-navigation">
-              <button onClick={handlePrevSlide} disabled={currentSlideIndex === 0} className="slide-nav-btn">이전</button>
-              <span>{currentSlideIndex + 1} / {totalSlides}</span>
-              <button onClick={handleNextSlide} disabled={currentSlideIndex === totalSlides - 1} className="slide-nav-btn">다음</button>
+              <button onClick={handlePrevSlide} disabled={currentSlideIndex === 0} className="slide-nav-btn">
+                <span aria-hidden="true">←</span><span>이전</span>
+              </button>
+              <span className="slide-counter"><strong>{String(currentSlideIndex + 1).padStart(2, '0')}</strong><span> / {String(totalSlides).padStart(2, '0')}</span></span>
+              <button onClick={handleNextSlide} disabled={currentSlideIndex === totalSlides - 1} className="slide-nav-btn">
+                <span>다음</span><span aria-hidden="true">→</span>
+              </button>
             </div>
-            
-            {/* 하단 '돌아가기' 버튼 (기본 상세 화면으로 돌아가기) */}
-            <button className="modal-close-btn bottom-close-btn" onClick={() => setCurrentView('simple')}>기본 정보로 돌아가기</button>
           </div>
         )}
       </div>
@@ -208,44 +215,78 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(null); 
     const contentRefs = useRef([]);
-  let currentRefIndex = 0; // ref 인덱스를 관리할 변수
+  let currentRefIndex = 9; // 첫 About 섹션에서 사용하는 0-8번 ref 다음 인덱스
 
 useEffect(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-        } else {
-          entry.target.classList.remove('is-visible');
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.remove('is-exiting-left', 'is-exiting-right');
+                    entry.target.classList.add('is-visible');
+                } else {
+                    entry.target.classList.remove('is-visible');
+                    if (entry.target.classList.contains('about-intro')) {
+                        const exitsAboveViewport = entry.boundingClientRect.top < entry.rootBounds.top;
+                        entry.target.classList.toggle('is-exiting-left', exitsAboveViewport);
+                        entry.target.classList.toggle('is-exiting-right', !exitsAboveViewport);
+                    }
+                }
+            });
+        },
+        {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
         }
-      });
-    },
-    {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.1,
-    }
-  );
+    );
 
-  const refsSnapshot = contentRefs.current.filter(el => el !== null);
-  refsSnapshot.forEach((el) => {
-    observer.observe(el);
-  });
+    // ✨✨✨ Netlify 로그와 ESLint 에러 해결을 위한 핵심 수정 부분 ✨✨✨
+    // contentRefs.current의 현재 값을 캡처합니다.
+    const refsSnapshot = contentRefs.current.filter(el => el !== null);
 
-  return () => {
-    refsSnapshot.forEach(el => {
-      observer.unobserve(el);
+    refsSnapshot.forEach((el) => {
+        observer.observe(el);
     });
-    observer.disconnect();
-  };
-}, []);
+
+    return () => {
+        // 클린업 함수에서 캡처된 refsSnapshot을 사용합니다.
+        refsSnapshot.forEach(el => {
+            observer.unobserve(el);
+        });
+        observer.disconnect();
+    };
+}, []); // 의존성 배열은 비워두는 것이 이 로직에는 맞습니다.
+
+
 
 
   const projectsData = [
     {
+      id: 'project3',
+      name: '프로젝트 1: EYWA 학원 관리 시스템',
+      thumbnail: '/프론트.jpg',
+      description: '학부모가 셔틀 등하원 정보를 확인하고 변경할 수 있도록 실제 운영 흐름을 개선한 학원 관리 시스템입니다.',
+      fullDescription: 'EYWA는 학원 운영과 학생·학부모 관리를 위한 웹 시스템입니다. 저는 AI와 협업하며 학부모가 셔틀 노선을 확인하고 탑승 장소를 변경하는 흐름을 중심으로 기능을 구체화하고 개선했습니다.\n\n먼저 학부모 등하원 화면과 계정을 연결하고, 호차별 전체 노선을 확인하는 수정 모달을 구성했습니다. 회차와 정류장을 선택해 변경하는 흐름을 만든 뒤, 화면에만 반영되던 변경을 실제 데이터베이스 저장으로 확장했습니다. 정기 배정 변경, 결석·미탑승 처리와 사유 입력, 수정 이력 기록도 연결해 학부모의 변경 사항을 셔틀 담당자가 확인할 수 있도록 했습니다.\n\n운영 화면에는 변경 내역과 호차별 묶음 보기, 이름·초성 검색을 반영했습니다. 사용자 요구사항을 기능 단위로 나누고 AI와 구현·검토를 반복하면서, 화면 경험뿐 아니라 저장 흐름과 변경 이력까지 함께 다룬 작업입니다.',
+      techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase', 'PostgreSQL', 'SQL', 'Claude AI'],
+      github: 'https://github.com/dudnjs123456-blip/eywa-test',
+      slides: [
+        { type: 'title', title: 'EYWA 학원 관리 시스템', subtitle: '학부모 셔틀 이용 흐름 개선 · AI 협업 개발' },
+        { type: 'text', title: '1. 프로젝트 개요', content: 'EYWA는 학원 운영과 학생·학부모 관리를 돕는 웹 시스템입니다.\n저는 그중 학부모가 셔틀 등하원 정보를 확인하고 변경하는 흐름을 중심으로 개선 작업에 참여했습니다.\n목표는 화면에서 선택한 변경이 실제 운영 데이터와 담당자 확인까지 이어지도록 만드는 것이었습니다.' },
+        { type: 'text', title: '2. 담당 작업 한눈에 보기', content: '• 학부모 계정과 등하원 화면 연결\n• 호차·회차별 전체 노선 조회 모달 구성\n• 회차와 정류장을 선택하는 탑승 장소 변경 흐름 구현\n• 변경 정보의 실제 DB 저장과 정기 배정 변경 연결\n• 결석·미탑승 사유 입력 및 출발 10분 전 수정 제한\n• 변경 이력 기록과 직원용 변경 내역·검색 화면 구현' },
+        { type: 'text', title: '3. 학부모 셔틀 화면 구현', content: '학부모 계정 화면에서 자녀의 요일별 등하원 정보를 확인하도록 연결했습니다.\n호차별 전체 노선과 회차를 모달에서 확인하고, 다른 호차로 전환하거나 회차를 선택해 탑승 장소를 변경하도록 구현했습니다.\n수정 모드에서만 노선 정보를 조회하도록 구성해 평소 화면의 불필요한 데이터 조회를 피했습니다.' },
+        { type: 'image_text', title: '4. 실제 화면: 등하원 정보 확인', image: '/eywa-parent-rides.png', imageClassName: 'eywa-screen-image', content: '학부모가 요일별 셔틀 일정과 회차별 정류장을 확인하고, 등원·하원 변경 화면으로 이동하는 흐름입니다.' },
+        { type: 'image_text', title: '5. 실제 화면: 호차별 전체 노선', image: '/eywa-shuttle-route.png', imageClassName: 'eywa-screen-image', content: '수정 모달에서 호차와 회차별 노선을 확인하고, 자녀가 탑승하거나 내리는 정류장을 한눈에 볼 수 있습니다.' },
+        { type: 'text', title: '6. DB 저장과 변경 규칙', content: '화면에서 선택한 탑승 장소가 새로고침 후에도 유지되도록 변경 내용을 DB에 저장했습니다.\n요일별 정기 배정 변경, 결석, 등원·하원만 타지 않기와 사유 입력을 연결했습니다.\n회차 출발 10분 전부터는 해당 회차의 수정을 막고, 같은 마감 규칙을 화면과 서버에서 확인하도록 했습니다.' },
+        { type: 'text', title: '7. 변경 이력과 직원용 관리', content: '변경·취소 때 행위자와 전후 내용을 이력으로 남겨 누가 언제 무엇을 바꿨는지 확인하도록 했습니다.\n직원 화면에 날짜별 변경 내역, 호차별 묶음 보기, 이름 및 초성 검색을 추가했습니다.\n학부모 화면에는 직원 메모와 내부 변경 이력이 전달되지 않도록 조회 범위를 분리했습니다.' },
+        { type: 'text', title: '8. AI 협업 방식과 배운 점', content: 'AI와 함께 사용자 요청을 화면 동작, 저장 규칙, 예외 상황으로 나누고 각 단계를 기능으로 구현했습니다.\n초기 화면 중심의 변경 흐름을 실제 저장과 변경 이력까지 확장하며, 제안된 구현을 직접 확인하고 다음 개선점을 정해 반복했습니다.\nAI를 활용하면 아이디어를 빠르게 시험하고 구현할 수 있지만, 문제의 우선순위를 정하고 결과가 사용자 요구에 맞는지 판단하는 책임은 개발자에게 있다는 점을 배웠습니다.' },
+        { type: 'tech_stack', title: '9. 기술 스택', content: '프로젝트에서 사용된 기술과 구현 영역입니다.' },
+        { type: 'links', title: '10. 저장소', content: '프로젝트 코드와 변경 내용을 GitHub 저장소에서 확인할 수 있습니다.' }
+      ]
+    },
+    {
       id: 'project1',
-      name: '프로젝트 1: 알바계의 새로운 플랫폼 알바툰',
+      name: '프로젝트 2: 알바계의 새로운 플랫폼 알바툰',
       thumbnail: '/메인페이지.png',
       description: '알바툰은 자영업 가게와 아르바이트를 하는 모두에게 실질적인 도움이 되고자 만든 프로젝트입니다.',
       fullDescription: '알바툰은 자영업가게를 운영하시는 사장님과 그곳에서 일하는 아르바이트를 하시는 분들에게 실질적인 도움이 되고자 만들게 되었습니다. 저도 아르바이트를 해오면서 수기로 체크하는 근태관리, 나의 근무일지, 나의 시급계산 등등 여러가지 부분들이 아직 이 알바 생태계에선 수기로 하는 부분들이 많고 명확한 틀이 갖춘 플랫폼도 없다고 생각했습니다. 지금 있는 알바몬, 알바천국은 구인공고에만 도움이 되지 실질적으로 일하는분들에겐 어떠한 도움도 주지 못합니다. 저는 그문제점을 해결하고 싶었습니다. 앞서 말햇듯 이미 두 플랫폼이 알바라는 생태계의 거장이기에 이곳의 파이를 가져오기 위한 충분한 도구로서도 작용할거라 생각하고 그것을 바탕으로 수익화까지 할수 있어야 요즘 시대에 필요한 개발자의 덕목이라고 생각합니다.',
@@ -267,7 +308,7 @@ useEffect(() => {
           '/유저이력서.png',  
           '/가게메인.png'   
         ],content: ' 저희 페이지는 가게마다 하나의 페이지를 제공합니다. 그곳의 메인 관리자 사장님이 가게의 정보를 제공하게 하고 가게 구성원들을 선택하여 인원을 추가,수정합니다, 그리고 개인 유저들은 마이페이지를 통해 본인의 데이터를 수정 및 추가 할 수 있습니다.. '}, // 9페이지 (이미지는 임시)
-        { type: 'image_text',imageClassName: 'main-p3',    images: [
+        { type: 'image_text', imageClassName: 'main-p3', contentClassName: 'albartoon-main-features', images: [
           '/가게출근부.png',
           '/가게일정표.png',
           '/가게채팅방.png',
@@ -293,14 +334,14 @@ useEffect(() => {
     },
     {
       id: 'project2',
-      name: '프로젝트 2: 나만의 유튜브 채널',
+      name: '프로젝트 3: 나만의 유튜브 채널',
       thumbnail: '/유튜브메인.png',
       description: '웹 개발뿐 아니라 내가 가진 카드들중 어떻게 좀더 생산성 있는 방향으로를 나아갈 수 있을까 해서 만든 채널입니다.',
       fullDescription: '이 유튜브 채널은 제가 웹 개발을 하기전에 웹 디자인을 공부하면서 처음 만들었던 채널입니다, 그때 전 포토샵, 일러스트 뿐아니라 좀더 생산성을 낼 수 있는 무언가가 있지 않을까 고민했고 그 결과가 내가 좋아하는 드라마들의 쇼츠를 따서 올려보는것이었습니다. 하지만 그냥 올리는것은 강점이 없다 생각했기에 제가 할수 있는 한 화질을 최대한 올리고 업스케일링을 공부하여 쇼츠를 만들어 올린 결과 최대 조회수 760만이라는 결과물을 얻었습니다, 물론 이것은 제가 만든 창작물이 아니라 수익화까진 가지 못했지만 이런 경험을 통해 유튜브 생태계는 어떤곳인지 깨달았고 이것을 어떻게 해야 수익화를 할 수 있는지 고민할수있는 좋은기회였다고 생각합니다. 이렇게 웹 개발뿐아니라 여러가지 분야에 도전하는것에 흥미를 느끼고 늘 배우는 자세가 실무에 있어서 큰 도움이 될것이라 생각합니다.',
       techStack: ['Youtube'],
       Url: 'https://www.youtube.com/@onein1004',
       slides: [] // 프로젝트 2는 슬라이드가 없으므로 빈 배열로 둡니다.
-    }
+    },
   ];  
 
   const handleProjectClick = (projectId) => {
@@ -356,8 +397,24 @@ useEffect(() => {
       {/* ============================================================= */}
       <section id="hero" className="section-hero">
         <div className="hero-content">
-          <img src="프론트1.png" alt="Your Profile" className="profile-image" /> 
-          <p className="hero-subtitle">안녕하세요!</p>
+          <div className="profile-image-wrap">
+            <span className="profile-wave" aria-hidden="true" />
+            <span className="profile-wave" aria-hidden="true" />
+            <span className="profile-wave" aria-hidden="true" />
+            <img src="프론트1.png" alt="Your Profile" className="profile-image" />
+          </div>
+          <p className="hero-subtitle" aria-label="안녕하세요!">
+            {'안녕하세요!'.split('').map((char, index) => (
+              <span
+                className="greeting-letter"
+                aria-hidden="true"
+                key={`${char}-${index}`}
+                style={{ animationDelay: `${index * 0.12}s` }}
+              >
+                {char}
+              </span>
+            ))}
+          </p>
           <h2 className="hero-title">아이디어를 코드로 구현하는 <span className="highlight">프론트엔드 개발자</span> <span className="animated-name">윤여원</span>입니다!</h2>
           <p className="hero-description">사용자 경험을 최우선으로 생각하며, 끊임없이 배우고 성장하는 개발자입니다.</p>
           <a href="#projects" className="btn-primary">내 프로젝트 보러가기</a>
@@ -379,29 +436,29 @@ useEffect(() => {
         </h2>
         
         <div className="about-me-content">
+          <div
+            className="about-intro content-item"
+            ref={el => contentRefs.current[1] = el}
+            style={{ transitionDelay: '0.1s' }}
+          >
           <img 
             src="내사진.jpeg" 
             alt="About Me" 
-            className="about-me-image content-item"
-            ref={el => contentRefs.current[1] = el} // 두 번째 요소
-            style={{ transitionDelay: '0.1s' }} // 0.1초 뒤에 나타남
+            className="about-me-image"
           />
           
           <p 
-            className="content-item"
-            ref={el => contentRefs.current[2] = el} // 세 번째 요소
-            style={{ transitionDelay: '0.2s' }} // 0.2초 뒤에 나타남
+            className="about-intro-copy"
           >
             호기심이 많고 새로운 도전을 즐기는 저는 개발뿐만 아니라 다양한 분야에 관심이 많습니다. 특히 <span className="highlight">프리미어 프로를 이용한 쇼츠 편집</span>과 <span className="highlight">디자인 및 메인 페이지 꾸미기
-            </span>에 깊은 흥미를 느끼고 있습니다. 이러한 활동들을 통해 시각적으로 매력적인 결과물을 만드는 즐거움을 느끼고 있습니다. 제 삶의 이러한 경험이 결국 더 나은 앞길을 제시하고 창의적인 해결책을 찾는 데 도움이 된다고 믿습니다.
+            </span>에 깊은 흥미를 느끼고 있습니다. 최근에는 <span className="highlight">AI 도구를 활용해 아이디어를 구체화하고 새로운 콘텐츠를 창작하는 일</span>에도 관심을 넓혀가고 있습니다. 이러한 활동들을 통해 시각적으로 매력적인 결과물을 만드는 즐거움을 느끼고 있습니다. 제 삶의 이러한 경험이 결국 더 나은 앞길을 제시하고 창의적인 해결책을 찾는 데 도움이 된다고 믿습니다.
           </p>
           <p 
-            className="content-item"
-            ref={el => contentRefs.current[3] = el} // 네 번째 요소
-            style={{ transitionDelay: '0.3s' }} // 0.3초 뒤에 나타남
+            className="about-intro-copy"
           >
             새로운 기술을 학습하고 적용하는 것을 좋아하며, 문제 해결 과정을 즐기는 개발자로서 끊임없이 성장하고 있습니다. 주변 사람들과의 소통과 협업을 중요하게 생각하며 긍정적인 에너지를 나누고자 노력합니다.
           </p>
+          </div>
 
           <div 
             className="personal-info-list content-item"
@@ -450,13 +507,15 @@ useEffect(() => {
             <h4>Frontend (프론트엔드) & Backend & API</h4>
             <ul className="skill-list">
               <li>React (Hooks, Context API)</li>
-              {/* <li>Next.js (SSG, SSR)</li> */}
+              <li>Next.js</li>
+              <li>TypeScript</li>
               <li>Redux 툴킷(상태 관리)</li>
               <li>React Router</li>
               <li>Styled Components / Tailwind CSS</li>
               <li>Node.js</li>
               <li>Express (Node.js 프레임워크)</li>
-              <li>Mysql</li>
+              <li>Supabase / PostgreSQL / MySQL</li>
+              <li>SQL</li>
             </ul>
           </div>
           <div 
@@ -469,120 +528,13 @@ useEffect(() => {
               <li>Git / GitHub</li>
               <li>VS Code</li>
               <li>RESTful API</li>
+              <li>AI 협업 개발 (Claude)</li>
             </ul>
           </div>
           {/* 더 많은 기술 스택 추가 (아이콘이나 프로그레스 바로 시각화하면 더 좋아요!) */}
         </div>
       </div>
     </section>
-      {/* ============================================================= */}
-      {/* 🚀 4. 프로젝트 경험 (Projects) 섹션 - 너의 실력을 증명할 시간! 🚀 */}
-      {/* ============================================================= */}
-       <section id="about-skills" className="section-about-skills">
-        <div className="section-content">
-          <h2
-            className="section-title content-item"
-            ref={el => contentRefs.current[currentRefIndex++] = el}
-            style={{ transitionDelay: '0s' }}
-          >
-            나에 대해 & 나의 기술 스택
-          </h2>
-
-          <div className="about-me-content">
-            <img
-              src="내사진.jpeg"
-              alt="About Me"
-              className="about-me-image content-item"
-              ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.1s' }}
-            />
-
-            <p
-              className="content-item"
-              ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.2s' }}
-            >
-              호기심이 많고 새로운 도전을 즐기는 저는 개발뿐만 아니라 다양한 분야에 관심이 많습니다. 특히 <span className="highlight">[프리미어 프로를 이용한 쇼츠 편집]</span>과 <span className="highlight">[디자인 및 메인 페이지 꾸미기]
-              </span>에 깊은 흥미를 느끼고 있습니다. 이러한 활동들을 통해 시각적으로 매력적인 결과물을 만드는 즐거움을 느끼고 있습니다. 제 삶의 이러한 경험이 결국 더 나은 앞길을 제시하고 창의적인 해결책을 찾는 데 도움이 된다고 믿습니다.
-            </p>
-            <p
-              className="content-item"
-              ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.3s' }}
-            >
-              새로운 기술을 학습하고 적용하는 것을 좋아하며, 문제 해결 과정을 즐기는 개발자로서 끊임없이 성장하고 있습니다. 주변 사람들과의 소통과 협업을 중요하게 생각하며 긍정적인 에너지를 나누고자 노력합니다.
-            </p>
-
-            <div
-              className="personal-info-list content-item"
-              ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.4s' }}
-            >
-                <h4>기본 정보</h4>
-                <ul>
-                    <li><strong>이름:</strong> 윤여원</li>
-                    <li><strong>나이 / 생년월일:</strong> 28세 (만 나이 기준) / 1998.01.23</li>
-                    <li><strong>학력:</strong> 대구가톨릭대학교 컴퓨터공학과 (2025년 졸업)</li>
-                    <li><strong>직무:</strong> 프론트엔드 개발자</li>
-                    <li><strong>거주지:</strong> 대구광역시 북구 태전동</li>
-                    <li><strong>관심 분야:</strong> 웹 개발, UX 디자인, 유튜브 콘텐츠 제작</li>
-                </ul>
-            </div>
-          </div>
-
-          <div className="skills-content">
-            <h3
-              className="content-item"
-              ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.1s' }}
-            >
-              나의 기술 무기들
-            </h3>
-            <div
-              className="skill-category content-item"
-              ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.2s' }}
-            >
-              <h4>Languages</h4>
-              <ul className="skill-list">
-                <li>JavaScript (ES6+)</li>
-                {/* <li>TypeScript</li> */}
-                <li>HTML5</li>
-                <li>CSS3 </li>
-              </ul>
-            </div>
-            <div
-              className="skill-category content-item"
-              ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.1s' }}
-            >
-              <h4>Frontend (프론트엔드) & Backend & API</h4>
-              <ul className="skill-list">
-                <li>React (Hooks, Context API)</li>
-                {/* <li>Next.js (SSG, SSR)</li> */}
-                <li>Redux 툴킷(상태 관리)</li>
-                <li>React Router</li>
-                <li>Styled Components / Tailwind CSS</li>
-                <li>Node.js</li>
-                <li>Express (Node.js 프레임워크)</li>
-                <li>Mysql</li>
-              </ul>
-            </div>
-            <div
-              className="skill-category content-item"
-              ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.2s' }}
-            >
-              <h4>Tools & Others</h4>
-              <ul className="skill-list">
-                <li>Git / GitHub</li>
-                <li>VS Code</li>
-                <li>RESTful API</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ======================= 새로 추가되는 '프로젝트' 섹션 ======================= */}
       <section id="projects" className="section-projects">
@@ -595,44 +547,39 @@ useEffect(() => {
             내 손으로 만든 프로젝트들
           </h2>
           <div className="projects-grid">
-            {/* 프로젝트 1 */}
-            <div
-              className="project-card content-item"
-              ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: `${0.9 + 0.1}s` }} // h2 제목보다 0.1초 뒤에
-              onClick={() => handleProjectClick('project1')}
-            >
-              <img src={projectsData[0].thumbnail} alt={projectsData[0].name} className="project-thumbnail" />
-              <h3 className="project-title">{projectsData[0].name}</h3>
-              <p className="project-description">{projectsData[0].description}</p>
-              <div className="project-tech-stack">
-                {projectsData[0].techStack.map((tech, index) => <span key={index}>{tech}</span>)}
+            {projectsData.map((project, index) => (
+              <div
+                key={project.id}
+                className="project-card content-item"
+                ref={el => contentRefs.current[currentRefIndex++] = el}
+                style={{ transitionDelay: `${1 + index * 0.1}s` }}
+                onClick={() => handleProjectClick(project.id)}
+              >
+                {project.thumbnail ? (
+                  <img
+                    src={project.thumbnail}
+                    alt={project.name}
+                    className={`project-thumbnail${project.id === 'project3' ? ' eywa-project-thumbnail' : ''}`}
+                  />
+                ) : (
+                  <div className="project-thumbnail project-ai-cover" aria-hidden="true">
+                    <span>AI × FRONTEND</span>
+                  </div>
+                )}
+                <h3 className="project-title">{project.name}</h3>
+                <p className="project-description">{project.description}</p>
+                <div className="project-tech-stack">
+                  {project.techStack.map(tech => <span key={tech}>{tech}</span>)}
+                </div>
+                {(project.github || project.demo || project.Url) && (
+                  <div className="project-links">
+                    {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer" className="btn-secondary" onClick={event => event.stopPropagation()}>GitHub</a>}
+                    {project.demo && <a href={project.demo} target="_blank" rel="noopener noreferrer" className="btn-secondary" onClick={event => event.stopPropagation()}>Demo Link</a>}
+                    {project.Url && <a href={project.Url} target="_blank" rel="noopener noreferrer" className="btn-secondary" onClick={event => event.stopPropagation()}>YouTube Channel</a>}
+                  </div>
+                )}
               </div>
-              <div className="project-links">
-                <a href={projectsData[0].github} target="_blank" rel="noopener noreferrer" className="btn-secondary" onClick={(e) => e.stopPropagation()}>GitHub</a>
-              </div>
-            </div>
-
-            {/* 프로젝트 2 */}
-            <div
-              className="project-card content-item"
-              ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: `${0.9 + 0.2}s` }} // 첫 번째 카드보다 0.1초 뒤에
-              onClick={() => handleProjectClick('project2')}
-            >
-              <img src={projectsData[1].thumbnail} alt={projectsData[1].name} className="project-thumbnail" />
-              <h3 className="project-title">{projectsData[1].name}</h3>
-              <p className="project-description">{projectsData[1].description}</p>
-              <div className="project-tech-stack">
-                {projectsData[1].techStack.map((tech, index) => <span key={index}>{tech}</span>)}
-              </div>
-              <div className="project-links">
-                {projectsData[1].github && <a href={projectsData[1].github} target="_blank" rel="noopener noreferrer" className="btn-secondary" onClick={(e) => e.stopPropagation()}>GitHub</a>}
-                {projectsData[1].demo && <a href={projectsData[1].demo} target="_blank" rel="noopener noreferrer" className="btn-secondary" onClick={(e) => e.stopPropagation()}>Demo Link</a>}
-                {projectsData[1].Url && <a href={projectsData[1].Url} target="_blank" rel="noopener noreferrer" className="btn-secondary" onClick={(e) => e.stopPropagation()}>YouTube Channel</a>}
-              </div>
-            </div>
-            {/* 프로젝트가 더 있다면 여기에 이어서 추가하고 contentRefs 인덱스와 transitionDelay를 계속 늘려주면 됩니다! */}
+            ))}
           </div>
         </div>
       </section>
@@ -642,7 +589,7 @@ useEffect(() => {
           <h2
             className="section-title content-item"
             ref={el => contentRefs.current[currentRefIndex++] = el}
-            style={{ transitionDelay: '0.1s' }} // 이전 섹션의 마지막 딜레이에 이어지는 값 (조정 필요)
+            style={{ transitionDelay: '0.9s' }} // 이전 섹션의 마지막 딜레이에 이어지는 값 (조정 필요)
           >
             프로젝트를 만들고 난 후기
           </h2>
@@ -650,7 +597,7 @@ useEffect(() => {
             <p
               className="content-item"
               ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.2s' }}
+              style={{ transitionDelay: '1.0s' }}
             >
               '알바툰' 프로젝트를 맨 처음 시작했을 때는 웹에 글자 하나 띄우는 것만으로도 신기하고 재미있었습니다. 그 재미가 제가 이분야로 들어오게 된 큰 계기입니다.
               하지만 개발을 '업'으로 생각하고 실제 문제점들을 마주했을 때, 잠시 적성에 대한 고민과 함께 주춤했던 시기도 있었습니다.
@@ -661,7 +608,7 @@ useEffect(() => {
             <p
               className="content-item"
               ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.3s' }}
+              style={{ transitionDelay: '1.1s' }}
             >
               그리고 이 프로젝트를 만들면서 마주한 많은 문제들 속에서, <span className="review-ai-highlight">AI의 도움은 문제 해결의 속도와 생산성을 비약적으로 높여주었습니다.</span> 하지만 그로인해 제가 모든 코드를 짜는게 아니기에 코드에 대한 이해도나 효율성이 떨어진다고 생각합니다. 허나 저는 현대 개발자에게는 <span className="review-strength-highlight">코드를 넘어선 '큰 그림을 그리는 능력'과 '실질적인 비즈니스 가치 창출 능력'</span>이 더욱 중요하다고 생각합니다.
               코드의 효율이나 가독성을 높이는 기술적 측면에서는 부족할지 몰라도, '이 기능이 회사에 어떤 실질적인 도움이 될까?', '어떻게 하면 서비스의 생산성을 극대화할 수 있을까?'와 같은 비즈니스 관점의 고민을 깊이 해왔기에, 이런 부분에서 다른 개발자보다 차별화된 강점이 있다고 자부합니다.
@@ -670,7 +617,7 @@ useEffect(() => {
             <p
               className="content-item"
               ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.4s' }}
+              style={{ transitionDelay: '1.2s' }}
             >
               그리고 이 알바툰 프로젝트는 아직 미완성입니다. 저는 이 프로젝트를 처음부터 혼자 만들었고 그로 인해 저혼자서는 모든걸 해낼 수 없고, 다른 사람들의 도움이 얼마나 절실한지 깨달았습니다.
               웹 개발이라는게 겉보기엔 단순해보이지만, 모든 것을 혼자 구현하기에는 턱없이 부족한것을 깨달았기에 <span className="review-collaboration-highlight">협업의 중요성</span>이 얼마나 큰지를 몸소 체험했습니다.
@@ -680,7 +627,16 @@ useEffect(() => {
             <p
               className="content-item"
               ref={el => contentRefs.current[currentRefIndex++] = el}
-              style={{ transitionDelay: '0.5s' }}
+              style={{ transitionDelay: '1.3s' }}
+            >
+              EYWA 학원 관리 시스템의 셔틀 기능을 개선하며, 저는 <span className="review-ai-highlight">AI와 대화해 사용자의 불편을 구체적인 기능으로 바꾸고, 아이디어를 실제 동작하는 코드로 구현하는 과정</span>을 경험했습니다. 학부모가 노선을 확인하고 탑승 장소를 바꾸는 흐름을 함께 설계한 뒤, 데이터 저장과 변경 이력까지 단계적으로 연결했습니다. 원하는 결과가 나올 때까지 AI와 구현 방향을 조정하고, 화면과 동작을 확인해 다시 개선하는 과정을 반복했습니다.
+              <span className="review-growth-highlight"> AI가 제안한 코드를 그대로 받아들이는 데 그치지 않고, 무엇을 만들지 결정하고 결과를 검토하며 다음 개선점을 찾는 주체는 저였습니다.</span> 이 경험을 통해 AI를 활용한 개발은 더 빠르게 코드를 만드는 것뿐 아니라, 더 많은 해결 방법을 시도하고 아이디어를 끝까지 구체화하는 일이라는 것을 배웠습니다.
+            </p>
+
+            <p
+              className="content-item"
+              ref={el => contentRefs.current[currentRefIndex++] = el}
+              style={{ transitionDelay: '1.4s' }}
             >
               마지막으로 저는 <span className="review-innovation-highlight">끊임없이 배우고 늘 새로운 시도를 추구합니다.</span> 저의 유튜브 채널 활동은 이러한 저의 성향을 잘 보여줍니다. 짧은 쇼츠 영상들이지만 '어떻게 하면 최소한의 자원으로 최대의 생산성을 낼 수 있을까?'라는 고민 끝에 드라마 쇼츠에 최대한의 화질 업스케일링을 시도했습니다. 당시에는 흔치 않았던 시도로 최대 500~600만 조회수를 달성하기도 했죠. 비록 수익화로는 이어지지 않았지만, 새로운 시도와 그로 인한 반응을 분석하며 인사이트를 얻는 값진 경험이었습니다.
               저는 현재 <span className="review-frontend-developer">프론트엔드 개발자</span>이지만, 단순히 기술에만 국한되지 않는 <span className="review-potential">무궁무진한 가능성을 가진 '윤여원'</span>이라는 사람을 소개하고 싶습니다! 감사합니다😊
@@ -695,20 +651,21 @@ useEffect(() => {
           <h2
             className="section-title content-item"
             ref={el => contentRefs.current[currentRefIndex++] = el}
-            style={{ transitionDelay: '0.1s' }}
+            style={{ transitionDelay: '1.5s' }}
           >
+            저와 함께 성장할 준비가 되셨나요?
           </h2>
           <p
             className="contact-description content-item"
             ref={el => contentRefs.current[currentRefIndex++] = el}
-            style={{ transitionDelay: '0.2s' }}
+            style={{ transitionDelay: '1.6s' }}
           >
             궁금한 점이 있거나, 함께 일하고 싶으시다면 언제든지 편하게 연락 주세요!
           </p>
           <div
             className="contact-info content-item"
             ref={el => contentRefs.current[currentRefIndex++] = el}
-            style={{ transitionDelay: '0.3s' }}
+            style={{ transitionDelay: '1.7s' }}
           >
             <p><strong>Email:</strong> ghkfkddlqtl@naver.com</p>
             <p><strong>Tel:</strong>010-6522-7425</p>
