@@ -270,7 +270,7 @@ section {
 /* ============================================================= */
 
 .section-hero {
-  background: var(--background-dark) url('https://via.placeholder.com/1920x1080?text=Background+Image') no-repeat center center/cover; /* 배경 이미지 또는 단색 */
+  background: var(--background-dark);
   min-height: 100vh; /* 화면 전체 높이 */
   display: flex; /* 내용 중앙 정렬 */
   flex-direction: column; /* 세로 방향 정렬 */
@@ -1026,6 +1026,7 @@ section {
     margin-bottom: var(--spacing-sm);
 }
 .simple-detail-view .project-detail-full-description p {
+    white-space: pre-line; /* 문단 나눔(\n) 표시 */
     font-size: 1rem;
     line-height: 1.6;
     color: var(--text-light);
