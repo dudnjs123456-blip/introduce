@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
+import UpdateLog from './components/UpdateLog';
+import StatsCard from './components/StatsCard';
+import WeatherEffects from './components/WeatherEffects';
 
 // 발표형 슬라이드 스타일(큰 글씨, 화면 캡처 크기 고정)을 쓰는 프로젝트
 const PRESENTATION_PROJECTS = ['eywa', 'ironfist'];
@@ -363,7 +366,11 @@ useEffect(() => {
 
   const name = "Yoon Yeo Won"; 
   return (
-    <div className='portfolio-container'> 
+    <div className='portfolio-container'>
+      <WeatherEffects />
+      <div className="panel-dock-bar" aria-hidden="true" />
+      <UpdateLog />
+      <StatsCard />
       
       {/* ============================================================= */}
       {/* 🚀 1. 헤더 (Header) 섹션 - 사이트의 얼굴, 내비게이션 🚀 */}
@@ -381,7 +388,7 @@ useEffect(() => {
     {name.split('').map((char, index) => (
       // 각 글자를 .letter 클래스의 span으로 감쌉니다.
       // 공백은 특수 공백 문자(&nbsp;에 해당)로 처리하여 CSS 애니메이션이 잘 적용되도록 합니다.
-      <span key={index} className="letter">
+      <span key={index} className="letter" style={{ animationDelay: `${index * 0.08}s` }}>
         {char === ' ' ? '\u00A0' : char}
       </span>
     ))}

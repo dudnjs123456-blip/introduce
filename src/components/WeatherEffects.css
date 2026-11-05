@@ -1,0 +1,172 @@
+/* 화면 전체 날씨 효과. 내용 위에 얹히지만 클릭은 통과하고, 양옆 카드·헤더보다는 아래에 둔다. */
+.wx-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 880;
+  pointer-events: none;
+  overflow: hidden;
+  animation: wxIn 1.5s ease;
+}
+
+@keyframes wxIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.wx-layer > * {
+  position: absolute;
+  inset: 0;
+}
+
+.wx-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* 날씨별 화면 색감 */
+.wx-tint { background: transparent; }
+
+.wx-rain .wx-tint {
+  background: linear-gradient(180deg, rgba(40, 46, 56, 0.28), rgba(0, 0, 0, 0.12));
+}
+
+.wx-storm .wx-tint {
+  background: linear-gradient(180deg, rgba(20, 22, 30, 0.45), rgba(0, 0, 0, 0.25));
+}
+
+.wx-snow .wx-tint {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0));
+}
+
+/* 밤: 가장자리부터 어둡게 */
+.wx-night .wx-tint {
+  background: radial-gradient(ellipse at 50% 40%, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.wx-cloudy .wx-tint {
+  background: rgba(60, 60, 60, 0.12);
+}
+
+.wx-fog .wx-tint {
+  background: rgba(150, 150, 150, 0.12);
+}
+
+/* 맑음: 오른쪽 위에서 비치는 햇빛 */
+.wx-sun {
+  inset: auto;
+  top: -260px;
+  right: -260px;
+  width: 720px;
+  height: 720px;
+}
+
+.wx-sun-core {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 236, 190, 0.55) 0%, rgba(255, 214, 140, 0.22) 22%, rgba(255, 200, 120, 0.06) 45%, transparent 68%);
+  animation: wxSunPulse 6s ease-in-out infinite;
+}
+
+.wx-sun-rays {
+  position: absolute;
+  inset: -40%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 230, 180, 0.09) 0deg 6deg, transparent 6deg 18deg);
+  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 60%);
+  mask-image: radial-gradient(circle, #000 0%, transparent 60%);
+  animation: wxSpin 90s linear infinite;
+}
+
+@keyframes wxSunPulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+@keyframes wxSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* 밤: 오른쪽 위 달빛 */
+.wx-moon {
+  inset: auto;
+  top: 90px;
+  right: 12%;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff, #d9d9d9 60%, #bdbdbd);
+  box-shadow: 0 0 40px 10px rgba(255, 255, 255, 0.18), 0 0 140px 50px rgba(255, 255, 255, 0.06);
+  opacity: 0.85;
+}
+
+/* 흐림·안개: 천천히 흘러가는 큰 구름 덩어리 */
+.wx-clouds span {
+  position: absolute;
+  width: 70vmax;
+  height: 40vmax;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(200, 200, 200, 0.16) 0%, transparent 65%);
+  filter: blur(20px);
+  animation: wxDrift 70s linear infinite;
+}
+
+.wx-clouds span:nth-child(1) { top: -12vmax; left: -30vmax; }
+.wx-clouds span:nth-child(2) { top: 25vh; left: -50vmax; animation-duration: 95s; animation-delay: -30s; }
+.wx-clouds span:nth-child(3) { top: 60vh; left: -40vmax; animation-duration: 80s; animation-delay: -55s; }
+
+.wx-fog .wx-clouds span {
+  background: radial-gradient(ellipse, rgba(220, 220, 220, 0.24) 0%, transparent 65%);
+}
+
+@keyframes wxDrift {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(100vw + 100vmax)); }
+}
+
+/* 뇌우: 번개 */
+.wx-flash {
+  background: rgba(255, 255, 255, 0.85);
+  opacity: 0;
+}
+
+.wx-flash.is-on {
+  animation: wxFlash 0.7s ease-out;
+}
+
+@keyframes wxFlash {
+  0% { opacity: 0; }
+  8% { opacity: 0.35; }
+  16% { opacity: 0.05; }
+  26% { opacity: 0.28; }
+  100% { opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .wx-sun {
+    top: -200px;
+    right: -200px;
+    width: 480px;
+    height: 480px;
+  }
+
+  .wx-moon {
+    top: 80px;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wx-layer *,
+  .wx-layer {
+    animation: none !important;
+  }
+}
+
+/* 오른쪽 통계 카드가 붙어 있으면 달이 카드 뒤에 숨지 않게 본문 쪽으로 옮긴다 */
+@media (min-width: 1280px) {
+  html.stats-docked .wx-moon {
+    right: calc(var(--stats-w) + var(--dock-gap) * 2 + 40px);
+  }
+}
