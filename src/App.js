@@ -3,6 +3,7 @@ import './App.css';
 import UpdateLog from './components/UpdateLog';
 import StatsCard from './components/StatsCard';
 import WeatherEffects from './components/WeatherEffects';
+import Runner from './components/Runner';
 
 // 발표형 슬라이드 스타일(큰 글씨, 화면 캡처 크기 고정)을 쓰는 프로젝트
 const PRESENTATION_PROJECTS = ['eywa', 'ironfist'];
@@ -371,6 +372,7 @@ useEffect(() => {
       <div className="panel-dock-bar" aria-hidden="true" />
       <UpdateLog />
       <StatsCard />
+      <Runner />
       
       {/* ============================================================= */}
       {/* 🚀 1. 헤더 (Header) 섹션 - 사이트의 얼굴, 내비게이션 🚀 */}
@@ -478,6 +480,7 @@ useEffect(() => {
                   <li><strong>출생:</strong> 1998년생</li>
                   <li><strong>학력:</strong> 대구가톨릭대학교 컴퓨터공학과 (2025년 졸업)</li>
                   <li><strong>직무:</strong> 프론트엔드 개발자</li>
+                  <li><strong>경력:</strong> 인재원 학원 근무 (2026년 8월 ~ 현재)</li>
                   <li><strong>거주지:</strong> 대구광역시</li>
                   <li><strong>관심 분야:</strong> 웹 개발, 웹 3D·게임, UX 디자인, 유튜브 콘텐츠 제작</li>
               </ul>

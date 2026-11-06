@@ -162,7 +162,7 @@ section {
 /* ============================================================= */
 
 .section-header {
-  background-color: rgba(0, 0, 0, 0.6); /* 배경색 지정 */
+  background-color: rgba(0, 0, 0, 0.35); /* 해·날씨 효과가 비쳐 보이도록 더 투명하게 */
   padding: var(--spacing-md) var(--spacing-lg);
   position: sticky; /* 상단에 고정 */
   top: 0;
@@ -829,6 +829,11 @@ section {
   color: white;
 }
 
+/* 연락처 제목 밑 파란 줄 제거 */
+.section-contact .section-title::after {
+  display: none;
+}
+
 .contact-description {
   font-size: 1.1rem;
   margin-bottom: var(--spacing-xl);
@@ -845,7 +850,7 @@ section {
 }
 
 .contact-info strong {
-  color: var(--primary-color);
+  color: #bdbdbd;
   margin-right: var(--spacing-sm);
   min-width: 60px; /* 라벨 너비 고정으로 정렬 유지 */
   display: inline-block;
@@ -853,12 +858,15 @@ section {
 
 
 .contact-info a {
-  color: var(--text-dark);
-  transition: color 0.3s ease;
+  color: #ffffff;
+  text-underline-offset: 4px;
+  transition: color 0.3s ease, opacity 0.3s ease;
 }
 
 .contact-info a:hover {
-  color: var(--primary-color);
+  color: #ffffff;
+  opacity: 0.8;
+  text-decoration: underline;
 }
 
 /* 연락 폼 (주석 처리된 경우) */

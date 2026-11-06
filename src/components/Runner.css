@@ -1,0 +1,275 @@
+/* 달리는 사람: 넓은 화면은 오른쪽 통계 카드 아래 빈 공간, 좁은 화면은 하단 바 가운데 */
+.runner {
+  --run-speed: 0.62s;
+  position: fixed;
+  right: var(--dock-gap);
+  bottom: 16px;
+  z-index: 895;
+  width: var(--stats-w);
+  height: 126px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.runner-svg {
+  width: 90px;
+  height: 120px;
+  overflow: visible;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+}
+
+.runner:hover .runner-svg {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.45));
+}
+
+.runner:hover {
+  --run-speed: 0.42s; /* 마우스를 올리면 더 빨리 달린다 */
+}
+
+/* 각 관절을 기준점으로 돌린다 (SVG 좌표 기준) */
+.runner-body,
+.runner-thigh,
+.runner-shin,
+.runner-upper-arm,
+.runner-forearm {
+  transform-box: view-box;
+}
+
+.runner-body {
+  transform-origin: 30px 44px;
+  animation: runnerBob calc(var(--run-speed) / 2) ease-in-out infinite;
+}
+
+.runner-thigh { transform-origin: 30px 44px; animation: runnerThigh var(--run-speed) linear infinite; }
+.runner-shin { transform-origin: 30px 58px; animation: runnerShin var(--run-speed) linear infinite; }
+.runner-upper-arm { transform-origin: 30px 27px; animation: runnerArm var(--run-speed) ease-in-out infinite; }
+.runner-forearm { transform-origin: 30px 37px; transform: rotate(-80deg); }
+
+/* 뒤쪽 팔다리는 반 박자 늦게, 조금 흐리게 */
+.leg-back,
+.leg-back .runner-shin,
+.arm-back {
+  animation-delay: calc(var(--run-speed) / -2);
+}
+
+/* 머리카락이 달릴 때 살짝 들썩인다 */
+.runner-hair {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: runnerHair calc(var(--run-speed) / 2) ease-in-out infinite;
+}
+
+@keyframes runnerHair {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-0.8px) rotate(-3deg); }
+}
+
+@keyframes runnerBob {
+  0%, 100% { transform: translateY(0) rotate(8deg); }
+  50% { transform: translateY(-2.5px) rotate(8deg); }
+}
+
+/* 음수 = 앞으로(오른쪽) 뻗음 */
+@keyframes runnerThigh {
+  0% { transform: rotate(-42deg); }
+  50% { transform: rotate(38deg); }
+  100% { transform: rotate(-42deg); }
+}
+
+@keyframes runnerShin {
+  0% { transform: rotate(12deg); }
+  25% { transform: rotate(22deg); }
+  55% { transform: rotate(95deg); }
+  80% { transform: rotate(70deg); }
+  100% { transform: rotate(12deg); }
+}
+
+@keyframes runnerArm {
+  0%, 100% { transform: rotate(45deg); }
+  50% { transform: rotate(-50deg); }
+}
+
+/* 발밑 땅이 뒤로 흘러가서 앞으로 달리는 느낌 */
+.runner-ground {
+  stroke: rgba(255, 255, 255, 0.35);
+  stroke-width: 1.4;
+  stroke-dasharray: 7 5;
+  animation: runnerGround calc(var(--run-speed) * 1.2) linear infinite;
+}
+
+@keyframes runnerGround {
+  to { stroke-dashoffset: 24; }
+}
+
+.runner-shadow {
+  fill: rgba(255, 255, 255, 0.12);
+  stroke: none;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: runnerShadow calc(var(--run-speed) / 2) ease-in-out infinite;
+}
+
+@keyframes runnerShadow {
+  0%, 100% { transform: scaleX(1); opacity: 1; }
+  50% { transform: scaleX(0.8); opacity: 0.6; }
+}
+
+.runner-dust circle {
+  fill: rgba(255, 255, 255, 0.5);
+  stroke: none;
+  animation: runnerDust var(--run-speed) ease-out infinite;
+}
+
+.runner-dust circle:nth-child(2) {
+  animation-delay: calc(var(--run-speed) / -3);
+}
+
+@keyframes runnerDust {
+  0% { transform: translateX(0); opacity: 0.7; }
+  100% { transform: translateX(-10px) translateY(-3px); opacity: 0; }
+}
+
+/* 화면 높이가 낮으면 통계 카드와 겹치므로 숨긴다 */
+@media (min-width: 1280px) and (max-height: 700px) {
+  .runner {
+    display: none;
+  }
+}
+
+/* 좁은 화면: 하단 바 가운데 */
+@media (max-width: 1279px) {
+  .runner {
+    right: auto;
+    left: 50%;
+    bottom: 0;
+    width: 56px;
+    height: 64px;
+    transform: translateX(-50%);
+  }
+
+  .runner-svg {
+    width: 44px;
+    height: 58px;
+  }
+}
+
+/* 아주 좁은 화면에서 양쪽 버튼과 겹치면 숨긴다 */
+@media (max-width: 340px) {
+  .runner {
+    display: none;
+  }
+}
+
+/* ---------- 뒤로 지나가는 풍경 ---------- */
+.runner {
+  --far-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='70' viewBox='0 0 240 70'%3E %3Cg fill='%2323263f' stroke='%2333385c' stroke-width='1'%3E %3Crect x='2' y='30' width='32' height='40'/%3E%3Crect x='38' y='12' width='26' height='58'/%3E%3Cline x1='51' y1='12' x2='51' y2='4'/%3E %3Crect x='68' y='38' width='28' height='32'/%3E%3Crect x='100' y='22' width='22' height='48'/%3E%3Crect x='126' y='34' width='40' height='36'/%3E %3Crect x='170' y='8' width='24' height='62'/%3E%3Crect x='198' y='42' width='38' height='28'/%3E%3C/g%3E %3Cg fill='%2333385c'%3E %3Crect x='8' y='36' width='4' height='4'/%3E%3Crect x='18' y='36' width='4' height='4'/%3E%3Crect x='8' y='48' width='4' height='4'/%3E%3Crect x='24' y='56' width='4' height='4'/%3E %3Crect x='43' y='20' width='4' height='4'/%3E%3Crect x='54' y='20' width='4' height='4'/%3E%3Crect x='43' y='32' width='4' height='4'/%3E%3Crect x='54' y='44' width='4' height='4'/%3E%3Crect x='43' y='56' width='4' height='4'/%3E %3Crect x='74' y='46' width='4' height='4'/%3E%3Crect x='86' y='54' width='4' height='4'/%3E %3Crect x='105' y='30' width='4' height='4'/%3E%3Crect x='113' y='42' width='4' height='4'/%3E%3Crect x='105' y='54' width='4' height='4'/%3E %3Crect x='132' y='42' width='5' height='4'/%3E%3Crect x='146' y='42' width='5' height='4'/%3E%3Crect x='156' y='54' width='5' height='4'/%3E %3Crect x='175' y='16' width='4' height='4'/%3E%3Crect x='185' y='28' width='4' height='4'/%3E%3Crect x='175' y='40' width='4' height='4'/%3E%3Crect x='185' y='52' width='4' height='4'/%3E %3Crect x='204' y='50' width='5' height='4'/%3E%3Crect x='222' y='50' width='5' height='4'/%3E%3C/g%3E %3C/svg%3E");
+  --far-img-night: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='70' viewBox='0 0 240 70'%3E %3Cg fill='%2323263f' stroke='%2333385c' stroke-width='1'%3E %3Crect x='2' y='30' width='32' height='40'/%3E%3Crect x='38' y='12' width='26' height='58'/%3E%3Cline x1='51' y1='12' x2='51' y2='4'/%3E %3Crect x='68' y='38' width='28' height='32'/%3E%3Crect x='100' y='22' width='22' height='48'/%3E%3Crect x='126' y='34' width='40' height='36'/%3E %3Crect x='170' y='8' width='24' height='62'/%3E%3Crect x='198' y='42' width='38' height='28'/%3E%3C/g%3E %3Cg fill='%232c3150'%3E %3Crect x='8' y='36' width='4' height='4'/%3E%3Crect x='18' y='36' width='4' height='4'/%3E%3Crect x='8' y='48' width='4' height='4'/%3E%3Crect x='24' y='56' width='4' height='4'/%3E %3Crect x='43' y='20' width='4' height='4'/%3E%3Crect x='54' y='20' width='4' height='4'/%3E%3Crect x='43' y='32' width='4' height='4'/%3E%3Crect x='54' y='44' width='4' height='4'/%3E%3Crect x='43' y='56' width='4' height='4'/%3E %3Crect x='74' y='46' width='4' height='4'/%3E%3Crect x='86' y='54' width='4' height='4'/%3E %3Crect x='105' y='30' width='4' height='4'/%3E%3Crect x='113' y='42' width='4' height='4'/%3E%3Crect x='105' y='54' width='4' height='4'/%3E %3Crect x='132' y='42' width='5' height='4'/%3E%3Crect x='146' y='42' width='5' height='4'/%3E%3Crect x='156' y='54' width='5' height='4'/%3E %3Crect x='175' y='16' width='4' height='4'/%3E%3Crect x='185' y='28' width='4' height='4'/%3E%3Crect x='175' y='40' width='4' height='4'/%3E%3Crect x='185' y='52' width='4' height='4'/%3E %3Crect x='204' y='50' width='5' height='4'/%3E%3Crect x='222' y='50' width='5' height='4'/%3E%3C/g%3E %3Cg fill='%23f5d76e' opacity='0.9'%3E%3Crect x='18' y='48' width='4' height='4'/%3E%3Crect x='54' y='32' width='4' height='4'/%3E%3Crect x='113' y='30' width='4' height='4'/%3E%3Crect x='185' y='40' width='4' height='4'/%3E%3Crect x='146' y='54' width='5' height='4'/%3E%3C/g%3E %3C/svg%3E");
+  --mid-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='60' viewBox='0 0 200 60'%3E %3Crect x='28' y='38' width='4' height='22' fill='%233a3256'/%3E %3Cg fill='%232f8a62' stroke='%231d1f3f' stroke-width='1.2'%3E%3Ccircle cx='22' cy='36' r='8'/%3E%3Ccircle cx='38' cy='36' r='8'/%3E%3Ccircle cx='30' cy='28' r='11'/%3E%3C/g%3E %3Cline x1='110' y1='16' x2='110' y2='60' stroke='%234a4f7a' stroke-width='2'/%3E%3Cpath d='M110 16 Q110 12 116 12' fill='none' stroke='%234a4f7a' stroke-width='2'/%3E %3Ccircle cx='117' cy='14' r='3' fill='%23f5d76e' opacity='0.5'/%3E %3Cg fill='%232f8a62' stroke='%231d1f3f' stroke-width='1.2'%3E%3Ccircle cx='160' cy='54' r='6'/%3E%3Ccircle cx='170' cy='52' r='7'/%3E%3Ccircle cx='180' cy='55' r='5'/%3E%3C/g%3E %3C/svg%3E");
+  --mid-img-night: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='60' viewBox='0 0 200 60'%3E %3Crect x='28' y='38' width='4' height='22' fill='%233a3256'/%3E %3Cg fill='%232f8a62' stroke='%231d1f3f' stroke-width='1.2'%3E%3Ccircle cx='22' cy='36' r='8'/%3E%3Ccircle cx='38' cy='36' r='8'/%3E%3Ccircle cx='30' cy='28' r='11'/%3E%3C/g%3E %3Cline x1='110' y1='16' x2='110' y2='60' stroke='%234a4f7a' stroke-width='2'/%3E%3Cpath d='M110 16 Q110 12 116 12' fill='none' stroke='%234a4f7a' stroke-width='2'/%3E %3Ccircle cx='117' cy='14' r='3' fill='%23f5d76e' opacity='1'/%3E %3Cg fill='%232f8a62' stroke='%231d1f3f' stroke-width='1.2'%3E%3Ccircle cx='160' cy='54' r='6'/%3E%3Ccircle cx='170' cy='52' r='7'/%3E%3Ccircle cx='180' cy='55' r='5'/%3E%3C/g%3E %3C/svg%3E");
+}
+
+.runner-scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  /* 양 끝은 서서히 사라지게 */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+}
+
+.scene-far,
+.scene-mid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  background-repeat: repeat-x;
+  background-position-x: 0;
+}
+
+.scene-far {
+  --tile-w: 240px;
+  height: 70px;
+  background-image: var(--far-img);
+  background-size: var(--tile-w) 70px;
+  opacity: 0.85;
+  animation: sceneScroll 16s linear infinite;
+}
+
+.scene-mid {
+  --tile-w: 200px;
+  height: 60px;
+  background-image: var(--mid-img);
+  background-size: var(--tile-w) 60px;
+  animation: sceneScroll 5.5s linear infinite;
+}
+
+.runner.scene-night .scene-far { background-image: var(--far-img-night); }
+.runner.scene-night .scene-mid { background-image: var(--mid-img-night); }
+
+@keyframes sceneScroll {
+  from { background-position-x: 0; }
+  to { background-position-x: calc(-1 * var(--tile-w)); }
+}
+
+.runner-svg {
+  position: relative; /* 풍경 위에 그린다 */
+}
+
+@media (max-width: 1279px) {
+  .runner {
+    width: 112px;
+  }
+
+  .scene-far,
+  .scene-mid {
+    bottom: 3px;
+  }
+
+  .scene-far {
+    --tile-w: 120px;
+    height: 35px;
+    background-size: var(--tile-w) 35px;
+  }
+
+  .scene-mid {
+    --tile-w: 100px;
+    height: 30px;
+    background-size: var(--tile-w) 30px;
+  }
+}
+
+/* 풍경 전체에 깔리는 길(점선)이 발밑과 같은 속도로 흐른다 */
+.runner-ground {
+  display: none;
+}
+
+.runner-scene::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5px;
+  height: 1.5px;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.4) 0 7px, transparent 7px 12px);
+  animation: roadScroll 0.33s linear infinite;
+}
+
+@keyframes roadScroll {
+  from { background-position-x: 0; }
+  to { background-position-x: -12px; }
+}
+
+@media (max-width: 1279px) {
+  .runner-scene::after {
+    bottom: 2px;
+  }
+}

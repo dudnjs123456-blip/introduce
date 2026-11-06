@@ -1,51 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { loadGithubActivity, localDateKey } from '../data/githubActivity';
+import { loadGithubActivity } from '../data/githubActivity';
+import { loadVisitors } from '../data/visitors';
 import { useWeather } from '../data/WeatherContext';
 import { createWeatherAudio } from '../audio/weatherAudio';
 import { useSidePanel } from '../hooks/useSidePanel';
 import './StatsCard.css';
 
-// 무료 방문자 카운터(Abacus). 로컬 개발 중 방문은 실제 통계에 섞이지 않게 따로 센다.
-const COUNTER_BASE = 'https://abacus.jasoncameron.dev';
-const IS_LOCAL = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-const NAMESPACE = IS_LOCAL ? 'dudnjs-introduce-dev' : 'dudnjs-introduce';
-const VISITED_KEY = 'yyw-visited-day';
-
-function readCounter(action, key) {
-  return fetch(`${COUNTER_BASE}/${action}/${NAMESPACE}/${key}`)
-    .then(res => (res.ok ? res.json() : { value: 0 }))
-    .then(data => data.value ?? 0)
-    .catch(() => null);
-}
-
-let visitorsPromise = null;
-
-// 같은 브라우저는 하루에 한 번만 센다. (개발 모드에서 두 번 실행돼도 한 번만 요청)
-function loadVisitors() {
-  if (visitorsPromise) return visitorsPromise;
-  const today = localDateKey(new Date()).replace(/-/g, '');
-  let alreadyCounted = false;
-  try {
-    alreadyCounted = localStorage.getItem(VISITED_KEY) === today;
-  } catch {
-    // 저장소를 못 쓰면 매번 센다.
-  }
-  const action = alreadyCounted ? 'get' : 'hit';
-
-  visitorsPromise = Promise.all([readCounter(action, `day-${today}`), readCounter(action, 'total')]).then(
-    ([todayCount, total]) => {
-      if (!alreadyCounted && todayCount !== null) {
-        try {
-          localStorage.setItem(VISITED_KEY, today);
-        } catch {
-          // 무시
-        }
-      }
-      return { today: todayCount, total };
-    }
-  );
-  return visitorsPromise;
-}
 
 function relativeDay(dateLike) {
   const start = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
@@ -133,6 +93,7 @@ const StatsCard = () => {
             <h2 className="stats-title">
               <span className="stats-live" aria-hidden="true" />
               방문 현황
+              <span className="stats-live-label">LIVE</span>
             </h2>
             <button type="button" className="stats-toggle" onClick={() => setOpen(false)} aria-label="통계 카드 접기">
               –
