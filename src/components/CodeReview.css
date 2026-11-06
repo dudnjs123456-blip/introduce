@@ -1,0 +1,240 @@
+.section-code-review {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: var(--spacing-xl) 0;
+}
+
+.section-code-review .section-title {
+  color: #fff;
+}
+
+.cr-desc {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: var(--spacing-lg);
+}
+
+.cr-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* 저장소 필터 */
+.cr-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: var(--spacing-md);
+}
+
+.cr-chip {
+  font: inherit;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.cr-chip.is-active {
+  color: #fff;
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.cr-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cr-empty {
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+.cr-error {
+  color: #ff8a8a;
+  text-align: center;
+}
+
+/* 게시글 */
+.cr-post {
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.cr-post-head {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 18px 22px;
+  cursor: pointer;
+}
+
+.cr-post-head:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.cr-post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.cr-repo {
+  font-weight: 700;
+  color: #a9d3ff;
+}
+
+.cr-commit-count {
+  margin-left: auto;
+}
+
+.cr-post-title {
+  margin: 8px 0 10px;
+  font-size: 1.15rem;
+  line-height: 1.4;
+  color: #fff;
+}
+
+.cr-counts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.cr-toggle {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.cr-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.cr-badge-critical { background: rgba(255, 82, 82, 0.2); color: #ff9a9a; }
+.cr-badge-warning  { background: rgba(255, 193, 7, 0.18); color: #ffd666; }
+.cr-badge-info     { background: rgba(0, 123, 255, 0.22); color: #9ccbff; }
+.cr-badge-good     { background: rgba(40, 167, 69, 0.22); color: #8ee0a3; }
+
+.cr-post-body {
+  padding: 0 22px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cr-summary {
+  margin: 16px 0;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: pre-wrap;
+}
+
+/* 리뷰 항목 */
+.cr-finding {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  border-left: 3px solid #9ccbff;
+}
+
+.cr-sev-critical { border-left-color: #ff6b6b; }
+.cr-sev-warning  { border-left-color: #ffc107; }
+.cr-sev-good     { border-left-color: #4cd07a; }
+
+.cr-finding-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.cr-category {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.cr-finding-title {
+  flex-basis: 100%;
+  color: #fff;
+  line-height: 1.5;
+}
+
+.cr-file {
+  margin-top: 6px;
+  font-family: Consolas, 'D2Coding', monospace;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.55);
+  word-break: break-all;
+}
+
+.cr-code {
+  margin: 10px 0 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #0d0d1a;
+  overflow-x: auto;
+  font-family: Consolas, 'D2Coding', monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #e6e6f0;
+}
+
+.cr-text {
+  margin: 10px 0 0;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.cr-suggestion span {
+  font-weight: 700;
+  color: #8ee0a3;
+  margin-right: 8px;
+}
+
+/* 커밋 목록 */
+.cr-commits {
+  margin-top: 16px;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.cr-commits summary {
+  cursor: pointer;
+}
+
+.cr-commits ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  line-height: 1.8;
+}
+
+.cr-commits a {
+  color: #9ccbff;
+}
+
+@media (max-width: 600px) {
+  .cr-post-head { padding: 14px 16px; }
+  .cr-post-body { padding: 0 16px 16px; }
+  .cr-commit-count { margin-left: 0; }
+}

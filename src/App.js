@@ -4,6 +4,7 @@ import UpdateLog from './components/UpdateLog';
 import StatsCard from './components/StatsCard';
 import WeatherEffects from './components/WeatherEffects';
 import Runner from './components/Runner';
+import CodeReview from './components/CodeReview';
 
 // 발표형 슬라이드 스타일(큰 글씨, 화면 캡처 크기 고정)을 쓰는 프로젝트
 const PRESENTATION_PROJECTS = ['eywa', 'ironfist'];
@@ -401,6 +402,7 @@ useEffect(() => {
               <li><a href="#hero">Home</a></li>
               <li><a href="#about-skills">About & Skills</a></li>
               <li><a href="#projects">Projects</a></li>
+              <li><a href="#code-review">Code Review</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
           </nav>
@@ -660,6 +662,27 @@ useEffect(() => {
               저는 현재 <span className="review-frontend-developer">프론트엔드 개발자</span>이지만, 단순히 기술에만 국한되지 않는 <span className="review-potential">무궁무진한 가능성을 가진 '윤여원'</span>이라는 사람을 소개하고 싶습니다! 감사합니다😊
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* ======================= 코드 리뷰 (매일 밤 Claude 가 그날 커밋을 리뷰해 Supabase 에 올린 글) ======================= */}
+      <section id="code-review" className="section-code-review">
+        <div className="section-content">
+          <h2
+            className="section-title content-item"
+            ref={el => contentRefs.current[currentRefIndex++] = el}
+            style={{ transitionDelay: '0.2s' }}
+          >
+            코드 리뷰
+          </h2>
+          <p
+            className="cr-desc content-item"
+            ref={el => contentRefs.current[currentRefIndex++] = el}
+            style={{ transitionDelay: '0.3s' }}
+          >
+            매일 밤 AI(Claude)가 그날 GitHub 에 올라온 커밋을 읽고, 고쳐야 할 부분과 눈여겨볼 코드를 골라 리뷰합니다.
+          </p>
+          <CodeReview />
         </div>
       </section>
 
