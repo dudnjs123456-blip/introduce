@@ -322,3 +322,19 @@
 .stats-fx-toggle:hover {
   color: #ffffff;
 }
+
+/* 넓은 화면: 방명록을 펼쳐도 아래 달리는 캐릭터 자리(약 150px)는 비워 두고, 넘치면 카드 안에서 스크롤 */
+@media (min-width: 1280px) {
+  .stats-card.is-open {
+    max-height: calc(100vh - 96px - 150px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+  }
+}
+
+@media (min-width: 1280px) and (max-height: 700px) {
+  .stats-card.is-open {
+    max-height: calc(100vh - 112px);
+  }
+}

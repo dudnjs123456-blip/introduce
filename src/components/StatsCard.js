@@ -4,6 +4,7 @@ import { loadVisitors } from '../data/visitors';
 import { useWeather } from '../data/WeatherContext';
 import { createWeatherAudio } from '../audio/weatherAudio';
 import { useSidePanel } from '../hooks/useSidePanel';
+import Guestbook from './Guestbook';
 import './StatsCard.css';
 
 
@@ -173,6 +174,8 @@ const StatsCard = () => {
               {soundLabel}
             </button>
           </div>
+
+          <Guestbook />
         </>
       ) : (
         <button type="button" className="stats-pill" onClick={() => setOpen(true)} aria-label="방문 통계 열기">
