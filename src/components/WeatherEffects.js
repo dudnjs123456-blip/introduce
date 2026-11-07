@@ -69,8 +69,9 @@ function lightStyle(body, { x, y }) {
     const r = Math.round(lerp(255, 255, high));
     const g = Math.round(lerp(176, 240, high));
     const b = Math.round(lerp(96, 210, high));
-    const a = lerp(0.13, 0.08, high).toFixed(3);
-    const shade = lerp(0.2, 0.06, high).toFixed(3);
+    // 처음 들어온 사람이 거슬리지 않게 아주 은은하게 (달빛 정도)
+    const a = lerp(0.06, 0.035, high).toFixed(3);
+    const shade = lerp(0.1, 0.03, high).toFixed(3);
     return {
       background:
         `radial-gradient(circle at ${x}px ${y}px, rgba(${r}, ${g}, ${b}, ${a}) 0%, rgba(${r}, ${g}, ${b}, ${(a * 0.45).toFixed(3)}) ${reach * 0.35}vmax, rgba(${r}, ${g}, ${b}, 0) ${reach * 0.7}vmax, rgba(0, 0, 0, 0) ${reach * 0.8}vmax, rgba(0, 0, 0, ${shade}) ${reach * 1.25}vmax)`,
