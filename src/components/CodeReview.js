@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import './CodeReview.css';
 
@@ -20,6 +20,9 @@ const SEVERITY = {
   good: { label: '잘한 점', order: 3 },
 };
 const sevOf = (s) => (SEVERITY[s] ? s : 'info');
+
+// 한 페이지에 보여 줄 글 수
+const PAGE_SIZE = 5;
 
 const formatDate = (d) =>
   new Date(`${d}T00:00:00`).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
@@ -101,6 +104,8 @@ export default function CodeReview() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [repo, setRepo] = useState('all');
+  const [page, setPage] = useState(1);
+  const wrapRef = useRef(null);
 
   useEffect(() => {
     if (!supabase) { setLoading(false); return; }
@@ -109,7 +114,7 @@ export default function CodeReview() {
       .select('id, review_date, repo, title, summary, findings, commits')
       .order('review_date', { ascending: false })
       .order('repo')
-      .limit(60)
+      .limit(300)
       .then(({ data, error: err }) => {
         if (err) setError('리뷰를 불러오지 못했어요.');
         else setPosts(data);
@@ -118,12 +123,22 @@ export default function CodeReview() {
   }, []);
 
   const repos = useMemo(() => [...new Set(posts.map((p) => p.repo))], [posts]);
-  const shown = repo === 'all' ? posts : posts.filter((p) => p.repo === repo);
+  const filtered = repo === 'all' ? posts : posts.filter((p) => p.repo === repo);
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const current = Math.min(page, pageCount);
+  const shown = filtered.slice((current - 1) * PAGE_SIZE, current * PAGE_SIZE);
+
+  const selectRepo = (r) => { setRepo(r); setPage(1); };
+  const goPage = (n) => {
+    setPage(n);
+    // 다음 페이지 첫 글이 보이도록 목록 맨 위로
+    wrapRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   if (!supabase) return <p className="cr-empty">리뷰 기능이 아직 연결되지 않았어요.</p>;
 
   return (
-    <div className="cr-wrap">
+    <div className="cr-wrap" ref={wrapRef}>
       {repos.length > 1 && (
         <div className="cr-filters" role="tablist" aria-label="저장소">
           {['all', ...repos].map((r) => (
@@ -132,7 +147,7 @@ export default function CodeReview() {
               role="tab"
               aria-selected={repo === r}
               className={`cr-chip${repo === r ? ' is-active' : ''}`}
-              onClick={() => setRepo(r)}
+              onClick={() => selectRepo(r)}
             >
               {r === 'all' ? '전체' : repoLabel(r)}
             </button>
@@ -142,13 +157,30 @@ export default function CodeReview() {
 
       {loading && <p className="cr-empty">불러오는 중…</p>}
       {!loading && error && <p className="cr-error">{error}</p>}
-      {!loading && !error && shown.length === 0 && (
+      {!loading && !error && filtered.length === 0 && (
         <p className="cr-empty">아직 올라온 리뷰가 없어요. 매일 밤 그날 커밋을 리뷰해서 올려요.</p>
       )}
 
       <div className="cr-list">
-        {shown.map((p, i) => <Post key={p.id} post={p} defaultOpen={i === 0} />)}
+        {shown.map((p, i) => <Post key={p.id} post={p} defaultOpen={current === 1 && i === 0} />)}
       </div>
+
+      {pageCount > 1 && (
+        <nav className="cr-pager" aria-label="리뷰 페이지">
+          <button className="cr-page-btn" onClick={() => goPage(current - 1)} disabled={current === 1} aria-label="이전 페이지">‹</button>
+          {Array.from({ length: pageCount }, (_, i) => i + 1).map((n) => (
+            <button
+              key={n}
+              className={`cr-page-btn${n === current ? ' is-active' : ''}`}
+              onClick={() => goPage(n)}
+              aria-current={n === current ? 'page' : undefined}
+            >
+              {n}
+            </button>
+          ))}
+          <button className="cr-page-btn" onClick={() => goPage(current + 1)} disabled={current === pageCount} aria-label="다음 페이지">›</button>
+        </nav>
+      )}
     </div>
   );
 }

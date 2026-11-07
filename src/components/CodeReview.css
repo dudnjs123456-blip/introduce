@@ -8,6 +8,11 @@
   color: #fff;
 }
 
+/* 제목 밑 파란 줄 제거 (연락처 섹션과 같게) */
+.section-code-review .section-title::after {
+  display: none;
+}
+
 .cr-desc {
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: var(--spacing-lg);
@@ -27,21 +32,55 @@
   margin-bottom: var(--spacing-md);
 }
 
-.cr-chip {
-  font: inherit;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+/* 필터·페이지 버튼: 히어로 버튼과 같은 흑백 알약 모양 (선택·호버 = 흰 바탕 + 검정 글자) */
+.cr-chip,
+.cr-page-btn {
+  font-family: 'Do Hyeon', var(--font-family-primary);
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  color: #f2f2f2;
+  background: #111111;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
   border-radius: 999px;
-  padding: 6px 14px;
+  padding: 6px 18px;
   cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
-.cr-chip.is-active {
-  color: #fff;
-  background: var(--primary-color);
-  border-color: var(--primary-color);
+.cr-chip:hover,
+.cr-chip:focus-visible,
+.cr-page-btn:not(:disabled):hover,
+.cr-page-btn:focus-visible {
+  border-color: rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.cr-chip.is-active,
+.cr-page-btn.is-active {
+  color: #111111;
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
+/* 페이지 넘기기 */
+.cr-pager {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: var(--spacing-lg);
+}
+
+.cr-page-btn {
+  min-width: 40px;
+  padding: 6px 12px;
+}
+
+.cr-page-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
 }
 
 .cr-list {
