@@ -1,12 +1,138 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useWeather } from '../data/WeatherContext';
+import { DEG, moonIllumination, moonPosition, skyToScreen, sunPosition } from '../data/sky';
 import './WeatherEffects.css';
 
 // 페이지 전체 위에 깔리는 날씨 효과. 클릭은 그대로 아래 내용으로 통과한다.
 //  비·뇌우: 빗줄기 (뇌우는 번개 번쩍임)   눈: 흩날리는 눈송이
-//  맑음: 오른쪽 위 햇빛   밤: 화면을 어둡게 + 반짝이는 별   흐림·안개: 천천히 흐르는 구름·안개
+//  맑음: 해   밤: 화면을 어둡게 + 반짝이는 별 + 달   흐림·안개: 천천히 흐르는 구름·안개
+// 해·달은 방문자 지역의 실제 시각 기준 하늘 위치에 놓이고(1분마다 갱신), 빛이 닿는 범위도 고도에 따라 바뀐다.
+// 미리보기: ?weather=clear&time=17:30 처럼 시각을 붙이면 그 시각의 위치로 본다.
 
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const SEOUL = { lat: 37.5665, lon: 126.978 };
+
+// ?time=HH:MM 이 있으면 오늘 그 시각(방문자 시계 기준), 없으면 지금
+function skyTime() {
+  const t = new URLSearchParams(window.location.search).get('time');
+  const m = t && /^(\d{1,2}):(\d{2})$/.exec(t);
+  if (!m) return new Date();
+  const d = new Date();
+  d.setHours(Number(m[1]), Number(m[2]), 0, 0);
+  return d;
+}
+
+const lerp = (a, b, t) => a + (b - a) * t;
+const clamp01 = v => Math.max(0, Math.min(1, v));
+
+/**
+ * 해(맑음) 또는 달(밤)의 화면 위치와 빛.
+ * 실제로 지평선 아래면 숨긴다. 단, ?weather= 미리보기 중이면 모양을 볼 수 있게 낮은 하늘에 띄운다.
+ */
+function useSkyBody(kind, weather) {
+  const [body, setBody] = useState(null);
+
+  useEffect(() => {
+    if (kind !== 'clear' && kind !== 'night') {
+      setBody(null);
+      return undefined;
+    }
+    const lat = typeof weather?.lat === 'number' ? weather.lat : SEOUL.lat;
+    const lon = typeof weather?.lon === 'number' ? weather.lon : SEOUL.lon;
+
+    const update = () => {
+      const now = skyTime();
+      const isSun = kind === 'clear';
+      let pos = isSun ? sunPosition(now, lat, lon) : moonPosition(now, lat, lon);
+      if (pos.altitude < 0 && weather?.preview) pos = { altitude: 25 * DEG, azimuth: 30 * DEG };
+      if (pos.altitude < -1 * DEG) {
+        setBody(null);
+        return;
+      }
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const { x, y } = skyToScreen(pos, lat, w, h);
+      const high = clamp01(Math.sin(Math.max(pos.altitude, 0)) / Math.sin(60 * DEG)); // 0 지평선 ~ 1 높이 뜸
+      const moon = isSun ? null : moonIllumination(now);
+      // 빛살·반사광은 화면 가운데 쪽을 향하게
+      const flareRot = Math.atan2(-(w / 2 - x), h / 2 - y) / DEG;
+      setBody({ isSun, x, y, high, flareRot, moon, lat });
+    };
+
+    update();
+    const timer = setInterval(update, 60 * 1000);
+    window.addEventListener('resize', update);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('resize', update);
+    };
+  }, [kind, weather]);
+
+  return body;
+}
+
+/**
+ * 빛이 닿는 범위: 해·달 자리에서 퍼져 나가 거리만큼 약해지고, 닿지 않는 먼 쪽은 살짝 그늘진다.
+ * 해가 높으면 넓고 하얗게, 낮으면(아침·저녁) 좁고 주황빛으로. 달빛은 밝은 부분 비율만큼 푸르스름하게.
+ */
+function lightStyle(body) {
+  const { x, y, high, isSun, moon } = body;
+  if (isSun) {
+    const reach = lerp(45, 110, high); // vmax
+    const r = Math.round(lerp(255, 255, high));
+    const g = Math.round(lerp(176, 240, high));
+    const b = Math.round(lerp(96, 210, high));
+    const a = lerp(0.13, 0.08, high).toFixed(3);
+    const shade = lerp(0.2, 0.06, high).toFixed(3);
+    return {
+      background:
+        `radial-gradient(circle at ${x}px ${y}px, rgba(${r}, ${g}, ${b}, ${a}) 0%, rgba(${r}, ${g}, ${b}, ${(a * 0.45).toFixed(3)}) ${reach * 0.35}vmax, rgba(${r}, ${g}, ${b}, 0) ${reach * 0.7}vmax, rgba(0, 0, 0, 0) ${reach * 0.8}vmax, rgba(0, 0, 0, ${shade}) ${reach * 1.25}vmax)`,
+    };
+  }
+  const f = moon ? moon.fraction : 0.5;
+  const reach = lerp(25, 70, f);
+  const a = (0.07 * f + 0.01).toFixed(3);
+  return {
+    background: `radial-gradient(circle at ${x}px ${y}px, rgba(190, 210, 255, ${a}) 0%, rgba(190, 210, 255, 0) ${reach}vmax)`,
+  };
+}
+
+// 달 위상 그림: 밝은 쪽 반원 + 명암 경계(타원 호). 북반구는 차오를 때 오른쪽이 밝다.
+function moonPath(fraction, rightLit) {
+  const rx = Math.abs(1 - 2 * fraction) * 50;
+  const gibbous = fraction > 0.5;
+  const outer = rightLit ? 1 : 0;
+  const inner = rightLit ? (gibbous ? 1 : 0) : gibbous ? 0 : 1;
+  return `M50 0 A50 50 0 0 ${outer} 50 100 A${rx.toFixed(2)} 50 0 0 ${inner} 50 0 Z`;
+}
+
+function Moon({ body }) {
+  const { fraction, waxing } = body.moon;
+  const rightLit = body.lat >= 0 ? waxing : !waxing;
+  return (
+    <div className="wx-moon" style={{ left: body.x, top: body.y }}>
+      <svg viewBox="0 0 100 100" className="wx-moon-svg">
+        <defs>
+          <radialGradient id="wxMoonLit" cx="45%" cy="40%" r="65%">
+            <stop offset="0%" stopColor="#fbfbf5" />
+            <stop offset="70%" stopColor="#dedcd2" />
+            <stop offset="100%" stopColor="#c4c2b8" />
+          </radialGradient>
+        </defs>
+        {/* 그늘진 부분도 희미하게 보인다(지구조) */}
+        <circle cx="50" cy="50" r="50" fill="rgba(160, 170, 190, 0.1)" />
+        <path d={moonPath(fraction, rightLit)} fill="url(#wxMoonLit)" />
+        {/* 바다(어두운 무늬) */}
+        <g fill="rgba(120, 118, 110, 0.16)">
+          <circle cx="38" cy="36" r="10" />
+          <circle cx="60" cy="58" r="13" />
+          <circle cx="40" cy="66" r="7" />
+        </g>
+      </svg>
+    </div>
+  );
+}
 
 function makeParticles(kind, w, h) {
   const area = w * h;
@@ -103,6 +229,7 @@ const WeatherEffects = () => {
   const canvasRef = useRef(null);
   const [flash, setFlash] = useState(false);
   const kind = effectsOn && weather ? weather.kind : null;
+  const body = useSkyBody(kind, weather);
 
   // 빗줄기·눈송이·별 애니메이션
   useEffect(() => {
@@ -165,8 +292,12 @@ const WeatherEffects = () => {
   return (
     <div className={`wx-layer wx-${kind}`} aria-hidden="true">
       <div className="wx-tint" />
-      {kind === 'clear' && (
-        <div className="wx-sun">
+      {body && <div className="wx-light" style={lightStyle(body)} />}
+      {body?.isSun && (
+        <div
+          className={`wx-sun${body.high < 0.25 ? ' is-low' : ''}`}
+          style={{ left: body.x, top: body.y, '--flare-rot': `${body.flareRot}deg` }}
+        >
           <div className="wx-sun-halo" />
           <div className="wx-sun-rays" />
           <div className="wx-sun-disc" />
@@ -184,7 +315,7 @@ const WeatherEffects = () => {
           <span />
         </div>
       )}
-      {kind === 'night' && <div className="wx-moon" />}
+      {body && !body.isSun && body.moon && <Moon body={body} />}
       {CANVAS_KINDS.includes(kind) && <canvas ref={canvasRef} className="wx-canvas" />}
       {kind === 'storm' && <div className={`wx-flash ${flash ? 'is-on' : ''}`} />}
     </div>

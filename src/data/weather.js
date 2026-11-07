@@ -40,7 +40,8 @@ async function fetchWeatherAt(lat, lon) {
   return { kind, temperature: Math.round(data.current.temperature_2m), ...WEATHER_INFO[kind] };
 }
 
-const APPROX_CACHE_KEY = 'yyw-weather-approx-v1';
+// v2: 해·달 위치 계산용 좌표(lat, lon)를 같이 저장
+const APPROX_CACHE_KEY = 'yyw-weather-approx-v2';
 const APPROX_CACHE_MS = 30 * 60 * 1000;
 
 // 권한 요청 없이 접속 지역 기준으로 날씨를 가져온다. 실패하면 서울 기준.
@@ -77,7 +78,7 @@ async function fetchApproxWeather() {
     // 서울 기준으로 계속
   }
   const weather = await fetchWeatherAt(spot.lat, spot.lon);
-  return { ...weather, place: spot.place, source };
+  return { ...weather, place: spot.place, source, lat: spot.lat, lon: spot.lon };
 }
 
 function getPosition() {
@@ -105,5 +106,5 @@ export async function loadPreciseWeather() {
       .then(placeName)
       .catch(() => null),
   ]);
-  return { ...weather, place: place || '현재 위치', source: 'gps' };
+  return { ...weather, place: place || '현재 위치', source: 'gps', lat: pos.lat, lon: pos.lon };
 }
