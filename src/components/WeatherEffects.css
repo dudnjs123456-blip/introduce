@@ -51,13 +51,14 @@
   background: rgba(150, 150, 150, 0.12);
 }
 
-/* 맑음: 해. 자리(left·top)는 실제 하늘 위치로 계산해 넣는다 — 그 점이 해의 중심 */
+/* 맑음: 오른쪽 위 해 (자리 고정) */
+/* 해 중심이 상단 바 아래(화면 위에서 약 170px)에 오도록 내려서 가리지 않게 한다 */
 .wx-sun {
   inset: auto;
+  top: -190px;
+  right: -200px;
   width: 720px;
   height: 720px;
-  transform: translate(-50%, -50%);
-  transition: left 2s ease, top 2s ease;
 }
 
 /* 빛이 닿는 범위 (그라데이션은 고도에 따라 JS 에서 계산) */
@@ -133,7 +134,7 @@
   left: 50%;
   width: 0;
   height: 0;
-  transform: rotate(var(--flare-rot, 135deg));
+  transform: rotate(135deg);
 }
 
 .wx-sun-flare span {
@@ -181,13 +182,13 @@
   to { transform: rotate(360deg); }
 }
 
-/* 밤: 달. 실제 하늘 위치(left·top = 중심)와 위상(초승달~보름달)으로 그린다 */
+/* 밤: 오른쪽 위 달 (자리 고정). 모양은 실제 위상(초승달~보름달)으로 그린다 */
 .wx-moon {
   inset: auto;
-  width: 64px;
-  height: 64px;
-  transform: translate(-50%, -50%);
-  transition: left 2s ease, top 2s ease;
+  top: 90px;
+  right: 12%;
+  width: 70px;
+  height: 70px;
   opacity: 0.85;
 }
 
@@ -243,17 +244,20 @@
 
 @media (max-width: 768px) {
   .wx-sun {
+    top: -130px;
+    right: -170px;
     width: 480px;
     height: 480px;
   }
 
   .wx-sun-flare {
-    transform: rotate(var(--flare-rot, 135deg)) scale(0.65);
+    transform: rotate(135deg) scale(0.65);
   }
 
   .wx-moon {
-    width: 44px;
-    height: 44px;
+    top: 80px;
+    width: 48px;
+    height: 48px;
   }
 }
 
@@ -264,3 +268,13 @@
   }
 }
 
+/* 오른쪽 통계 카드가 붙어 있으면 해·달이 카드 뒤에 숨지 않게 본문 쪽으로 옮긴다 */
+@media (min-width: 1280px) {
+  html.stats-docked .wx-moon {
+    right: calc(var(--stats-w) + var(--dock-gap) * 2 + 40px);
+  }
+
+  html.stats-docked .wx-sun {
+    right: calc(var(--stats-w) + var(--dock-gap) * 2 - 300px);
+  }
+}

@@ -75,20 +75,4 @@ export function moonIllumination(date) {
   return { fraction: (1 + Math.cos(inc)) / 2, waxing: phase < 0.5 };
 }
 
-/**
- * 하늘 위치 → 화면 좌표(px). 북반구는 남쪽 하늘을 바라본다고 보고 동쪽 = 왼쪽, 서쪽 = 오른쪽.
- * 남반구는 북쪽 하늘을 보므로 좌우가 바뀐다. 방위 ±120° 를 화면 양 끝으로 잡는다.
- * 고도는 sin 으로 바꿔 지평선(화면 아래쪽) ~ 천정(상단 바 바로 아래) 사이에 놓는다.
- */
-export function skyToScreen({ altitude, azimuth }, lat, w, h) {
-  const facing = lat >= 0 ? 1 : -1;
-  const az = lat >= 0 ? azimuth : Math.atan2(Math.sin(azimuth + Math.PI), Math.cos(azimuth + Math.PI));
-  const across = Math.max(-1, Math.min(1, az / (RAD * 120)));
-  const x = w * (0.5 + 0.44 * across * facing);
-  const horizon = h * 0.88;
-  const zenith = Math.min(150, h * 0.2);
-  const y = horizon - (horizon - zenith) * Math.max(0, Math.sin(altitude));
-  return { x, y };
-}
-
 export const DEG = RAD;

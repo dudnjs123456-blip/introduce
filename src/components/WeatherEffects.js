@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useWeather } from '../data/WeatherContext';
-import { DEG, moonIllumination, moonPosition, skyToScreen, sunPosition } from '../data/sky';
+import { DEG, moonIllumination, moonPosition, sunPosition } from '../data/sky';
 import './WeatherEffects.css';
 
 // 페이지 전체 위에 깔리는 날씨 효과. 클릭은 그대로 아래 내용으로 통과한다.
 //  비·뇌우: 빗줄기 (뇌우는 번개 번쩍임)   눈: 흩날리는 눈송이
-//  맑음: 해   밤: 화면을 어둡게 + 반짝이는 별 + 달   흐림·안개: 천천히 흐르는 구름·안개
-// 해·달은 방문자 지역의 실제 시각 기준 하늘 위치에 놓이고(1분마다 갱신), 빛이 닿는 범위도 고도에 따라 바뀐다.
-// 미리보기: ?weather=clear&time=17:30 처럼 시각을 붙이면 그 시각의 위치로 본다.
+//  맑음: 오른쪽 위 해   밤: 화면을 어둡게 + 반짝이는 별 + 오른쪽 위 달   흐림·안개: 천천히 흐르는 구름·안개
+// 해·달 자리는 고정. 실제 시각의 해 고도로 빛이 닿는 범위·색(아침·저녁은 주황빛)을, 달은 실제 위상을 정한다(1분마다 갱신).
+// 미리보기: ?weather=clear&time=17:30 처럼 시각을 붙이면 그 시각 기준으로 본다.
 
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -27,8 +27,8 @@ const lerp = (a, b, t) => a + (b - a) * t;
 const clamp01 = v => Math.max(0, Math.min(1, v));
 
 /**
- * 해(맑음) 또는 달(밤)의 화면 위치와 빛.
- * 실제로 지평선 아래면 숨긴다. 단, ?weather= 미리보기 중이면 모양을 볼 수 있게 낮은 하늘에 띄운다.
+ * 해(맑음) 또는 달(밤)의 실제 고도 → 빛의 세기·색, 달 위상. 자리는 CSS 로 고정이다.
+ * 지평선 아래여도 숨기지 않고 '낮은 해·달'로 다룬다.
  */
 function useSkyBody(kind, weather) {
   const [body, setBody] = useState(null);
@@ -44,29 +44,15 @@ function useSkyBody(kind, weather) {
     const update = () => {
       const now = skyTime();
       const isSun = kind === 'clear';
-      let pos = isSun ? sunPosition(now, lat, lon) : moonPosition(now, lat, lon);
-      if (pos.altitude < 0 && weather?.preview) pos = { altitude: 25 * DEG, azimuth: 30 * DEG };
-      if (pos.altitude < -1 * DEG) {
-        setBody(null);
-        return;
-      }
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      const { x, y } = skyToScreen(pos, lat, w, h);
+      const pos = isSun ? sunPosition(now, lat, lon) : moonPosition(now, lat, lon);
       const high = clamp01(Math.sin(Math.max(pos.altitude, 0)) / Math.sin(60 * DEG)); // 0 지평선 ~ 1 높이 뜸
       const moon = isSun ? null : moonIllumination(now);
-      // 빛살·반사광은 화면 가운데 쪽을 향하게
-      const flareRot = Math.atan2(-(w / 2 - x), h / 2 - y) / DEG;
-      setBody({ isSun, x, y, high, flareRot, moon, lat });
+      setBody({ isSun, high, moon, lat });
     };
 
     update();
     const timer = setInterval(update, 60 * 1000);
-    window.addEventListener('resize', update);
-    return () => {
-      clearInterval(timer);
-      window.removeEventListener('resize', update);
-    };
+    return () => clearInterval(timer);
   }, [kind, weather]);
 
   return body;
@@ -76,8 +62,8 @@ function useSkyBody(kind, weather) {
  * 빛이 닿는 범위: 해·달 자리에서 퍼져 나가 거리만큼 약해지고, 닿지 않는 먼 쪽은 살짝 그늘진다.
  * 해가 높으면 넓고 하얗게, 낮으면(아침·저녁) 좁고 주황빛으로. 달빛은 밝은 부분 비율만큼 푸르스름하게.
  */
-function lightStyle(body) {
-  const { x, y, high, isSun, moon } = body;
+function lightStyle(body, { x, y }) {
+  const { high, isSun, moon } = body;
   if (isSun) {
     const reach = lerp(45, 110, high); // vmax
     const r = Math.round(lerp(255, 255, high));
@@ -107,11 +93,11 @@ function moonPath(fraction, rightLit) {
   return `M50 0 A50 50 0 0 ${outer} 50 100 A${rx.toFixed(2)} 50 0 0 ${inner} 50 0 Z`;
 }
 
-function Moon({ body }) {
+const Moon = React.forwardRef(function Moon({ body }, ref) {
   const { fraction, waxing } = body.moon;
   const rightLit = body.lat >= 0 ? waxing : !waxing;
   return (
-    <div className="wx-moon" style={{ left: body.x, top: body.y }}>
+    <div className="wx-moon" ref={ref}>
       <svg viewBox="0 0 100 100" className="wx-moon-svg">
         <defs>
           <radialGradient id="wxMoonLit" cx="45%" cy="40%" r="65%">
@@ -132,7 +118,7 @@ function Moon({ body }) {
       </svg>
     </div>
   );
-}
+});
 
 function makeParticles(kind, w, h) {
   const area = w * h;
@@ -230,6 +216,24 @@ const WeatherEffects = () => {
   const [flash, setFlash] = useState(false);
   const kind = effectsOn && weather ? weather.kind : null;
   const body = useSkyBody(kind, weather);
+  const bodyRef = useRef(null);
+  const [anchor, setAnchor] = useState(null);
+
+  // 빛의 중심 = 고정된 해·달 자리(화면 크기·통계 카드 자리에 따라 CSS 가 정함)를 재서 쓴다
+  useLayoutEffect(() => {
+    if (!body) return undefined;
+    const measure = () => {
+      const r = bodyRef.current?.getBoundingClientRect();
+      if (r) setAnchor({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    const later = setTimeout(measure, 600); // 통계 카드가 붙으며 자리가 바뀌는 경우
+    return () => {
+      window.removeEventListener('resize', measure);
+      clearTimeout(later);
+    };
+  }, [body?.isSun, body?.moon ? 1 : 0]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 빗줄기·눈송이·별 애니메이션
   useEffect(() => {
@@ -292,11 +296,11 @@ const WeatherEffects = () => {
   return (
     <div className={`wx-layer wx-${kind}`} aria-hidden="true">
       <div className="wx-tint" />
-      {body && <div className="wx-light" style={lightStyle(body)} />}
+      {body && anchor && <div className="wx-light" style={lightStyle(body, anchor)} />}
       {body?.isSun && (
         <div
+          ref={bodyRef}
           className={`wx-sun${body.high < 0.25 ? ' is-low' : ''}`}
-          style={{ left: body.x, top: body.y, '--flare-rot': `${body.flareRot}deg` }}
         >
           <div className="wx-sun-halo" />
           <div className="wx-sun-rays" />
@@ -315,7 +319,7 @@ const WeatherEffects = () => {
           <span />
         </div>
       )}
-      {body && !body.isSun && body.moon && <Moon body={body} />}
+      {body && !body.isSun && body.moon && <Moon body={body} ref={bodyRef} />}
       {CANVAS_KINDS.includes(kind) && <canvas ref={canvasRef} className="wx-canvas" />}
       {kind === 'storm' && <div className={`wx-flash ${flash ? 'is-on' : ''}`} />}
     </div>
