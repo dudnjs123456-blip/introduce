@@ -61,27 +61,98 @@
   height: 720px;
 }
 
-.wx-sun-core {
+/* 하늘에 퍼지는 넓은 빛무리 */
+.wx-sun-halo {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 236, 190, 0.55) 0%, rgba(255, 214, 140, 0.22) 22%, rgba(255, 200, 120, 0.06) 45%, transparent 68%);
-  animation: wxSunPulse 6s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(255, 244, 214, 0.5) 0%, rgba(255, 224, 150, 0.22) 14%, rgba(255, 204, 120, 0.08) 32%, transparent 62%);
+  animation: wxSunPulse 7s ease-in-out infinite;
 }
 
+/* 은은한 빛살: 흐릿하게 번진 가는 빛줄기가 아주 천천히 돈다 */
 .wx-sun-rays {
   position: absolute;
-  inset: -40%;
+  inset: 8%;
   border-radius: 50%;
-  background: repeating-conic-gradient(from 0deg, rgba(255, 230, 180, 0.09) 0deg 6deg, transparent 6deg 18deg);
-  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 60%);
-  mask-image: radial-gradient(circle, #000 0%, transparent 60%);
-  animation: wxSpin 90s linear infinite;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 240, 200, 0) 0deg,
+    rgba(255, 240, 200, 0.14) 4deg,
+    rgba(255, 240, 200, 0) 9deg,
+    rgba(255, 240, 200, 0) 23deg
+  );
+  -webkit-mask-image: radial-gradient(circle, transparent 9%, #000 12%, rgba(0, 0, 0, 0.35) 30%, transparent 50%);
+  mask-image: radial-gradient(circle, transparent 9%, #000 12%, rgba(0, 0, 0, 0.35) 30%, transparent 50%);
+  filter: blur(3px);
+  animation: wxSpin 160s linear infinite;
+}
+
+/* 해 본체: 가운데는 흰빛, 가장자리는 노란빛 + 바로 둘레의 밝은 코로나 */
+.wx-sun-disc {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15%;
+  height: 15%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, #fffbe8 38%, #fff0b3 62%, #ffdb6e 82%, rgba(255, 214, 102, 0) 100%);
+  box-shadow:
+    0 0 18px 6px rgba(255, 250, 225, 0.85),
+    0 0 50px 22px rgba(255, 228, 140, 0.45),
+    0 0 110px 55px rgba(255, 196, 90, 0.18);
+}
+
+/* 렌즈 반사광: 해에서 화면 안쪽(왼쪽 아래)으로 이어지는 작은 빛 원 */
+.wx-sun-flare {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform: rotate(135deg);
+}
+
+.wx-sun-flare span {
+  position: absolute;
+  left: 0;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: wxFlare 7s ease-in-out infinite;
+}
+
+.wx-sun-flare span:nth-child(1) {
+  top: 130px;
+  width: 34px;
+  height: 34px;
+  background: radial-gradient(circle, rgba(255, 240, 190, 0.22), rgba(255, 240, 190, 0) 70%);
+}
+
+.wx-sun-flare span:nth-child(2) {
+  top: 215px;
+  width: 16px;
+  height: 16px;
+  background: rgba(190, 225, 255, 0.12);
+  box-shadow: 0 0 6px rgba(190, 225, 255, 0.15);
+}
+
+.wx-sun-flare span:nth-child(3) {
+  top: 300px;
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(255, 225, 170, 0.12);
+  background: radial-gradient(circle, rgba(255, 225, 170, 0) 55%, rgba(255, 225, 170, 0.08));
 }
 
 @keyframes wxSunPulse {
   0%, 100% { transform: scale(1); opacity: 0.9; }
-  50% { transform: scale(1.06); opacity: 1; }
+  50% { transform: scale(1.04); opacity: 1; }
+}
+
+@keyframes wxFlare {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
 }
 
 @keyframes wxSpin {
@@ -149,6 +220,10 @@
     right: -170px;
     width: 480px;
     height: 480px;
+  }
+
+  .wx-sun-flare {
+    transform: rotate(135deg) scale(0.65);
   }
 
   .wx-moon {

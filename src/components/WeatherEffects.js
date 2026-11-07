@@ -167,8 +167,14 @@ const WeatherEffects = () => {
       <div className="wx-tint" />
       {kind === 'clear' && (
         <div className="wx-sun">
+          <div className="wx-sun-halo" />
           <div className="wx-sun-rays" />
-          <div className="wx-sun-core" />
+          <div className="wx-sun-disc" />
+          <div className="wx-sun-flare">
+            <span />
+            <span />
+            <span />
+          </div>
         </div>
       )}
       {(kind === 'cloudy' || kind === 'fog') && (
