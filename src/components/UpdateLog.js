@@ -95,9 +95,15 @@ const UpdateLog = () => {
                       <span className="update-item-repo">{item.repoLabel}</span>
                       <span className={`update-item-type type-${item.type}`}>{item.typeLabel}</span>
                     </div>
-                    <a className="update-item-text" href={item.url} target="_blank" rel="noopener noreferrer">
-                      {item.text}
-                    </a>
+                    {item.url ? (
+                      <a className="update-item-text" href={item.url} target="_blank" rel="noopener noreferrer">
+                        {item.text}
+                      </a>
+                    ) : (
+                      <span className="update-item-text" title="비공개 저장소라 링크는 없어요">
+                        {item.text}
+                      </span>
+                    )}
                   </li>
                 ))}
               </ul>

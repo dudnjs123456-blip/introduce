@@ -1,0 +1,55 @@
+# 비공개 저장소 eywa-test 의 내 커밋 기록(제목·날짜만)을 activity-data 브랜치에 옮겨 둔다.
+# 포트폴리오 업데이트 기록이 이 파일을 읽어 "에이와" 항목으로 보여준다.
+# 필요한 설정: 저장소 Settings > Secrets and variables > Actions 에 EYWA_TOKEN
+#   (eywa-test 의 Contents 읽기 권한만 준 fine-grained 토큰)
+name: Sync private activity
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: private-activity
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 커밋 기록 뽑기
+        env:
+          GH_TOKEN: ${{ secrets.EYWA_TOKEN }}
+          OUT: ${{ runner.temp }}/private-activity.json
+        run: node scripts/sync-private-activity.mjs
+
+      - name: 바뀌었으면 activity-data 브랜치에 올리기
+        env:
+          SRC: ${{ runner.temp }}/private-activity.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin activity-data >/dev/null; then
+            git fetch --depth=1 origin activity-data
+            git switch -c activity-data FETCH_HEAD
+          else
+            git switch --orphan activity-data
+            git rm -rf --quiet . || true
+          fi
+          cp "$SRC" private-activity.json
+          git add private-activity.json
+          if git diff --cached --quiet; then
+            echo "변경 없음"
+            exit 0
+          fi
+          git commit -m "chore: 에이와 커밋 기록 갱신"
+          git push origin activity-data
