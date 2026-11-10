@@ -21,7 +21,7 @@ const PRIVATE_SOURCES = [
   },
 ];
 
-const CACHE_KEY = 'yyw-github-activity-v5';
+const CACHE_KEY = 'yyw-github-activity-v7';
 const CACHE_MS = 10 * 60 * 1000;
 
 // 내용 없이 의미 없는 커밋 메시지는 기록에서 뺀다.
@@ -33,6 +33,7 @@ const SKIP_PATTERNS = [
   /^테스트$/,
   /^one day$/i,
   /^add gitignore$/i,
+  /기술 스택 강조 문구의 별 장식 제거 및 업데이트 기록 한글 표기 보완/,
   /^merge /i,
   /lfs|node_modules|remove_large_files|\.git directory|history clean|yallist/i,
 ];
@@ -62,6 +63,16 @@ const MESSAGE_TRANSLATIONS = {
   'add albal_toon.git directory': '알바툰 저장소 파일 추가',
   'add small silver girl city skills': '은발 소녀의 도시 생활 기술 추가',
   'add small silver-haired girl character': '작은 은발 소녀 캐릭터 추가',
+  'app.js useeffect ref cleanup eslint error (final apply)': '화면 요소 감지 기능의 정리 오류 수정',
+  'app.js a 태그 관련 최종 수정': '링크 태그 최종 수정',
+  'introduce 프로젝트 오늘 수정한 내용 반영': '포트폴리오 당일 수정 사항 반영',
+  'eslint error in app.js and add missing babel plugin': '코드 검사 오류 수정 및 Babel 플러그인 추가',
+  'update xmlhttprequest-ssl and yallist modules': '통신 및 목록 처리 라이브러리 업데이트',
+  'improve tornado kick leap animation': '토네이도 킥 도약 동작 개선',
+  'apply leap height to vrm characters': 'VRM 캐릭터에 도약 높이 적용',
+  'add small silver back-turn kick': '은발 소녀 전용 뒤돌려차기 추가',
+  'add airborne spin to back-turn kick': '뒤돌려차기에 공중 회전 동작 추가',
+  'improve back-turn kick side strike': '뒤돌려차기 옆 타격 동작 개선',
 };
 
 function readCache({ allowStale = false } = {}) {

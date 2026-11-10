@@ -575,19 +575,6 @@ section {
   text-underline-offset: 4px; /* 텍스트와 밑줄 사이 간격 조정 (너무 붙지 않도록) */
   text-decoration-thickness: 1.5px; /* 밑줄 두께 조정 (더 얇고 잔잔하게) */
 
-  position: relative; /* ::before 의 위치 조정을 위해 필요 */
-  padding-left: 18px; /* ::before 요소의 공간을 확보하기 위해 왼쪽 패딩 유지 */
-}
-
-/* ✨ 별표 이모티콘 같은 표시를 ::before 가상 요소로 추가 ✨ (이전과 동일) */
-.about-me-content .highlight::before {
-  content: '✨'; /* Sparkles 이모티콘. ⭐(별), •(점) 등 다른 이모티콘도 시도해보세요! */
-  color: #FFD54F; /* 이모티콘 색상 (노란빛으로 더 강조) */
-  font-size: 0.8em; /* 텍스트보다 살짝 작게 */
-  position: absolute; /* .highlight 요소를 기준으로 위치 지정 */
-  left: 0; /* .highlight 왼쪽 끝에 배치 */
-  top: 50%; /* 수직 중앙 정렬 */
-  transform: translateY(-50%); /* 수직 중앙 정렬 미세 조정 */
 }
 
 
