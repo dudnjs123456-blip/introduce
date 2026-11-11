@@ -682,7 +682,7 @@ useEffect(() => {
               style={{ transitionDelay: '1.5s' }}
             >
               마지막으로 저는 <span className="review-innovation-highlight">끊임없이 배우고 늘 새로운 시도를 추구합니다.</span> 유튜브 채널 활동이 이런 성향을 잘 보여 줍니다. '어떻게 하면 적은 자원으로 큰 결과를 낼 수 있을까?'라는 고민 끝에 드라마 쇼츠의 화질을 업스케일링으로 최대한 끌어올리는 시도를 했고, 당시에는 흔치 않던 방식으로 최고 760만 조회수를 기록했습니다. 수익으로 이어지지는 않았지만, 새로운 시도에 대한 반응을 분석하며 인사이트를 얻은 값진 경험이었습니다.
-              저는 현재 <span className="review-frontend-developer">프론트엔드 개발자</span>이지만, 단순히 기술에만 국한되지 않는 <span className="review-potential">무궁무진한 가능성을 가진 '윤여원'</span>이라는 사람을 소개하고 싶습니다! 감사합니다😊
+              저는 현재 <span className="review-frontend-developer">프론트엔드 개발자</span>이지만, 단순히 기술에만 국한되지 않는 <span className="review-potential">무궁무진한 가능성을 가진 '윤여원'</span>이라는 사람을 소개하고 싶습니다! 감사합니다.
             </p>
           </div>
         </div>
@@ -691,13 +691,6 @@ useEffect(() => {
       {/* ======================= 새로 추가되는 '연락처' 섹션 ======================= */}
       <section id="contact" className="section-contact">
         <div className="section-content">
-          <h2
-            className="section-title content-item"
-            ref={el => contentRefs.current[currentRefIndex++] = el}
-            style={{ transitionDelay: '1.6s' }}
-          >
-            저와 함께 성장할 준비가 되셨나요?
-          </h2>
           <p
             className="contact-description content-item"
             ref={el => contentRefs.current[currentRefIndex++] = el}
