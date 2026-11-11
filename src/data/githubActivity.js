@@ -21,7 +21,7 @@ const PRIVATE_SOURCES = [
   },
 ];
 
-const CACHE_KEY = 'yyw-github-activity-v10';
+const CACHE_KEY = 'yyw-github-activity-v11';
 const CACHE_MS = 10 * 60 * 1000;
 
 // 내용 없이 의미 없는 커밋 메시지는 기록에서 뺀다.
@@ -36,6 +36,7 @@ const SKIP_PATTERNS = [
   /^모바일 화면 크기 조정$/,
   /^모바일 버튼·네브바·본문 글자 크기 조정$/,
   /^후기 이모지와 연락처 제목 제거$/,
+  /^포트폴리오 소개글 프로젝트 경험 중심으로 보완$/,
   /기술 스택 강조 문구의 별 장식 제거 및 업데이트 기록 한글 표기 보완/,
   /^merge /i,
   /lfs|node_modules|remove_large_files|\.git directory|history clean|yallist/i,
