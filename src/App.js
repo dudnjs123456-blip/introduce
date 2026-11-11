@@ -466,13 +466,13 @@ useEffect(() => {
           />
 
           <p className="about-intro-copy">
-            저는 사용자의 불편을 이해하기 쉬운 화면과 실제 동작하는 기능으로 바꾸는 프론트엔드 개발자입니다. JavaScript와 TypeScript를 바탕으로 React·Next.js 웹 애플리케이션을 만들고, 반응형 UI와 사용 흐름을 세심하게 다듬습니다. 디자인과 영상 편집에도 관심이 있어 화면의 완성도와 전달 방식까지 함께 고민합니다.
+            저는 사용자의 불편을 이해하기 쉬운 화면과 실제 동작하는 기능으로 바꾸는 프론트엔드 개발자입니다. JavaScript와 TypeScript를 바탕으로 <span className="highlight">React·Next.js 웹 애플리케이션</span>을 만들고, <span className="highlight">반응형 UI와 사용 흐름</span>을 세심하게 다듬습니다. 디자인과 영상 편집에도 관심이 있어 화면의 완성도와 전달 방식까지 함께 고민합니다.
           </p>
           <p className="about-intro-copy">
-            프론트엔드 구현에 그치지 않고 Node.js·Express 서버, REST API 연동, Supabase와 PostgreSQL·MySQL 데이터 흐름까지 다뤄 왔습니다. EYWA에서는 학부모의 셔틀 정보 확인과 변경이 실제 데이터 저장 및 운영 이력으로 이어지도록 개선했고, IRON FIST에서는 Three.js 기반 브라우저 3D 게임과 실시간 기능을 구현하고 있습니다.
+            프론트엔드 구현에 그치지 않고 <span className="highlight">Node.js·Express 서버와 REST API 연동</span>, Supabase와 PostgreSQL·MySQL 데이터 흐름까지 다뤄 왔습니다. EYWA에서는 학부모의 셔틀 정보 확인과 변경이 <span className="highlight">실제 데이터 저장 및 운영 이력</span>으로 이어지도록 개선했고, IRON FIST에서는 Three.js 기반 브라우저 3D 게임과 실시간 기능을 구현하고 있습니다.
           </p>
           <p className="about-intro-copy">
-            요구사항을 작은 기능으로 나누고, 구현 결과를 직접 확인하며 끝까지 다듬는 과정을 중요하게 생각합니다. AI와 협업할 때도 제안된 코드를 그대로 적용하기보다 동작과 사용자 경험을 검토한 뒤 반영합니다. 새로운 기술을 꾸준히 익히고 팀과 명확하게 소통하며, 안정적이고 실질적인 가치를 만드는 서비스를 개발하겠습니다.
+            <span className="highlight">요구사항을 작은 기능으로 나누고, 구현 결과를 직접 확인하며 끝까지 다듬는 과정</span>을 중요하게 생각합니다. AI와 협업할 때도 제안된 코드를 그대로 적용하기보다 동작과 사용자 경험을 검토한 뒤 반영합니다. 새로운 기술을 꾸준히 익히고 팀과 명확하게 소통하며, 안정적이고 실질적인 가치를 만드는 서비스를 개발하겠습니다.
           </p>
           </div>
 
