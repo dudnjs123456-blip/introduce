@@ -434,7 +434,7 @@ useEffect(() => {
               </span>
             ))}
           </p>
-          <h2 className="hero-title">아이디어를 코드로 구현하는 <span className="highlight">프론트엔드 개발자</span> <span className="animated-name">윤여원</span>입니다!</h2>
+          <h2 className="hero-title"><span className="hero-title-intro">아이디어를 코드로 구현하는</span> <span className="highlight">프론트엔드 개발자</span> <span className="animated-name">윤여원</span>입니다!</h2>
           <p className="hero-description">사용자 경험을 최우선으로 생각하며, 끊임없이 배우고 성장하는 개발자입니다.</p>
           <a href="#projects" className="btn-primary">내 프로젝트 보러가기</a>
           <div className="social-links">

@@ -236,7 +236,7 @@ section {
   bottom: 0;
   width: 0%;
   height: 2px;
-  background-color: var(--primary-color);
+  background-color: #ffffff;
   transition: width 0.3s ease;
 }
 
@@ -1361,24 +1361,41 @@ section {
 /* ============================================================= */
 
 @media (max-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+
   .header-content {
     flex-direction: column; /* 모바일에서 헤더 아이템 세로 정렬 */
   }
 
   .main-nav ul {
     margin-top: var(--spacing-md);
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 0.7rem;
   }
 
   .main-nav li {
-    margin: var(--spacing-sm) 0;
+    margin: 0;
+  }
+
+  .main-nav a {
+    font-size: 0.82rem;
+    white-space: nowrap;
   }
 
   .hero-title {
-    font-size: 2.1rem;
+    font-size: clamp(1rem, 4.2vw, 1.25rem);
     white-space: normal; /* 좁은 화면에서는 줄바꿈 허용 */
     word-break: keep-all;
+    line-height: 1.45;
+  }
+
+  .hero-title-intro {
+    white-space: nowrap;
   }
 
   .hero-subtitle {
@@ -1386,7 +1403,32 @@ section {
   }
 
   .hero-description {
-    font-size: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .profile-image-wrap {
+    width: min(230px, 58vw);
+  }
+
+  .profile-wave {
+    animation-name: profileWaveMobile;
+  }
+
+  @keyframes profileWaveMobile {
+    0% { transform: scale(0.96); opacity: 0.7; }
+    100% { transform: scale(1.32); opacity: 0; }
+  }
+
+  .profile-image {
+    animation-name: profileGrooveMobile;
+  }
+
+  @keyframes profileGrooveMobile {
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+    18% { transform: translate3d(-4px, -2px, 0) rotate(-1.5deg); }
+    38% { transform: translate3d(1px, 2px, 0) rotate(1deg); }
+    62% { transform: translate3d(4px, -2px, 0) rotate(1.5deg); }
+    82% { transform: translate3d(-1px, 1px, 0) rotate(-1deg); }
   }
 
   .projects-grid {
@@ -1460,20 +1502,45 @@ section {
 }
 
 @media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+
   .site-title {
     font-size: 1.7rem;
   }
 
   .site-title > span {
-    font-size: 24px;
+    font-size: 20px;
+  }
+
+  .section-header {
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+  }
+
+  .main-nav ul {
+    gap: 0.28rem;
   }
 
   .main-nav a {
-    font-size: 1rem;
+    font-size: 0.78rem;
+  }
+
+  .profile-image-wrap {
+    width: min(200px, 56vw);
   }
 
   .hero-title {
-    font-size: 1.55rem;
+    font-size: clamp(0.9rem, 4.1vw, 1.05rem);
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .hero-description {
+    font-size: 0.82rem;
   }
 }
 
