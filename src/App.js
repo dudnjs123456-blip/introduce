@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import UpdateLog from './components/UpdateLog';
 import StatsCard from './components/StatsCard';
-import WeatherEffects from './components/WeatherEffects';
+import NightSky from './components/NightSky';
 import Runner from './components/Runner';
 import CodeReview from './components/CodeReview';
 
@@ -371,7 +371,7 @@ useEffect(() => {
   const name = "Yoon Yeo Won"; 
   return (
     <div className='portfolio-container'>
-      <WeatherEffects />
+      <NightSky />
       <div className="panel-dock-bar" aria-hidden="true" />
       <UpdateLog />
       <StatsCard />

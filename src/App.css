@@ -41,7 +41,7 @@ body {
   font-family: var(--font-family-primary);
   line-height: 1.6;
   color: var(--text-light); /* 기본 텍스트는 밝게 */
-  background-color: var(--background-dark); /* 전체 배경은 어둡게 */
+  background-color: #06060d; /* 밤하늘 배경(NightSky)이 비치도록 바탕만 깐다 */
   font-optical-sizing: auto;
   text-rendering: optimizeLegibility;
 }
@@ -66,7 +66,7 @@ section {
 
 .portfolio-container {
     overflow-x: hidden; /* 가로 스크롤 방지 */
-    background-color: rgb(0, 0, 0);
+    background-color: transparent; /* 밤하늘 배경이 비치게 */
     
 }
 
@@ -162,7 +162,9 @@ section {
 /* ============================================================= */
 
 .section-header {
-  background-color: rgba(0, 0, 0, 0.35); /* 해·날씨 효과가 비쳐 보이도록 더 투명하게 */
+  background-color: rgba(6, 6, 13, 0.55); /* 밤하늘이 은은하게 비치게 */
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   padding: var(--spacing-md) var(--spacing-lg);
   position: sticky; /* 상단에 고정 */
   top: 0;
@@ -250,7 +252,7 @@ section {
 /* ============================================================= */
 
 .section-hero {
-  background: var(--background-dark);
+  background: transparent; /* 밤하늘 배경이 그대로 보이게 */
   min-height: 100vh; /* 화면 전체 높이 */
   display: flex; /* 내용 중앙 정렬 */
   flex-direction: column; /* 세로 방향 정렬 */
@@ -270,7 +272,7 @@ section {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgb(0, 0, 0); /* 어두운 오버레이 */
+  background-color: transparent; /* 밤하늘이 보이도록 오버레이를 없앤다 */
   z-index: -1;
 }
 
@@ -486,7 +488,7 @@ section {
 /* ============================================================= */
 
 .section-about-skills {
-  background-color: rgba(0, 0, 0, 0.6); /* 밝은 배경 */
+  background-color: rgba(0, 0, 0, 0.35); /* 밝은 배경 */
   color: var(--text-dark); /* 어두운 텍스트 */
   padding: 1.5rem 0;
 }
@@ -668,7 +670,7 @@ section {
 /* ============================================================= */
 
 .section-projects {
-  background-color:rgba(0, 0, 0, 0.6); /* 어두운 배경 */
+  background-color: rgba(0, 0, 0, 0.35); /* 어두운 배경 */
   color: var(--text-light); /* 밝은 텍스트 */
   padding: var(--spacing-xl) 0;
   margin-top: 0;
@@ -807,7 +809,7 @@ section {
 /* ============================================================= */
 
 .section-contact {
-  background-color: rgba(0, 0, 0, 0.6); /* 밝은 배경 */
+  background-color: rgba(0, 0, 0, 0.35); /* 밝은 배경 */
   color: white; /* 어두운 텍스트 */
   padding: var(--spacing-xl) 0;
 }
@@ -900,7 +902,7 @@ section {
 /* ============================================================= */
 
 .section-footer {
-  background-color: black;
+  background-color: rgba(6, 6, 13, 0.75);
   color: var(--text-light);
   text-align: center;
   padding: var(--spacing-lg) 0;

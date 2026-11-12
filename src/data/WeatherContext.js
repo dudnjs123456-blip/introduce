@@ -1,10 +1,8 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { WEATHER_INFO, loadApproxWeather, loadPreciseWeather } from './weather';
 
-// 화면 날씨 효과와 통계 카드(날씨 표시·배경음)가 같은 날씨 정보를 쓰도록 묶어 둔다.
+// 통계 카드(날씨 표시·배경음)와 러너 게임이 같은 날씨 정보를 쓰도록 묶어 둔다.
 const WeatherContext = createContext(null);
-
-const FX_KEY = 'yyw-weather-fx';
 
 // 주소 뒤에 ?weather=rain 처럼 붙이면 실제 날씨 대신 그 날씨로 미리 볼 수 있다.
 function previewKind() {
@@ -20,13 +18,6 @@ function withPreview(weather) {
 
 export function WeatherProvider({ children }) {
   const [weather, setWeather] = useState(null);
-  const [effectsOn, setEffectsOnState] = useState(() => {
-    try {
-      return localStorage.getItem(FX_KEY) !== 'off';
-    } catch {
-      return true;
-    }
-  });
 
   useEffect(() => {
     let alive = true;
@@ -53,17 +44,8 @@ export function WeatherProvider({ children }) {
     return null;
   }, []);
 
-  const setEffectsOn = useCallback(on => {
-    setEffectsOnState(on);
-    try {
-      localStorage.setItem(FX_KEY, on ? 'on' : 'off');
-    } catch {
-      // 무시
-    }
-  }, []);
-
   return (
-    <WeatherContext.Provider value={{ weather, requestPrecise, effectsOn, setEffectsOn }}>
+    <WeatherContext.Provider value={{ weather, requestPrecise }}>
       {children}
     </WeatherContext.Provider>
   );

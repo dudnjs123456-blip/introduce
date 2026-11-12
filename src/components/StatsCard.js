@@ -23,7 +23,7 @@ const StatsCard = () => {
   const { open, setOpen, docked } = useSidePanel('yyw-stats-v2', 'stats-docked');
   const [visitors, setVisitors] = useState({ today: undefined, total: undefined });
   const [activity, setActivity] = useState(null);
-  const { weather, requestPrecise, effectsOn, setEffectsOn } = useWeather();
+  const { weather, requestPrecise } = useWeather();
   const [soundState, setSoundState] = useState('off'); // off | loading | on | error
   const audioRef = useRef(null);
 
@@ -144,16 +144,6 @@ const StatsCard = () => {
             )}
             {weather?.source === 'fallback' && <p className="stats-weather-note">위치를 알 수 없어 서울 기준이에요.</p>}
             {weather?.preview && <p className="stats-weather-note">미리보기 중인 날씨예요.</p>}
-            {weather && (
-              <button
-                type="button"
-                className="stats-fx-toggle"
-                onClick={() => setEffectsOn(!effectsOn)}
-                aria-pressed={effectsOn}
-              >
-                화면 날씨 효과 {effectsOn ? '끄기' : '켜기'}
-              </button>
-            )}
             <button
               type="button"
               className={`stats-sound sound-${soundState}`}

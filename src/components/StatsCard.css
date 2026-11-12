@@ -306,22 +306,7 @@
   }
 }
 
-.stats-fx-toggle {
-  display: block;
-  margin-top: 6px;
-  padding: 0;
-  font-size: 0.74rem;
-  color: #9a9a9a;
-  background: none;
-  border: 0;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-}
 
-.stats-fx-toggle:hover {
-  color: #ffffff;
-}
 
 /* 넓은 화면: 방명록을 펼쳐도 아래 달리는 캐릭터 자리(약 150px)는 비워 두고, 넘치면 카드 안에서 스크롤 */
 @media (min-width: 1280px) {
