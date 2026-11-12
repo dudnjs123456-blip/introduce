@@ -4,7 +4,7 @@ import './CodeReview.css';
 
 // 매일 밤 Claude 가 저장소별 그날 커밋을 리뷰해 올린 글 (code_review_posts 테이블)
 const REPO_LABELS = {
-  'dudnjs123456-blip/ONE': 'IRON FIST',
+  'dudnjs123456-blip/ONE': 'Together',
   'dudnjs123456-blip/introduce': '포트폴리오',
   'dudnjs123456-blip/Albartoon': '알바툰',
   'dudnjs123456-blip/eywa-test': 'EYWA 테스트',

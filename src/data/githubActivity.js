@@ -7,7 +7,7 @@ const OWNER = 'dudnjs123456-blip';
 
 export const TRACKED_REPOS = [
   { repo: 'introduce', label: '포트폴리오' },
-  { repo: 'ONE', label: 'IRON FIST' },
+  { repo: 'ONE', label: 'Together' },
   { repo: 'Albartoon', label: '알바툰' },
 ];
 
