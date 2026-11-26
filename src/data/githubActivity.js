@@ -10,6 +10,7 @@ export const TRACKED_REPOS = [
   { repo: 'ONE', label: 'Together' },
   { repo: 'Albartoon', label: '알바툰' },
   { repo: 'ai-law-scanner', label: 'AI 법령 진단' },
+  { repo: 'drone-delivery-sim', label: '드론 시뮬레이터' },
 ];
 
 // 비공개 저장소는 GitHub Actions가 제목·날짜만 뽑아 activity-data 브랜치에 올려 둔 파일을 읽는다.
@@ -22,7 +23,7 @@ const PRIVATE_SOURCES = [
   },
 ];
 
-const CACHE_KEY = 'yyw-github-activity-v13';
+const CACHE_KEY = 'yyw-github-activity-v14';
 const CACHE_MS = 10 * 60 * 1000;
 
 // 내용 없이 의미 없는 커밋 메시지는 기록에서 뺀다.

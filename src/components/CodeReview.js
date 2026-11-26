@@ -8,6 +8,7 @@ const REPO_LABELS = {
   'dudnjs123456-blip/introduce': '포트폴리오',
   'dudnjs123456-blip/Albartoon': '알바툰',
   'dudnjs123456-blip/ai-law-scanner': 'AI 법령 진단',
+  'dudnjs123456-blip/drone-delivery-sim': '드론 시뮬레이터',
   'dudnjs123456-blip/eywa-test': 'EYWA 테스트',
   'chrismathone/eywa': 'EYWA',
 };
