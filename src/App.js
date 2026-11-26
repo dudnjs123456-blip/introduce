@@ -627,7 +627,13 @@ useEffect(() => {
           >
             내 손으로 만든 프로젝트들
           </h2>
-          <p className="projects-hint">프로젝트 카드를 누르면 상세 내용을 볼 수 있어요.</p>
+          <p
+            className="projects-hint content-item"
+            ref={el => contentRefs.current[currentRefIndex++] = el}
+            style={{ transitionDelay: '0.95s' }} // 제목 바로 뒤, 카드보다 먼저 나타나도록
+          >
+            프로젝트 카드를 누르면 상세 내용을 볼 수 있어요.
+          </p>
           <div className="projects-grid">
             {projectsData.map((project, index) => (
               <div
