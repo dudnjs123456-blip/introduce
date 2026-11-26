@@ -285,6 +285,7 @@ useEffect(() => {
       github: 'https://github.com/dudnjs123456-blip/ai-law-scanner',
       demo: 'https://ai-law-scanner.vercel.app',
       demoLabel: '서비스 써 보기',
+      cardDemoLabel: '바로가기',
       slides: [
         { type: 'title', title: 'AI 법령 코드 진단', subtitle: '깃 저장소 코드로 AI 관련 법령 위반 가능성을 찾는 서비스 · AI 협업 개발' },
         { type: 'text', title: '1. 프로젝트 개요', content: '2026년 1월 AI 기본법이 시행되면서 AI 서비스를 운영하는 회사는 AI 사용 사실을 알리고 생성물에 표시해야 합니다.\n하지만 중소기업과 스타트업은 "우리도 대상인가"부터 판단하기 어렵고, 기존 진단은 대부분 설문 방식입니다.\n그래서 깃 저장소 주소만 넣으면 실제 코드를 읽고, 법령별로 걸릴 만한 부분과 그 근거가 되는 코드 줄, 고치는 방법을 보여 주는 서비스를 만들었습니다.' },
@@ -310,6 +311,7 @@ useEffect(() => {
       github: 'https://github.com/dudnjs123456-blip/drone-delivery-sim',
       demo: 'https://drone-delivery-sim-tau.vercel.app',
       demoLabel: '시뮬레이터 써 보기',
+      cardDemoLabel: '바로가기',
       slides: [
         { type: 'title', title: '드론 배송 3D 시뮬레이터', subtitle: '가게에서 단지 스테이션까지, 드론 배송 전 과정을 3D로 재현하고 측정 · 기획 문서 기반 AI 협업 개발' },
         { type: 'text', title: '1. 프로젝트 개요', content: '도심 아파트 단지에서 드론 여러 대가 장애물과 바람을 피해 음식을 배송하는 과정을 웹 브라우저에서 3D로 시뮬레이션합니다.\n핵심은 보기 좋은 화면이 아니라 측정입니다. 주방 대기·조리·포장·도크까지 운반·적재·비행 같은 구간별 시간과, 드론 사이 최소 거리·비행금지구역 침범·추락 같은 안전 지표를 기록합니다.\n돌발 상황과 날씨를 원하는 시점에 넣어 보면서 "이 조건에서도 실제로 운영할 수 있는가"를 확인하는 도구입니다.' },
@@ -653,7 +655,7 @@ useEffect(() => {
                 {(project.github || project.demo || project.Url) && (
                   <div className="project-links">
                     {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer" className="btn-secondary" onClick={event => event.stopPropagation()}>GitHub</a>}
-                    {project.demo && <a href={project.demo} target="_blank" rel="noopener noreferrer" className="btn-secondary" onClick={event => event.stopPropagation()}>플레이하기</a>}
+                    {project.demo && <a href={project.demo} target="_blank" rel="noopener noreferrer" className="btn-secondary" onClick={event => event.stopPropagation()}>{project.cardDemoLabel || '플레이하기'}</a>}
                     {project.Url && <a href={project.Url} target="_blank" rel="noopener noreferrer" className="btn-secondary" onClick={event => event.stopPropagation()}>YouTube Channel</a>}
                   </div>
                 )}
