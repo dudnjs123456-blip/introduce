@@ -681,6 +681,15 @@ section {
   max-width: 1480px;
 }
 
+/* 프로젝트 제목 밑 안내 문구: 카드를 누르면 상세 내용이 열린다는 것을 알려 줌 */
+.projects-hint {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  margin: -1rem 0 0;
+  word-break: keep-all;
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr)); /* 넓은 화면: 한 줄에 4개 */
